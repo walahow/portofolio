@@ -4,6 +4,8 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 
+import NoiseOverlay from "@/components/NoiseOverlay";
+
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -26,6 +28,7 @@ export default function RootLayout({
         className={`${jetbrainsMono.variable} antialiased`}
       >
         <SmoothScroll>
+          <NoiseOverlay />
           <CustomCursor />
           {children}
         </SmoothScroll>

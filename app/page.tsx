@@ -4,15 +4,22 @@ import { useState } from "react";
 import HeroGate from "@/components/HeroGate";
 import ProjectGallery from "@/components/ProjectGallery";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTimerStore } from "@/store/useTimerStore";
 
 export default function Home() {
   const [isEntered, setIsEntered] = useState(false);
+  const { setSystemActive } = useTimerStore();
+
+  const handleEnter = () => {
+    setIsEntered(true);
+    setSystemActive(true);
+  };
 
   return (
     <main className="min-h-screen">
       <AnimatePresence mode="wait">
         {!isEntered && (
-          <HeroGate onEnter={() => setIsEntered(true)} />
+          <HeroGate onEnter={handleEnter} />
         )}
       </AnimatePresence>
 

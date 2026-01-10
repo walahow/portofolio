@@ -178,19 +178,19 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
             {/* --- 4 CORNER LAYOUT --- */}
 
             {/* Top Left */}
-            <div className="absolute top-8 left-8 text-xs text-gray-500 tracking-widest pointer-events-none z-10">
+            <div className="absolute top-8 left-8 text-md text-gray-500 tracking-widest pointer-events-none z-10">
                 {displayedTitle}
             </div>
 
             {/* Top Right */}
-            <div className="absolute top-8 right-8 text-xs text-gray-500 text-right pointer-events-none z-10">
-                JAKARTA, ID // 12.05.2003
+            <div className="absolute top-8 right-8 text-md text-gray-500 text-right pointer-events-none z-10">
+                MEDAN, ID // 24.12.2005
             </div>
 
             {/* Bottom Left - IDENTITY MORPH */}
             <div className="absolute bottom-8 left-8 text-left pointer-events-none z-10 block">
                 {/* Name Morph */}
-                <h1 className="text-4xl md:text-6xl font-bold mb-2 text-white">
+                <h1 className="text-4xl md:text-4xl font-bold mb-2 text-white">
                     {displayedName}
                 </h1>
                 {/* Role */}
@@ -204,8 +204,8 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
             </div>
 
             {/* Bottom Right - Interaction Hint */}
-            <div className="absolute bottom-8 right-8 text-xs text-white animate-pulse pointer-events-none z-10">
-                ( HOLD TO ENTER )
+            <div className="absolute bottom-8 right-8 text-xl text-white animate-pulse pointer-events-none z-10">
+                [ HOLD TO ENTER ]
             </div>
 
             {/* Bottom Progress Bar */}

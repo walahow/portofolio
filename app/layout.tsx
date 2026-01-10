@@ -6,6 +6,9 @@ import CustomCursor from "@/components/CustomCursor";
 
 import NoiseOverlay from "@/components/NoiseOverlay";
 
+import SystemHUD from "@/components/SystemHUD";
+import RestOverlay from "@/components/RestOverlay";
+
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -28,6 +31,8 @@ export default function RootLayout({
         className={`${jetbrainsMono.variable} antialiased`}
       >
         <SmoothScroll>
+          <RestOverlay />
+          <SystemHUD />
           <NoiseOverlay />
           <CustomCursor />
           {children}

@@ -1,9 +1,7 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLenis } from './SmoothScroll';
-import gsap from 'gsap';
 import { useCursorStore } from '@/store/useCursorStore';
 
 interface ProjectCardProps {
@@ -15,34 +13,8 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ id, title, category, year, image }: ProjectCardProps) {
-    const { lenis } = useLenis();
     const cardRef = useRef<HTMLAnchorElement>(null);
-    const imageContainerRef = useRef<HTMLDivElement>(null);
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
-
-    useEffect(() => {
-        if (!lenis || !cardRef.current) return;
-
-        const setSkew = gsap.quickSetter(cardRef.current, "skewY", "deg");
-        const setScale = gsap.quickSetter(cardRef.current, "scaleY");
-
-        const onScroll = (e: any) => {
-            const velocity = e.velocity;
-
-            const skewAmount = velocity * 0.25;
-            const stretchAmount = 1 + Math.min(Math.abs(velocity) * 0.002, 0.1);
-
-
-            setSkew(skewAmount);
-            setScale(stretchAmount);
-        };
-
-        lenis.on('scroll', onScroll);
-
-        return () => {
-            lenis.off('scroll', onScroll);
-        };
-    }, [lenis]);
 
     const slug = title.toLowerCase().replace(/ /g, "-");
 
@@ -50,7 +22,7 @@ export default function ProjectCard({ id, title, category, year, image }: Projec
         <Link
             href={`/project/${slug}`}
             ref={cardRef}
-            className="block w-full mb-32 origin-center will-change-transform cursor-none"
+            className="project-card block w-full mb-32 origin-center will-change-transform cursor-none opacity-80" // Added project-card class and default opacity
             onMouseEnter={() => {
                 setIsHovered(true);
                 setCursorText("ENTER");
@@ -63,9 +35,7 @@ export default function ProjectCard({ id, title, category, year, image }: Projec
             }}
         >
             <div
-                ref={imageContainerRef}
                 className="relative w-full aspect-[16/9] bg-neutral-900 overflow-hidden mb-6 group border border-neutral-800"
-
             >
                 {image ? (
                     <Image

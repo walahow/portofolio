@@ -53,15 +53,30 @@ export default function ProjectGallery() {
     }, []);
 
     return (
-        <div ref={containerRef} className="min-h-screen py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-            <header className="mb-24 flex justify-between items-end border-b border-foreground/10 pb-8">
+        <div ref={containerRef} className="min-h-screen py-24 px-4 sm:px-8 max-w-7xl mx-auto md:pl-28">
+            {/* Mobile Header (Horizontal) */}
+            <header className="mb-24 flex justify-between items-end border-b border-foreground/10 pb-8 md:hidden">
                 <div>
-                    <h1 className="ttext-4xl md:text-6xl font-bold tracking-tighter mb-2">SELECTED<br /> WORKS</h1>
+                    <h1 className="text-4xl font-bold tracking-tighter mb-2">SELECTED<br /> WORKS</h1>
                 </div>
                 <div className="text-right hidden sm:block">
                     <p className="text-sm opacity-50">INDEX / [01-04]</p>
                 </div>
             </header>
+
+            {/* Desktop Vertical Sidebar (Fixed Spine) */}
+            <aside className="hidden md:flex fixed top-0 left-0 h-screen w-16 bg-[#050505] z-50 flex-col justify-between items-start py-6 border-r border-white/5">
+
+                <h1 className="[writing-mode:vertical-rl] text-6xl font-bold tracking-tighter whitespace-nowrap mix-blend-difference">
+                    SELECTED WORKS
+                </h1>
+
+                <div className="[writing-mode:vertical-rl] text-md tracking-tighter opacity-50 font-mono">
+                    INDEX / [01 - 04]
+                </div>
+
+
+            </aside>
 
             <div className="space-y-48">
                 {[

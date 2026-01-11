@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTimerStore } from '@/store/useTimerStore';
-import clsx from 'clsx';
 import { useLenis } from './SmoothScroll';
 import { motion } from 'framer-motion';
 
@@ -13,12 +12,10 @@ export default function SystemHUD() {
     const { uptime, tick, isSystemActive, setOverheated } = useTimerStore();
     const { lenis } = useLenis();
 
-    const [speed, setSpeed] = useState(0);
     const [rotation, setRotation] = useState(0);
 
     // Thermal Limit (Seconds)
     const MAX_UPTIME = 180;
-    const MAX_SPEED = 15; // Arbitrary max speed for gauge scaling
 
     // Formatting MM:SS
     const formatTime = (seconds: number) => {
@@ -27,34 +24,44 @@ export default function SystemHUD() {
         return `${m}:${s}`;
     };
 
-    // Lenis Scroll Listener
+    // Lenis Scroll Listener for Kinetic Rotation
     useEffect(() => {
         if (!lenis) return;
 
-        const onScroll = ({ velocity }: { velocity: number }) => {
-            const absVelocity = Math.abs(velocity);
-            setSpeed(absVelocity);
-            setRotation((prev) => prev + velocity * 2); // Accumulate rotation
+        // Simpler approach requested by user:
+        // User snippet: useLenis(({ velocity }) => { setRotation(...) })
+        // If we strictly follow that, it only updates on scroll. 
+        // To achieve "always rotates slowly even when not scrolling", we need a separate ticker.
+
+        let animationFrameId: number;
+
+        const updateLoop = () => {
+            // Get current velocity from lenis instance if available
+            const currentVelocity = lenis.velocity || 0;
+
+            // Apply rotation: Reactivity to velocity (Bidirectional)
+            // Removed constant + 0.2 to ensure no rotation when idle
+            // Using signed velocity to allow rotation in both directions
+            setRotation((prev) => prev + (currentVelocity * 0.5));
+
+            animationFrameId = requestAnimationFrame(updateLoop);
         };
 
-        lenis.on('scroll', onScroll);
+        updateLoop();
 
         return () => {
-            lenis.off('scroll', onScroll);
+            cancelAnimationFrame(animationFrameId);
         };
     }, [lenis]);
 
+    // Timer Tick Logic
     useEffect(() => {
         if (pathname === '/rest') return;
 
-        // ONLY tick if we are on the ProjectGallery (Home Page) AND System is Active (Gate Passed)
-        // User Requirement: "this shing only applied on ProjectGallery page... user switch page... current time will stop"
-        // Also assuming ProjectGallery is on '/'
         const shouldTick = pathname === '/' && isSystemActive;
 
         if (!shouldTick) return;
 
-        // Thermal Check
         if (uptime >= MAX_UPTIME) {
             setOverheated(true);
             return;
@@ -67,53 +74,32 @@ export default function SystemHUD() {
         return () => clearInterval(interval);
     }, [pathname, isSystemActive, uptime, tick, router, setOverheated]);
 
-    // Strictly appear ONLY on Home ('/') and when System is Active
     if (pathname !== '/' || !isSystemActive) return null;
 
-    // Calculate dynamic bar height percent
-    const barHeightPercent = Math.min((speed / MAX_SPEED) * 100, 100);
-
-    // Determine Bar Color based on speed
-    const getBarColor = () => {
-        if (barHeightPercent > 80) return "bg-red-500 box-shadow-red";
-        if (barHeightPercent > 40) return "bg-yellow-500";
-        return "bg-white";
-    };
-
     return (
-        <div className="fixed z-[100] font-mono pointer-events-none mix-blend-difference text-white">
-            {/* Original Top Right HUD - Timer */}
-            <div className="fixed top-8 right-8">
-                <div className={clsx(
-                    "text-xs tracking-widest transition-colors duration-300",
-                    uptime > MAX_UPTIME - 10 ? "text-red-500 animate-pulse" : "" // Warn when near limit
-                )}>
-                    UPTIME: {formatTime(uptime)}
-                </div>
+        <div className="fixed top-32 right-8 z-50 flex items-center justify-center w-32 h-32 pointer-events-none mix-blend-difference text-white">
+            {/* 1. CENTER: UPTIME */}
+            <div className="absolute font-mono text-sm font-bold tracking-widest z-10 flex flex-col items-center justify-center">
+                <span className={uptime > MAX_UPTIME - 10 ? "text-red-500 animate-pulse" : ""}>
+                    {formatTime(uptime)}
+                </span>
             </div>
 
-            {/* Bottom Right HUD - RPM Gauge */}
-            <div className="fixed bottom-8 right-8 flex flex-col items-center gap-3">
-                {/* 1. Vertical Velocity Bar */}
-                <div className="h-24 w-1.5 bg-white/15 relative overflow-hidden flex items-end">
-                    <motion.div
-                        className={clsx("w-full transition-colors duration-100", getBarColor())}
-                        animate={{ height: `${barHeightPercent}%` }}
-                        transition={{ duration: 0.05, ease: "linear" }}
-                    />
-                </div>
-
-                {/* 2. Rotating Gear Mechanism */}
-                <motion.div
-                    animate={{ rotate: rotation }}
-                    transition={{ type: "spring", stiffness: 50, damping: 10, mass: 0.5 }}
-                >
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-80">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </motion.div>
-            </div>
+            {/* 2. OUTER: ROTATING RING */}
+            <motion.div
+                style={{ rotate: rotation }}
+                className="absolute w-full h-full flex items-center justify-center"
+            >
+                {/* Use SVG for Circular Text */}
+                <svg viewBox="0 0 100 100" className="w-full h-full opacity-80 overflow-visible">
+                    <path id="textPath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                    <text className="text-[10px] uppercase font-mono tracking-[4px]" fill="currentColor">
+                        <textPath href="#textPath" startOffset="0%">
+                            {" SCROLL || SCROlLL"}
+                        </textPath>
+                    </text>
+                </svg>
+            </motion.div>
         </div>
     );
 }

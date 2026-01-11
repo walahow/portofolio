@@ -65,16 +65,11 @@ export default function ProjectGallery() {
             </header>
 
             {/* Desktop Vertical Sidebar (Fixed Spine) */}
-            <aside className="hidden md:flex fixed top-0 left-0 h-screen w-16 bg-[#050505] z-50 flex-col justify-between items-start py-6 border-r border-white/5">
+            <aside className="hidden md:flex fixed top-0 left-0 h-screen w-26 bg-[#050505] z-50 flex-col justify-between items-start border-r border-white/5">
 
-                <h1 className="[writing-mode:vertical-rl] text-6xl font-bold tracking-tighter whitespace-nowrap mix-blend-difference">
-                    SELECTED WORKS
+                <h1 className="[writing-mode:vertical-rl] text-8xl font-bold tracking-widest whitespace-nowrap mix-blend-difference">
+                    KEY PROJECTS
                 </h1>
-
-                <div className="[writing-mode:vertical-rl] text-md tracking-tighter opacity-50 font-mono">
-                    INDEX / [01 - 04]
-                </div>
-
 
             </aside>
 

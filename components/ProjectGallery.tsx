@@ -4,6 +4,7 @@ import { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectCard from "./ProjectCard";
+import { PROJECTS } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,7 +54,7 @@ export default function ProjectGallery() {
     }, []);
 
     return (
-        <div ref={containerRef} className="min-h-screen py-24 px-4 sm:px-8 max-w-7xl mx-auto md:pl-28">
+        <div ref={containerRef} className="min-h-screen py-24 px-4 sm:px-8 max-w-7xl mx-auto">
             {/* Mobile Header (Horizontal) */}
             <header className="mb-24 flex justify-between items-end border-b border-foreground/10 pb-8 md:hidden">
                 <div>
@@ -74,13 +75,16 @@ export default function ProjectGallery() {
             </aside>
 
             <div className="space-y-48">
-                {[
-                    { id: '01', title: 'Ilkom-web', category: 'Dev / Design', year: '2025', image: '/img/ilkom-web.png' },
-                    { id: '02', title: 'MyMeet', category: 'Mobile App', year: '2025', image: '/img/mymeet.jpg' },
-                    { id: '03', title: 'Schedule Integrated Manager', category: 'Web Dev', year: '2025', image: '/img/sim.jpg' },
-                    { id: '04', title: 'MyTask', category: 'Web Daily', year: '2025', image: '/img/mytask.jpg' },
-                ].map((project) => (
-                    <ProjectCard key={project.id} {...project} />
+                {PROJECTS.map((project) => (
+                    <ProjectCard
+                        key={project.id}
+                        id={project.id}
+                        title={project.title}
+                        slug={project.slug}
+                        category={project.category}
+                        year={project.year}
+                        image={project.thumbnail}
+                    />
                 ))}
             </div>
         </div>

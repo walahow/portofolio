@@ -102,6 +102,11 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
 
     // Cleanup on unmount to ensure cursor resets when gate opens/closes
     useEffect(() => {
+        // Force set cursor on mount (in case mouse is already there)
+        setIsHovered(true);
+        setCursorText("HOLD");
+        setCursorVariant('default');
+
         return () => {
             setIsHovered(false);
             setCursorText("");

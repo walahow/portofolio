@@ -7,16 +7,15 @@ import { useCursorStore } from '@/store/useCursorStore';
 interface ProjectCardProps {
     id: string;
     title: string;
+    slug: string;
     category: string;
     year: string;
     image?: string;
 }
 
-export default function ProjectCard({ id, title, category, year, image }: ProjectCardProps) {
+export default function ProjectCard({ id, title, slug, category, year, image }: ProjectCardProps) {
     const cardRef = useRef<HTMLAnchorElement>(null);
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
-
-    const slug = title.toLowerCase().replace(/ /g, "-");
 
     return (
         <Link

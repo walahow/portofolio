@@ -69,6 +69,21 @@ body {
   animation: noise-shift 0.2s steps(1) infinite;
 }
 
+/* Vertical Marquee Animation */
+@keyframes scroll-vertical {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-scroll-vertical {
+  animation: scroll-vertical 5s linear infinite;
+}
+
 html.lenis,
 html.lenis body {
   height: auto;

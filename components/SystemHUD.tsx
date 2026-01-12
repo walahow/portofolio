@@ -74,15 +74,30 @@ export default function SystemHUD() {
         return () => clearInterval(interval);
     }, [pathname, isSystemActive, uptime, tick, router, setOverheated]);
 
-    if (pathname !== '/' || !isSystemActive) return null;
+    const isProjectPage = pathname.startsWith('/project/');
+
+    if ((pathname !== '/' && !isProjectPage) || !isSystemActive) return null;
+
+    const handleBack = () => {
+        if (isProjectPage) {
+            router.back();
+        }
+    };
 
     return (
-        <div className="fixed top-32 right-8 z-50 flex items-center justify-center w-32 h-32 pointer-events-none mix-blend-difference text-white">
-            {/* 1. CENTER: UPTIME */}
+        <div
+            onClick={handleBack}
+            className={`fixed top-32 right-8 z-50 flex items-center justify-center w-32 h-32 mix-blend-difference text-white transition-transform duration-500 ${isProjectPage ? "cursor-pointer hover:scale-110" : "pointer-events-none"}`}
+        >
+            {/* 1. CENTER: UPTIME OR BACK */}
             <div className="absolute font-mono text-sm font-bold tracking-widest z-10 flex flex-col items-center justify-center">
-                <span className={uptime > MAX_UPTIME - 10 ? "text-red-500 animate-pulse" : ""}>
-                    {formatTime(uptime)}
-                </span>
+                {isProjectPage ? (
+                    <span>BACK</span>
+                ) : (
+                    <span className={uptime > MAX_UPTIME - 10 ? "text-red-500 animate-pulse" : ""}>
+                        {formatTime(uptime)}
+                    </span>
+                )}
             </div>
 
             {/* 2. OUTER: ROTATING RING */}
@@ -95,7 +110,7 @@ export default function SystemHUD() {
                     <path id="textPath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
                     <text className="text-[10px] uppercase font-mono tracking-[4px]" fill="currentColor">
                         <textPath href="#textPath" startOffset="0%">
-                            {" SCROLL || SCROlLL"}
+                            {isProjectPage ? " RETURN || RETURN" : " SCROLL || SCROLL"}
                         </textPath>
                     </text>
                 </svg>

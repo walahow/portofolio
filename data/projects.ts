@@ -19,7 +19,7 @@ export const PROJECTS: Project[] = [
         slug: 'ilkom-web',
         category: 'Dev / Design',
         year: '2025',
-        roles: ['Frontend Developer', 'UI/UX Designer'],
+        roles: ['FRONTEND DEVELOPER', 'UI/UX DESIGNER'],
         jargon: '/// ACADEMIC PORTAL REIMAGINED ///',
         description: 'A comprehensive redesign of the Computer Science faculty website. The goal was to modernize the information architecture while introducing a distinct visual identity that reflects the forward-thinking nature of the department. Built with Next.js and Framer Motion for seamless page transitions.',
         thumbnail: '/img/ilkom-web.png',

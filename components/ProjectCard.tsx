@@ -24,7 +24,7 @@ export default function ProjectCard({ id, title, slug, category, year, image }: 
             className="project-card block w-full mb-32 origin-center will-change-transform cursor-none opacity-80" // Added project-card class and default opacity
             onMouseEnter={() => {
                 setIsHovered(true);
-                setCursorText("ENTER");
+                setCursorText("CLICK");
                 setCursorVariant("click");
             }}
             onMouseLeave={() => {

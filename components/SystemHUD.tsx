@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTimerStore } from '@/store/useTimerStore';
+import { useCursorStore } from '@/store/useCursorStore';
 import { useLenis } from './SmoothScroll';
 import { motion } from 'framer-motion';
 
@@ -11,6 +12,7 @@ export default function SystemHUD() {
     const router = useRouter();
     const { uptime, tick, isSystemActive, setOverheated } = useTimerStore();
     const { lenis } = useLenis();
+    const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
 
     const [rotation, setRotation] = useState(0);
 
@@ -87,7 +89,19 @@ export default function SystemHUD() {
     return (
         <div
             onClick={handleBack}
-            className={`fixed top-32 right-8 z-50 flex items-center justify-center w-32 h-32 mix-blend-difference text-white transition-transform duration-500 ${isProjectPage ? "cursor-pointer hover:scale-110" : "pointer-events-none"}`}
+            onMouseEnter={() => {
+                if (isProjectPage) {
+                    setIsHovered(true);
+                    setCursorText("CLICK");
+                    setCursorVariant('click');
+                }
+            }}
+            onMouseLeave={() => {
+                setIsHovered(false);
+                setCursorText("");
+                setCursorVariant('default');
+            }}
+            className={`fixed top-32 right-8 z-50 flex items-center justify-center w-32 h-32 mix-blend-difference text-white transition-transform duration-500 ${isProjectPage ? "cursor-none hover:scale-110" : "pointer-events-none"}`}
         >
             {/* 1. CENTER: UPTIME OR BACK */}
             <div className="absolute font-mono text-sm font-bold tracking-widest z-10 flex flex-col items-center justify-center">

@@ -21,8 +21,13 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
     // MarginTop: 0vh -> 15vh (Pushes top down to create centered shrink effect)
     const width = useTransform(scrollY, [0, 200], ['117.65%', '100%']);
     const marginLeft = useTransform(scrollY, [0, 200], ['-17.65%', '0%']);
-    const height = useTransform(scrollY, [0, 200], ['100vh', '70vh']);
-    const marginTop = useTransform(scrollY, [0, 200], ['0vh', '15vh']);
+    const height = useTransform(scrollY, [0, 200], ['100vh', '140vh']);
+    const marginTop = useTransform(scrollY, [0, 200], ['0vh', '-20vh']);
+    const y = useTransform(scrollY, [0, 200], [0, 200]);
+
+    // Description Animation - Start AFTER image settles (200px)
+    const descOpacity = useTransform(scrollY, [200, 500], [0, 1]);
+    const descY = useTransform(scrollY, [200, 500], [100, -100]);
 
     return (
         <main className="min-h-screen bg-[#050505] w-full relative">
@@ -64,12 +69,13 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                         width,
                         marginLeft,
                         height,
-                        marginTop
+                        marginTop,
+                        y
                     }}
-                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col bg-[#050505] pt-48 pb-48"
+                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col bg-[#050505] py-[35vh]"
                 >
                     {/* Title Overlay - Overlapping border */}
-                    <div className="absolute top-24 right-8 z-50 mix-blend-difference pointer-events-none">
+                    <div className="absolute top-[24vh] right-8 z-50 mix-blend-difference pointer-events-none">
                         <h1 className="text-6xl md:text-9xl font-bold tracking-tighter text-white">
                             {project.title}
                         </h1>
@@ -93,13 +99,35 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                     </div>
                 </motion.div>
 
-                {/* 2. MAIN CONTENT STACK */}
-                <div className="px-12 pb-48 max-w-5xl mx-auto">
+                {/* 2. MAIN CONTENT STACK - Overlapping Card Container */}
+                <div className="relative px-4 md:px-12 w-full z-50 pointer-events-none -mt-20 md:-mt-40">
+                    <motion.div
+                        style={{ opacity: descOpacity, y: descY }}
+                        className="mx-auto max-w-4xl bg-[#0A0A0A] text-neutral-300 p-8 md:p-24 shadow-2xl pointer-events-auto border border-white/10 backdrop-blur-sm"
+                    >
+                        <h2 className="text-3xl md:text-5xl font-light mb-12 tracking-tight text-white">
+                            Project Overview
+                        </h2>
+                        <div className="text-lg md:text-xl leading-relaxed font-light text-neutral-400">
+                            {project.description}
+                        </div>
 
-                    {/* Description */}
-                    <div className="mb-24 text-xl md:text-2xl leading-relaxed text-neutral-300 font-light max-w-3xl">
-                        {project.description}
-                    </div>
+                        {/* Additional Metadata Block */}
+                        <div className="mt-16 pt-16 border-t border-white/10 grid grid-cols-2 gap-8 font-mono text-sm uppercase tracking-widest text-neutral-500">
+                            <div>
+                                <span className="block text-white mb-2">Role</span>
+                                {project.roles.join(', ')}
+                            </div>
+                            <div>
+                                <span className="block text-white mb-2">Year</span>
+                                {project.year}
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Remainder of content (Video/Gallery) needs to be pushed down or wrapped */}
+                <div className="px-12 pb-48 max-w-5xl mx-auto pt-24">
 
                     {/* Video (if valid, else placeholder logic) */}
                     <div className="w-full aspect-video bg-neutral-900 mb-24 overflow-hidden relative group">
@@ -119,8 +147,11 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                         )}
                     </div>
 
+                    <br />
+                    <br />
+
                     {/* Gallery Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                         {project.gallery.map((img, i) => (
                             <div key={i} className="relative aspect-[4/3] bg-neutral-900 overflow-hidden">
                                 <Image
@@ -136,6 +167,8 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                 </div>
 
             </div>
+
+
         </main>
     );
 }

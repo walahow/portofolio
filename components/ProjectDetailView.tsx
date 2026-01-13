@@ -242,17 +242,24 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                     <br />
 
                     {/* Gallery Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-1 gap-32">
-                        {project.gallery.map((img, i) => (
-                            <div key={i} className="relative aspect-[4/3] bg-neutral-900 overflow-hidden">
-                                <Image
-                                    src={img}
-                                    alt={`Gallery ${i}`}
-                                    fill
-                                    className="object-cover hover:scale-105 transition-transform duration-700"
-                                />
-                            </div>
-                        ))}
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-48">
+                        {project.gallery.map((img, i) => {
+                            // First 2 images are smaller and centered
+                            const isSmall = i === 0 || i === 1;
+                            return (
+                                <div
+                                    key={i}
+                                    className={`relative bg-neutral-900 overflow-hidden ${isSmall ? 'w-full md:w-2/3 mx-auto aspect-[4/3]' : 'w-full aspect-[4/3]'}`}
+                                >
+                                    <Image
+                                        src={img}
+                                        alt={`Gallery ${i}`}
+                                        fill
+                                        className="object-cover hover:scale-105 transition-transform duration-700"
+                                    />
+                                </div>
+                            );
+                        })}
                     </div>
 
                 </div>

@@ -228,7 +228,7 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                 >
                     {/* 2. INTERACTION LAYER (Grayscale via Physics Progress) */}
                     <motion.img
-                        src="/img/img1.jpg"
+                        src="/img/HeroGate.avif"
                         alt=""
                         className="w-full h-full object-cover"
                         style={{

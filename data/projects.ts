@@ -22,9 +22,9 @@ export const PROJECTS: Project[] = [
         roles: ['FRONTEND DEVELOPER', 'UI/UX DESIGNER'],
         jargon: '/// ACADEMIC PORTAL REIMAGINED ///',
         description: 'A comprehensive redesign of the Computer Science faculty website. The goal was to modernize the information architecture while introducing a distinct visual identity that reflects the forward-thinking nature of the department. Built with Next.js and Framer Motion for seamless page transitions.',
-        thumbnail: '/img/ilkom-web.png',
+        thumbnail: '/img/ilkomWeb.avif',
         video: '', // Placeholder
-        gallery: ['/img/ilkom-web.png', '/img/mymeet.jpg'] // Placeholders using existing images
+        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'] // Using existing images
     },
     {
         id: '02',
@@ -35,9 +35,9 @@ export const PROJECTS: Project[] = [
         roles: ['Mobile Engineer', 'Product Designer'],
         jargon: '/// VIRTUAL CONNECTION ///',
         description: 'MyMeet is a high-performance video conferencing application designed for low-bandwidth environments. It utilizes adaptive bitrate streaming and a custom signaling server to ensure stable connections. The UI focuses on clarity and accessibility.',
-        thumbnail: '/img/mymeet.jpg',
+        thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
-        gallery: ['/img/mymeet.jpg', '/img/sim.jpg']
+        gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif']
     },
     {
         id: '03',
@@ -48,9 +48,9 @@ export const PROJECTS: Project[] = [
         roles: ['Full Stack Developer'],
         jargon: '/// SYSTEMATIC EFFICIENCY ///',
         description: 'SIM (Schedule Integrated Manager) fixes the chaos of university course planning. It features an automated conflict detection algorithm and a drag-and-drop interface for ease of use. The backend is powered by Python/Django.',
-        thumbnail: '/img/sim.jpg',
+        thumbnail: '/img/ilkomWeb.avif', // Placeholder
         video: '',
-        gallery: ['/img/sim.jpg', '/img/mytask.jpg']
+        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif']
     },
     {
         id: '04',
@@ -61,8 +61,8 @@ export const PROJECTS: Project[] = [
         roles: ['Frontend Developer'],
         jargon: '/// PRODUCTIVITY FLOW ///',
         description: 'A minimalist task management dashboard that emphasizes "flow state". It uses a dark-mode-first design language and supports keyboard shortcuts for rapid task entry. Local-first architecture ensures instant interactions.',
-        thumbnail: '/img/mytask.jpg',
+        thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
-        gallery: ['/img/mytask.jpg', '/img/ilkom-web.png']
+        gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif']
     }
 ];

@@ -5,6 +5,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 
 import NoiseOverlay from "@/components/NoiseOverlay";
+import ScrollReset from "@/components/ScrollReset";
 
 import SystemHUD from "@/components/SystemHUD";
 import RestOverlay from "@/components/RestOverlay";
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${jetbrainsMono.variable} antialiased`}
       >
+        <ScrollReset />
         <SmoothScroll>
           <RestOverlay />
           <SystemHUD />

@@ -1,17 +1,29 @@
 'use client';
 
 import { Project } from '@/data/projects';
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useLenis } from '@/components/SmoothScroll'; // Import useLenis
+import { useTransitionStore } from '@/store/useTransitionStore'; // Import Transition Store
 
 interface ProjectDetailViewProps {
     project: Project;
+    nextProject: Project;
 }
 
-export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
+export default function ProjectDetailView({ project, nextProject }: ProjectDetailViewProps) {
     const containerRef = useRef(null);
     const { scrollY } = useScroll();
+    const router = useRouter();
+
+    // Global Smooth Scroll Control
+    const { lenis } = useLenis();
+    const { startTransition } = useTransitionStore();
+
+    // Curtain Animation
+    // ... (rest of animations) ...
 
     // Curtain Animation
     // Map scroll 0 -> 200px (increased sensitivity) to animation values
@@ -28,6 +40,85 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
     // Description Animation - Start AFTER image settles (200px)
     const descOpacity = useTransform(scrollY, [200, 500], [0, 1]);
     const descY = useTransform(scrollY, [200, 500], [100, -100]);
+
+    // --- DEEP SCROLL LOGIC ---
+    const footerRef = useRef(null);
+    const [canNavigate, setCanNavigate] = useState(false); // Safety Warmup
+    const [isNavigating, setIsNavigating] = useState(false); // Transition Lock
+    const isNavigatingRef = useRef(false); // Ref for cleanup access
+
+    const { scrollYProgress } = useScroll({
+        target: footerRef,
+        offset: ["start end", "end end"]
+    });
+
+    // Warmup Timer & Scroll Reset
+    useEffect(() => {
+        // 1. KILL MOMENTUM: Stop the scroll engine immediately
+        // This prevents any "fling" velocity from the previous page from carrying over
+        if (lenis) lenis.stop();
+
+        // 2. IMMEDIATE RESET
+        window.scrollTo(0, 0);
+        if (lenis) {
+            lenis.scrollTo(0, { immediate: true, force: true });
+        }
+
+        // 3. RESUME AFTER SETTLING
+        // We wait a tiny bit to ensure the browser has painted the "top" state
+        const resumeTimer = setTimeout(() => {
+            // Double check position before unlocking
+            window.scrollTo(0, 0);
+            if (lenis) {
+                lenis.scrollTo(0, { immediate: true, force: true });
+                lenis.start();
+            }
+        }, 100);
+
+        // 4. Enable Navigation after delay
+        const navTimer = setTimeout(() => setCanNavigate(true), 1500); // Increased safety to 1.5s
+
+        return () => {
+            clearTimeout(resumeTimer);
+            clearTimeout(navTimer);
+
+            // Cleanup CSS Lock
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+
+            // IMPORTANT: Only restart Lenis if we are NOT navigating away.
+            // If we ARE navigating, we want to keep it stopped so the new page loads static.
+            if (lenis && !isNavigatingRef.current) {
+                lenis.start();
+            }
+        };
+    }, [lenis]); // Re-run if lenis becomes available
+
+    useMotionValueEvent(scrollYProgress, "change", (latest) => {
+        // Trigger ONLY if:
+        // 1. Scrolled to bottom (>= 0.99)
+        // 2. Warmup is complete (canNavigate)
+        // 3. Not already transitioning (!isNavigating)
+        if (latest >= 0.99 && canNavigate && !isNavigating) {
+            setIsNavigating(true); // Lock it
+            isNavigatingRef.current = true; // Signal cleanup to stay quiet
+
+            // KILL MOMENTUM IMMEDIATELY
+            // Brake the scroll engine so no velocity carries over
+            if (lenis) lenis.stop();
+
+            // CSS LOCK: Prevent native scroll entirely
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            startTransition();     // Trigger Shutter
+
+            // Wait for shutter to close (800ms) before changing page
+            setTimeout(() => {
+                router.push(`/project/${nextProject.slug}`);
+            }, 800);
+        }
+    });
 
     return (
         <main className="min-h-screen bg-[#050505] w-full relative">
@@ -162,6 +253,31 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                                 />
                             </div>
                         ))}
+                    </div>
+
+                </div>
+
+                {/* --- DEEP SCROLL FOOTER --- */}
+                <div ref={footerRef} className="relative w-full h-[80vh] flex flex-col items-center justify-center mt-32 border-t border-white/10">
+
+                    {/* Sticky/Fixed Center Content */}
+                    <div className="sticky top-0 h-full flex flex-col items-center justify-center space-y-4">
+                        <span className="text-white/50 text-sm tracking-widest">NEXT PROJECT</span>
+                        <h2 className="text-5xl md:text-7xl font-bold text-white text-center">
+                            {nextProject.title}
+                        </h2>
+
+                        {/* THE PROGRESS BAR (Visual Feedback of "Effort") */}
+                        <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-8">
+                            <motion.div
+                                className="h-full bg-white"
+                                style={{
+                                    scaleX: scrollYProgress,
+                                    transformOrigin: "left"
+                                }}
+                            />
+                        </div>
+                        <p className="text-xs text-white/30 mt-2">KEEP SCROLLING TO ENTER</p>
                     </div>
 
                 </div>

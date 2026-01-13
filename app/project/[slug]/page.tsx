@@ -11,10 +11,14 @@ export function generateStaticParams() {
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const project = PROJECTS.find((p) => p.slug === slug);
+    const projectIndex = PROJECTS.findIndex((p) => p.slug === slug);
+    const project = PROJECTS[projectIndex];
 
     if (!project) {
         notFound();
     }
-    return <ProjectDetailView project={project} />;
+
+    const nextProject = PROJECTS[(projectIndex + 1) % PROJECTS.length];
+
+    return <ProjectDetailView key={project.slug} project={project} nextProject={nextProject} />;
 }

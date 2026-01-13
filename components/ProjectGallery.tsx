@@ -13,41 +13,71 @@ export default function ProjectGallery() {
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
-            const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+            const mm = gsap.matchMedia();
 
-            cards.forEach((card) => {
-                gsap.timeline({
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top bottom", // When top of card hits bottom of viewport
-                        end: "bottom top",   // When bottom of card hits top of viewport
-                        scrub: true,
-                    }
-                })
-                    .fromTo(card,
+            // DESKTOP: Full Experience (Filter + Scrub)
+            mm.add("(min-width: 768px)", () => {
+                const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+                cards.forEach((card) => {
+                    gsap.timeline({
+                        scrollTrigger: {
+                            trigger: card,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true,
+                        }
+                    })
+                        .fromTo(card,
+                            {
+                                scale: 0.85,
+                                filter: "grayscale(1) brightness(0.8)",
+                                opacity: 0.7
+                            },
+                            {
+                                scale: 1,
+                                filter: "grayscale(0) brightness(1)",
+                                opacity: 1,
+                                duration: 1,
+                                ease: "power2.out"
+                            }
+                        )
+                        .to(card,
+                            {
+                                scale: 0.85,
+                                filter: "grayscale(1) brightness(0.8)",
+                                opacity: 0.7,
+                                duration: 1,
+                                ease: "power2.in"
+                            }
+                        );
+                });
+            });
+
+            // MOBILE: Performance Mode (No Filter, No Scrub, Play Once)
+            mm.add("(max-width: 767px)", () => {
+                const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+                cards.forEach((card) => {
+                    // Simple Fade In
+                    gsap.fromTo(card,
                         {
-                            scale: 0.85,
-                            filter: "grayscale(1) brightness(0.8)",
-                            opacity: 0.7
+                            opacity: 0,
+                            scale: 0.9,
                         },
                         {
-                            scale: 1,
-                            filter: "grayscale(0) brightness(1)",
                             opacity: 1,
-                            duration: 1,
-                            ease: "power2.out"
-                        }
-                    )
-                    .to(card,
-                        {
-                            scale: 0.85,
-                            filter: "grayscale(1) brightness(0.8)",
-                            opacity: 0.7,
-                            duration: 1,
-                            ease: "power2.in"
+                            scale: 1,
+                            duration: 0.8,
+                            ease: "power2.out",
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 85%", // Trigger when top of card is at 85% of viewport
+                                toggleActions: "play none none reverse" // Play on enter, reverse on leave
+                            }
                         }
                     );
+                });
             });
+
         }, containerRef);
 
         return () => ctx.revert();

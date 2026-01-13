@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTimerStore } from '@/store/useTimerStore';
 import { useCursorStore } from '@/store/useCursorStore';
+import { useTransitionStore } from '@/store/useTransitionStore';
 import { useLenis } from './SmoothScroll';
 import { motion } from 'framer-motion';
 
@@ -13,11 +14,12 @@ export default function SystemHUD() {
     const { uptime, tick, isSystemActive, setOverheated } = useTimerStore();
     const { lenis } = useLenis();
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
+    const { startTransition } = useTransitionStore();
 
     const [rotation, setRotation] = useState(0);
 
     // Thermal Limit (Seconds)
-    const MAX_UPTIME = 180;
+    const MAX_UPTIME = 30;
 
     // Formatting MM:SS
     const formatTime = (seconds: number) => {
@@ -58,7 +60,7 @@ export default function SystemHUD() {
 
     // Timer Tick Logic
     useEffect(() => {
-        if (pathname === '/rest') return;
+
 
         const shouldTick = pathname === '/' && isSystemActive;
 
@@ -80,9 +82,13 @@ export default function SystemHUD() {
 
     if ((pathname !== '/' && !isProjectPage) || !isSystemActive) return null;
 
+
     const handleBack = () => {
         if (isProjectPage) {
-            router.back();
+            startTransition();
+            setTimeout(() => {
+                router.back();
+            }, 800);
         }
     };
 

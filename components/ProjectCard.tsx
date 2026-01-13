@@ -2,6 +2,8 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTransitionStore } from '@/store/useTransitionStore';
 import { useCursorStore } from '@/store/useCursorStore';
 
 interface ProjectCardProps {
@@ -16,12 +18,22 @@ interface ProjectCardProps {
 export default function ProjectCard({ id, title, slug, category, year, image }: ProjectCardProps) {
     const cardRef = useRef<HTMLAnchorElement>(null);
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
+    const { startTransition } = useTransitionStore();
+    const router = useRouter();
 
     return (
         <Link
             href={`/project/${slug}`}
             ref={cardRef}
             className="project-card block w-full mb-32 origin-center will-change-transform cursor-none opacity-80" // Added project-card class and default opacity
+            onClick={(e) => {
+                e.preventDefault();
+                startTransition();
+                // Wait for shutter to close (approx 800ms) before navigating
+                setTimeout(() => {
+                    router.push(`/project/${slug}`);
+                }, 800);
+            }}
             onMouseEnter={() => {
                 setIsHovered(true);
                 setCursorText("CLICK");

@@ -8,6 +8,7 @@ import NoiseOverlay from "@/components/NoiseOverlay";
 
 import SystemHUD from "@/components/SystemHUD";
 import RestOverlay from "@/components/RestOverlay";
+import ShutterOverlay from "@/components/ShutterOverlay";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
           <RestOverlay />
           <SystemHUD />
           <NoiseOverlay />
+          <ShutterOverlay />
           <CustomCursor />
           {children}
         </SmoothScroll>

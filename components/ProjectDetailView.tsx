@@ -151,7 +151,7 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                     <br />
 
                     {/* Gallery Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-32">
                         {project.gallery.map((img, i) => (
                             <div key={i} className="relative aspect-[4/3] bg-neutral-900 overflow-hidden">
                                 <Image

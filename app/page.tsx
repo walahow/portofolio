@@ -1,17 +1,19 @@
 'use client';
 
-import { useState } from "react";
+
 import HeroGate from "@/components/HeroGate";
 import ProjectGallery from "@/components/ProjectGallery";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTimerStore } from "@/store/useTimerStore";
 
+import { useIntroStore } from "@/store/useIntroStore";
+
 export default function Home() {
-  const [isEntered, setIsEntered] = useState(false);
+  const { isEntered, setEntered } = useIntroStore();
   const { setSystemActive } = useTimerStore();
 
   const handleEnter = () => {
-    setIsEntered(true);
+    setEntered(true);
     setSystemActive(true);
   };
 

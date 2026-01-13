@@ -15,7 +15,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
     {
         id: '01',
-        title: 'Ilkom-web',
+        title: 'Ilkom-Web',
         slug: 'ilkom-web',
         category: 'Dev / Design',
         year: '2025',

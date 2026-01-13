@@ -1,6 +1,7 @@
 import { PROJECTS } from '@/data/projects';
 import { notFound } from 'next/navigation';
 import ProjectDetailView from '@/components/ProjectDetailView';
+import ProjectNavigation from '@/components/ProjectNavigation';
 
 export function generateStaticParams() {
     return PROJECTS.map((project) => ({
@@ -16,5 +17,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         notFound();
     }
 
-    return <ProjectDetailView project={project} />;
+    return (
+        <>
+            <ProjectNavigation />
+            <ProjectDetailView project={project} />
+        </>
+    );
 }

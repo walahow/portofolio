@@ -1,8 +1,31 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useCursorStore } from '@/store/useCursorStore';
+
+// ... (existing code)
+
+// VARIANTS
+const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.05,
+            delayChildren: 0.2
+        }
+    }
+};
+
+const charVariants: Variants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: "easeOut" }
+    }
+};
 
 interface HeroGateProps {
     onEnter: () => void;
@@ -75,17 +98,20 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
         }
     };
 
+    const [isHoldingState, setIsHoldingState] = useState(false); // For React/Animation state
+
     const handleMouseDown = () => {
         isHolding.current = true;
-        // Start/Confirm loop is running
+        setIsHoldingState(true); // Trigger visual state
         startLoop();
     };
 
     const handleMouseUp = () => {
         isHolding.current = false;
-        // Loop continues to handle decay via !isHolding check inside updateProgress
-        // Eventually stops when progress hits 0
+        setIsHoldingState(false); // Trigger visual state
     };
+
+    // ... (rest of handlers and useEffect as before) ...
 
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -100,9 +126,9 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
         handleMouseUp();
     };
 
-    // Cleanup on unmount to ensure cursor resets when gate opens/closes
+
+    // Cleanup on unmount
     useEffect(() => {
-        // Force set cursor on mount (in case mouse is already there)
         setIsHovered(true);
         setCursorText("HOLD");
         setCursorVariant('default');
@@ -117,34 +143,27 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
     const handleTouchStart = handleMouseDown;
     const handleTouchEnd = handleMouseUp;
 
+    // ... (morph logic as before) ...
     // Scramble / Morph Logic
     const startText = "Atta Zulfahrizan";
     const endText = "Walaho";
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_/-";
 
-    // Helper for morph logic
     const resolveMorph = (progressPct: number, start: string, end: string) => {
         const p = Math.max(0, Math.min(1, progressPct / 100));
         if (p <= 0) return start;
         if (p >= 1) return end;
-
         // Peak scramble at 50%
         const randomThreshold = Math.sin(p * Math.PI);
-
         const currentLength = Math.floor(start.length + (end.length - start.length) * p);
-
         let str = "";
         for (let i = 0; i < currentLength; i++) {
-            // Inject random noise based on threshold
             if (Math.random() < randomThreshold * 0.4) {
                 str += chars[Math.floor(Math.random() * chars.length)];
             } else {
-                // Determine if we pick from Start or End based on progress probability
                 if (Math.random() < p) {
-                    // Try to pick from End
                     str += (i < end.length) ? end[i] : "";
                 } else {
-                    // Try to pick from Start
                     str += (i < start.length) ? start[i] : "";
                 }
             }
@@ -154,6 +173,28 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
 
     const displayedName = resolveMorph(progress, "Atta Zulfahrizan", "Walaho");
     const displayedTitle = resolveMorph(progress, "[ ATTA ZULFAHRIZAN'S PORTFOLIO ]", "[ WALAHO'S PORTFOLIO ]");
+
+
+    // VARIANTS
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.05,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const charVariants: Variants = {
+        hidden: { opacity: 0, y: 10 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.5, ease: "easeOut" }
+        }
+    };
 
     return (
         <motion.div
@@ -167,13 +208,34 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
-            {/* Background Layer - Single Image */}
-            <div className="absolute inset-0 z-0 pointer-events-none w-full h-full">
-                <img
-                    src="/img/img1.jpg"
-                    alt=""
-                    className="w-full h-full object-cover opacity-60"
-                />
+            {/* Background Layer - Motion Image */}
+            <div className="absolute inset-0 z-0 pointer-events-none w-full h-full overflow-hidden">
+                {/* 1. ENTRANCE WRAPPER (Scale & Blur) */}
+                <motion.div
+                    className="w-full h-full"
+                    initial={{
+                        scale: 1.1,
+                        filter: "blur(5px)"
+                    }}
+                    animate={{
+                        scale: 1.0,
+                        filter: "blur(0px)"
+                    }}
+                    transition={{
+                        duration: 1.5,
+                        ease: "easeOut"
+                    }}
+                >
+                    {/* 2. INTERACTION LAYER (Grayscale via Physics Progress) */}
+                    <motion.img
+                        src="/img/img1.jpg"
+                        alt=""
+                        className="w-full h-full object-cover"
+                        style={{
+                            filter: `grayscale(${Math.max(0, 100 - progress)}%) brightness(0.8)`
+                        }}
+                    />
+                </motion.div>
             </div>
 
             {/* Global Gradient Overlay for unified tone */}
@@ -192,20 +254,42 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                 MEDAN, ID // 24.12.2005
             </div>
 
-            {/* Bottom Left - IDENTITY MORPH */}
+            {/* Bottom Left - IDENTITY MORPH (Animated Entrance) */}
             <div className="absolute bottom-8 left-8 text-left pointer-events-none z-10 block">
-                {/* Name Morph */}
-                <h1 className="text-4xl md:text-4xl font-bold mb-2 text-white">
-                    {displayedName}
-                </h1>
+                {/* Name Morph with Typing Effect */}
+                <motion.h1
+                    className="text-4xl md:text-4xl font-bold mb-2 text-white flex"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {/* 
+                      Note: Since 'displayedName' changes frequently during morph, 
+                      we just map the current string. 
+                      Ideally, for the "typing entrance", we only care about the initial render. 
+                      Subsequent updates might flicker if keys change.
+                      Using index as key is stable for position, allowing characters to morph in place.
+                    */}
+                    {displayedName.split("").map((char, i) => (
+                        <motion.span key={i} variants={charVariants}>
+                            {char === " " ? "\u00A0" : char}
+                        </motion.span>
+                    ))}
+                </motion.h1>
+
                 {/* Role */}
-                <p className="text-sm md:text-base text-gray-300">
-                    Creative Technologist
-                </p>
-                {/* Skills */}
-                <p className="text-xs text-gray-500 uppercase mt-1">
-                    Web • Photo • 3D • Mobile
-                </p>
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <motion.p className="text-sm md:text-base text-gray-300" variants={charVariants}>
+                        Creative Technologist
+                    </motion.p>
+                    <motion.p className="text-xs text-gray-500 uppercase mt-1" variants={charVariants}>
+                        Web • Photo • 3D • Mobile
+                    </motion.p>
+                </motion.div>
             </div>
 
             {/* Bottom Right - Interaction Hint */}

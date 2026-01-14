@@ -37,7 +37,11 @@ export default function SmoothScroll({
             gestureOrientation: "vertical",
             smoothWheel: true,
             wheelMultiplier: 1,
-            touchMultiplier: 2,
+            infinite: false,
+            syncTouch: true, // Force sync touch for better control
+            // smoothTouch: true, // DEPRECATED in V1, but let's check docs mentally.
+            // Actually, usually CSS is enough.
+            // Let's trying setting touchMultiplier to 1 to reduce fling overshoot?
         });
 
         // Synchronize Lenis with GSAP's ticker

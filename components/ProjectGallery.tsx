@@ -94,7 +94,10 @@ export default function ProjectGallery() {
     }, [enableAnimations]);
 
     return (
-        <div ref={containerRef} className="min-h-screen py-24 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div ref={containerRef} className="min-h-screen pt-4 pb-24 px-4 sm:px-8 max-w-7xl mx-auto">
+            {/* Top Spacer for Scroll Physics Damping */}
+            <div className="h-32 w-full" />
+
             {/* Mobile Header (Horizontal) */}
             <header className="mb-24 flex justify-between items-end border-b border-foreground/10 pb-8 md:hidden">
                 <div>

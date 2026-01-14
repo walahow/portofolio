@@ -19,7 +19,7 @@ export default function SystemHUD() {
     const [rotation, setRotation] = useState(0);
 
     // Thermal Limit (Seconds)
-    const MAX_UPTIME = 30;
+    const MAX_UPTIME = 180;
 
     // Formatting MM:SS
     const formatTime = (seconds: number) => {

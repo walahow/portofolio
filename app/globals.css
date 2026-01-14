@@ -12,9 +12,9 @@
 }
 
 html {
-  overscroll-behavior: none;
+  overscroll-behavior-y: none;
   background-color: #050505;
-  /* Match bg color to hide bounce gaps if they happen */
+  height: 100%;
 }
 
 body {
@@ -24,7 +24,8 @@ body {
   overflow-x: hidden;
   cursor: none;
   touch-action: pan-y;
-  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  height: 100%;
 }
 
 @keyframes noise-shift {

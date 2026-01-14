@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -20,6 +20,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Boku no Portofolio",
   description: "Im learning shi",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#050505",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false, // Prevents pinch-zoom which can sometimes trigger bounce
 };
 
 export default function RootLayout({

@@ -87,7 +87,7 @@ export default function SystemHUD() {
         if (isProjectPage) {
             startTransition();
             setTimeout(() => {
-                router.back();
+                router.push('/');
             }, 800);
         }
     };

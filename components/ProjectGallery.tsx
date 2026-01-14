@@ -5,18 +5,26 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectCard from "./ProjectCard";
 import { PROJECTS } from "@/data/projects";
+import { usePerformanceStore } from "@/store/usePerformanceStore";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ProjectGallery() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const { enableAnimations } = usePerformanceStore();
 
     useLayoutEffect(() => {
+        if (!enableAnimations) {
+            // If animations disabled, ensure everything is visible immediately
+            gsap.set(".project-card", { opacity: 1, scale: 1, filter: "none" });
+            return;
+        }
+
         const ctx = gsap.context(() => {
             const mm = gsap.matchMedia();
 
-            // DESKTOP: Full Experience (Filter + Scrub)
-            mm.add("(min-width: 768px)", () => {
+            // DESKTOP & MOBILE: Full Experience for ALL (Filter + Scrub)
+            mm.add("(min-width: 0px)", () => {
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
                 cards.forEach((card) => {
                     gsap.timeline({
@@ -53,25 +61,27 @@ export default function ProjectGallery() {
                 });
             });
 
-            // MOBILE: Performance Mode (No Filter, No Scrub, Play Once)
-            mm.add("(max-width: 767px)", () => {
+            // MOBILE: HIGH PERFORMANCE MODE (DISABLED - USING FULL EXPERIENCE)
+            // 1. No Scrub
+            // 2. Play Once (Don't reverse on leave)
+            // mm.add("(max-width: 767px)", () => {
+            mm.add("(max-width: -1px)", () => { // Disable this block effectively
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
                 cards.forEach((card) => {
-                    // Simple Fade In
                     gsap.fromTo(card,
                         {
                             opacity: 0,
-                            scale: 0.9,
+                            scale: 0.95, // Reduced scale delta for cheaper repaint
                         },
                         {
                             opacity: 1,
                             scale: 1,
-                            duration: 0.8,
-                            ease: "power2.out",
+                            duration: 0.6,
+                            ease: "power1.out",
                             scrollTrigger: {
                                 trigger: card,
-                                start: "top 85%", // Trigger when top of card is at 85% of viewport
-                                toggleActions: "play none none reverse" // Play on enter, reverse on leave
+                                start: "top 90%",
+                                once: true, // IMPORTANT: Animation only runs once. No constant listening.
                             }
                         }
                     );
@@ -81,7 +91,7 @@ export default function ProjectGallery() {
         }, containerRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [enableAnimations]);
 
     return (
         <div ref={containerRef} className="min-h-screen py-24 px-4 sm:px-8 max-w-7xl mx-auto">

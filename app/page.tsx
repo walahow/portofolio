@@ -3,25 +3,40 @@
 
 import HeroGate from "@/components/HeroGate";
 import ProjectGallery from "@/components/ProjectGallery";
+import Preloader from "@/components/Preloader";
+import DebugStats from "@/components/DebugStats"; // [NEW]
 import { AnimatePresence, motion } from "framer-motion";
 import { useTimerStore } from "@/store/useTimerStore";
+import { useState } from "react";
 
 import { useIntroStore } from "@/store/useIntroStore";
 
 export default function Home() {
-  const { isEntered, setEntered } = useIntroStore();
+  const { isEntered, setEntered, hasLoaded, setHasLoaded } = useIntroStore();
   const { setSystemActive } = useTimerStore();
+  const [isLoading, setIsLoading] = useState(!hasLoaded);
 
   const handleEnter = () => {
     setEntered(true);
     setSystemActive(true);
   };
 
+  const handlePreloaderComplete = () => {
+    setIsLoading(false);
+    setHasLoaded(true);
+  };
+
   return (
     <main className="min-h-screen">
+      <DebugStats /> {/* [NEW] Performance HUD */}
+
       <AnimatePresence mode="wait">
-        {!isEntered && (
-          <HeroGate onEnter={handleEnter} />
+        {isLoading ? (
+          <Preloader key="preloader" onComplete={handlePreloaderComplete} />
+        ) : (
+          !isEntered && (
+            <HeroGate key="herogate" onEnter={handleEnter} />
+          )
         )}
       </AnimatePresence>
 

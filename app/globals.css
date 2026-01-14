@@ -12,7 +12,9 @@
 }
 
 html {
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
+  background-color: #050505;
+  /* Match bg color to hide bounce gaps if they happen */
 }
 
 body {
@@ -22,7 +24,7 @@ body {
   overflow-x: hidden;
   cursor: none;
   touch-action: pan-y;
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
 }
 
 @keyframes noise-shift {
@@ -73,6 +75,31 @@ body {
 
 .animate-noise {
   animation: noise-shift 0.2s steps(1) infinite;
+}
+
+/* PERFORMANCE SWITCHES */
+body[data-perf-noise="off"] .animate-noise {
+  display: none !important;
+  animation: none !important;
+}
+
+/* AUTOMATIC MOBILE OPTIMIZATION: REMOVED (Noise Enabled on Mobile) */
+/* @media (max-width: 768px) {
+  .animate-noise {
+    display: none !important;
+  }
+} */
+
+body[data-perf-blur="off"] * {
+  backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+body[data-perf-blur="off"] * {
+  backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
 }
 
 /* Vertical Marquee Animation */

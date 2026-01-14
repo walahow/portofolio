@@ -233,16 +233,14 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                         alt=""
                         className="w-full h-full object-cover"
                         style={{
-                            filter: `grayscale(${Math.max(0, 100 - progress)}%) brightness(1.0)`,
+                            filter: `grayscale(${Math.max(0, 100 - progress)}%)`,
                             willChange: "filter"
                         }}
                     />
                 </motion.div>
             </div>
 
-            {/* Global Gradient Overlay for unified tone */}
-            <div className="absolute inset-0 pointer-events-none bg-background/30 mix-blend-color" />
-            <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-background via-transparent to-background/50" />
+
 
             {/* --- 4 CORNER LAYOUT --- */}
 

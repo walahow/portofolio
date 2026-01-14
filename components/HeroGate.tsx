@@ -213,6 +213,7 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                 {/* 1. ENTRANCE WRAPPER (Scale & Blur) */}
                 <motion.div
                     className="w-full h-full"
+                    style={{ willChange: "transform, filter" }}
                     initial={{
                         scale: 1.1,
                         filter: "blur(5px)"
@@ -232,7 +233,8 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                         alt=""
                         className="w-full h-full object-cover"
                         style={{
-                            filter: `grayscale(${Math.max(0, 100 - progress)}%) brightness(0.8)`
+                            filter: `grayscale(${Math.max(0, 100 - progress)}%) brightness(1.0)`,
+                            willChange: "filter"
                         }}
                     />
                 </motion.div>

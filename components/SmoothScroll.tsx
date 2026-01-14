@@ -23,6 +23,14 @@ export default function SmoothScroll({
 }) {
     const [lenis, setLenis] = useState<Lenis | null>(null);
     useEffect(() => {
+        // Only initialize Lenis on non-touch devices (Desktop)
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        if (isTouch) {
+            setLenis(null);
+            return;
+        }
+
         const lenisInstance = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

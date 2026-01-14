@@ -180,7 +180,7 @@ export default function CustomCursor() {
     const dashArray = `${dashLength} ${gapLength}`;
 
     return (
-        <>
+        <div className="hidden md:block">
             {/* Main Cursor & Text - NO ROTATION on this container */}
             <motion.div
                 className={clsx(
@@ -310,6 +310,6 @@ export default function CustomCursor() {
                     />
                 </svg>
             </motion.div>
-        </>
+        </div>
     );
 }

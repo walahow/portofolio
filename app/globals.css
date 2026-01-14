@@ -122,12 +122,15 @@ body {
   display: none;
 }
 
-/* Force disable default cursor globally to favor Custom Cursor */
-*,
-*::before,
-*::after,
-a,
-button,
-input {
-  cursor: none !important;
+/* Force disable default cursor globally to favor Custom Cursor ONLY on desktop */
+@media (hover: hover) and (pointer: fine) {
+
+  *,
+  *::before,
+  *::after,
+  a,
+  button,
+  input {
+    cursor: none !important;
+  }
 }

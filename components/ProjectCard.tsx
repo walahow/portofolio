@@ -25,7 +25,7 @@ export default function ProjectCard({ id, title, slug, category, year, image }: 
         <Link
             href={`/project/${slug}`}
             ref={cardRef}
-            className="project-card block w-full mb-32 origin-center cursor-none opacity-80" // Removed will-change-transform for mobile performance
+            className="project-card block w-full origin-center cursor-none opacity-80" // Removed will-change-transform for mobile performance
             onClick={(e) => {
                 e.preventDefault();
                 startTransition();
@@ -46,7 +46,7 @@ export default function ProjectCard({ id, title, slug, category, year, image }: 
             }}
         >
             <div
-                className="relative w-full aspect-[16/9] bg-neutral-900 overflow-hidden mb-6 group border border-neutral-800"
+                className="relative w-full aspect-[32/9] bg-neutral-900 overflow-hidden mb-6 group border border-neutral-800"
             >
                 {image ? (
                     <Image
@@ -54,7 +54,7 @@ export default function ProjectCard({ id, title, slug, category, year, image }: 
                         alt={title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-105"
                     />
                 ) : (
                     <>

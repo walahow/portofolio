@@ -38,12 +38,12 @@ export default function ProjectGallery() {
                         .fromTo(card,
                             {
                                 scale: 0.85,
-                                filter: "grayscale(1) brightness(0.8)",
+                                // filter: "grayscale(1) brightness(0.8)", // Handled by CSS Hover now
                                 opacity: 0.7
                             },
                             {
                                 scale: 1,
-                                filter: "grayscale(0) brightness(1)",
+                                // filter: "grayscale(0) brightness(1)", // Handled by CSS Hover now
                                 opacity: 1,
                                 duration: 1,
                                 ease: "power2.out"
@@ -52,7 +52,7 @@ export default function ProjectGallery() {
                         .to(card,
                             {
                                 scale: 0.85,
-                                filter: "grayscale(1) brightness(0.8)",
+                                // filter: "grayscale(1) brightness(0.8)", // Handled by CSS Hover now
                                 opacity: 0.7,
                                 duration: 1,
                                 ease: "power2.in"
@@ -94,7 +94,7 @@ export default function ProjectGallery() {
     }, [enableAnimations]);
 
     return (
-        <div ref={containerRef} className="min-h-screen pt-4 pb-24 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div ref={containerRef} className="min-h-screen pt-4 pb-24 px-4 sm:px-24 w-full mx-auto">
             {/* Top Spacer for Scroll Physics Damping */}
             <div className="h-32 w-full" />
 
@@ -109,15 +109,9 @@ export default function ProjectGallery() {
             </header>
 
             {/* Desktop Vertical Sidebar (Fixed Spine) */}
-            <aside className="hidden md:flex fixed top-0 left-0 h-screen w-26 bg-[#050505] z-50 flex-col justify-between items-start border-r border-white/5">
+            {/* Desktop Vertical Sidebar Removed per user request */}
 
-                <h1 className="[writing-mode:vertical-rl] text-8xl font-bold tracking-widest whitespace-nowrap mix-blend-difference">
-                    KEY PROJECTS
-                </h1>
-
-            </aside>
-
-            <div className="space-y-48">
+            <div className="space-y-[8rem]">
                 {PROJECTS.map((project) => (
                     <ProjectCard
                         key={project.id}

@@ -4,7 +4,7 @@
 import HeroGate from "@/components/HeroGate";
 import ProjectGallery from "@/components/ProjectGallery";
 import Preloader from "@/components/Preloader";
-import DebugStats from "@/components/DebugStats"; // [NEW]
+// import DebugStats from "@/components/DebugStats"; // [REMOVED]
 import { AnimatePresence, motion } from "framer-motion";
 import { useTimerStore } from "@/store/useTimerStore";
 import { useState } from "react";
@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <DebugStats /> {/* [NEW] Performance HUD */}
+      {/* DebugStats Removed */}
 
       <AnimatePresence mode="wait">
         {isLoading ? (

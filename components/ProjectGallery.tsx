@@ -37,25 +37,33 @@ export default function ProjectGallery() {
                     })
                         .fromTo(card,
                             {
-                                scale: 0.85,
-                                // filter: "grayscale(1) brightness(0.8)", // Handled by CSS Hover now
+                                scale: 0.95,
+                                filter: "grayscale(1) brightness(0.8)",
                                 opacity: 0.7
                             },
                             {
                                 scale: 1,
-                                // filter: "grayscale(0) brightness(1)", // Handled by CSS Hover now
+                                filter: "grayscale(0) brightness(1)",
                                 opacity: 1,
                                 duration: 1,
-                                ease: "power2.out"
+                                ease: "power2.out" // Smooth entry
                             }
                         )
+                        // HOLD PHASE: Stay centered and colored for a bit
+                        .to(card, {
+                            scale: 1,
+                            filter: "grayscale(0) brightness(1)",
+                            opacity: 1,
+                            duration: 0.5, // The "Hold" duration
+                            ease: "none"
+                        })
                         .to(card,
                             {
-                                scale: 0.85,
-                                // filter: "grayscale(1) brightness(0.8)", // Handled by CSS Hover now
+                                scale: 0.95,
+                                filter: "grayscale(1) brightness(0.8)",
                                 opacity: 0.7,
                                 duration: 1,
-                                ease: "power2.in"
+                                ease: "power2.in" // Smooth exit
                             }
                         );
                 });
@@ -99,22 +107,15 @@ export default function ProjectGallery() {
             <div className="h-32 w-full" />
 
             {/* Mobile Header (Horizontal) */}
-            <header className="mb-24 flex justify-between items-end border-b border-foreground/10 pb-8 md:hidden">
-                <div>
-                    <h1 className="text-4xl font-bold tracking-tighter mb-2">SELECTED<br /> WORKS</h1>
-                </div>
-                <div className="text-right hidden sm:block">
-                    <p className="text-sm opacity-50">INDEX / [01-04]</p>
-                </div>
-            </header>
+            {/* Mobile Header (Horizontal) Removed */}
 
             {/* Desktop Vertical Sidebar (Fixed Spine) */}
             {/* Desktop Vertical Sidebar Removed per user request */}
 
             <div className="space-y-[8rem]">
-                {PROJECTS.map((project) => (
+                {[...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS].map((project, index) => (
                     <ProjectCard
-                        key={project.id}
+                        key={`${project.id}-${index}`} // Unique key for duplicated items
                         id={project.id}
                         title={project.title}
                         slug={project.slug}

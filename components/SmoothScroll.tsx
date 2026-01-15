@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, createContext, useContext, useState } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -21,26 +22,23 @@ export default function SmoothScroll({
 }: {
     children: React.ReactNode;
 }) {
+    const pathname = usePathname();
+    const isHome = pathname === '/';
     const [lenis, setLenis] = useState<Lenis | null>(null);
+
     useEffect(() => {
         // Initialize Lenis on all devices
-        // const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        // if (isTouch) {
-        //     setLenis(null);
-        //     return;
-        // }
-
         const lenisInstance = new Lenis({
             lerp: 0.1, // Smoother damping for "soft stop" effect
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
             wheelMultiplier: 1,
-            infinite: false,
+            infinite: isHome, // Enable infinite loop ONLY on home page
             syncTouch: true, // Force sync touch for better control
-            // smoothTouch: true, // DEPRECATED in V1, but let's check docs mentally.
-            // Actually, usually CSS is enough.
-            // Let's trying setting touchMultiplier to 1 to reduce fling overshoot?
+            // @ts-ignore - 'overscroll' might not be in the types but usually respected or handled by infinite
+            overscroll: !isHome, // Disable overscroll damping on home (since it's infinite)
+            touchMultiplier: isHome ? 1.5 : 2,
         });
 
         // Synchronize Lenis with GSAP's ticker
@@ -57,7 +55,7 @@ export default function SmoothScroll({
             lenisInstance.destroy();
             setLenis(null);
         };
-    }, []);
+    }, [isHome]);
 
     return (
         <LenisContext.Provider value={{ lenis }}>

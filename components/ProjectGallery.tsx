@@ -75,7 +75,7 @@ export default function ProjectGallery() {
                             scale: 1,
                             filter: "grayscale(0) brightness(1)",
                             opacity: 1,
-                            duration: 1.5, // MUCH longer hold (50% of total timeline)
+                            duration: 2.0, // Long symmetrical hold (66% of timeline)
                             ease: "none"
                         })
                         .to(card,

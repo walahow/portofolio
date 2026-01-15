@@ -10,7 +10,7 @@ const socialData = [
         short: "GH",
         platform: "GITHUB",
         arcana: "IX. HERMIT",
-        url: "https://github.com/yourusername",
+        url: "https://github.com/walahow",
         themeColor: "#22c55e" // Matrix Green
     },
     {
@@ -18,7 +18,7 @@ const socialData = [
         short: "LI",
         platform: "LINKEDIN",
         arcana: "IV. EMPEROR",
-        url: "https://linkedin.com/in/yourusername",
+        url: "https://www.linkedin.com/in/attazul/",
         themeColor: "#3b82f6" // Professional Blue
     },
     {
@@ -26,7 +26,7 @@ const socialData = [
         short: "IG",
         platform: "INSTAGRAM",
         arcana: "XVII. STAR",
-        url: "https://instagram.com/yourusername",
+        url: "https://www.instagram.com/walawalaho_?igsh=emFlOWd1ZWxndWl3",
         themeColor: "#e11d48" // Aesthetic Red/Pink
     }
 ];
@@ -85,7 +85,7 @@ function SocialItem({ item, isHovered, setHovered, isAnyHovered }: {
                 width: 48, // Keep width fixed
                 opacity: isAnyHovered && !isHovered ? 0.5 : 1 // Dim others
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            transition={{ type: "spring", stiffness: 300, damping: 40 }}
         >
             {/* --- HOVER CONTENT (EXPANDED) --- */}
             <AnimatePresence>

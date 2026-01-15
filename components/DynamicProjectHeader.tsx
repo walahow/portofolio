@@ -56,7 +56,7 @@ interface DynamicProjectHeaderProps {
 export default function DynamicProjectHeader({ title, role }: DynamicProjectHeaderProps) {
     // 1. SCRAMBLE LOGIC
     // We trigger the hook whenever the 'title' prop changes
-    const scrambleTitle = useScrambleText(title.toUpperCase(), 450); // Slower scramble (was 300)
+    const scrambleTitle = useScrambleText(title.toUpperCase(), 800); // Significantly slower scramble (was 450)
 
     // 2. IS GLITCHING STATE
     // We want the glitch mainly active during the transition
@@ -64,7 +64,7 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
 
     useEffect(() => {
         setIsGlitching(true);
-        const t = setTimeout(() => setIsGlitching(false), 450); // Slower glitch (was 300)
+        const t = setTimeout(() => setIsGlitching(false), 800); // Slower glitch (was 450)
         return () => clearTimeout(t);
     }, [title]);
 
@@ -80,7 +80,7 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
             y: [0, 2, -2, 4, -4, 0, 3, -3, 0], // Increased offsets
             opacity: [0, 0.9, 0.6, 1, 0.5, 0],
             transition: {
-                duration: 0.45, // Slower glitch variant (was 0.3)
+                duration: 0.8, // Slower glitch variant (was 0.45)
                 times: [0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.8, 0.9, 1],
                 ease: "linear" as any
             }
@@ -98,7 +98,7 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
                         initial={{ opacity: 0, scale: 0.9, filter: "blur(0px)" }} // Removed blur for visibility
                         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                         exit={{ opacity: 0, scale: 1.05, filter: "blur(4px)", transition: { duration: 0.15 } }}
-                        transition={{ duration: 0.45, ease: "circOut" }}
+                        transition={{ duration: 0.8, ease: "circOut" }}
                         className="relative"
                     >
                         {/* Layer 1: Red Channel (Left Offset) */}

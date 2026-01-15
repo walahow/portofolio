@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useLenis } from '@/components/SmoothScroll'; // Import useLenis
 import { useTransitionStore } from '@/store/useTransitionStore'; // Import Transition Store
+import PersonaRevealSidebar from './PersonaRevealSidebar';
 
 interface ProjectDetailViewProps {
     project: Project;
@@ -124,30 +125,8 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
         <main className="min-h-screen bg-[#050505] w-full relative">
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
-            <aside className="fixed top-0 left-0 w-[15%] h-screen z-0 border-r border-white/5 flex flex-col">
-
-                {/* ROLES - Moved to Top */}
-                <div>
-                    <ul className="[writing-mode:vertical-rl] text-5xl font-bold tracking-widest whitespace-nowrap mix-blend-difference opacity-50">
-                        {project.roles.map((role, i) => (
-                            <li key={i}>{role}</li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Right Edge: VERTICAL MARQUEE */}
-                <div className="absolute top-0 right-0 h-full w-32 border-l border-white/5 overflow-hidden flex justify-center py-4 mix-blend-difference pointer-events-none z-10">
-                    <div className="flex flex-col animate-scroll-vertical will-change-transform">
-                        {/* Block 1 */}
-                        <div className="py-8 [writing-mode:vertical-rl] whitespace-nowrap text-8xl font-black text-neutral-800 tracking-widest uppercase">
-                            {`${project.jargon} ${project.jargon} ${project.jargon}`}
-                        </div>
-                        {/* Block 2 (Duplicate for loop) */}
-                        <div className="py-8 [writing-mode:vertical-rl] whitespace-nowrap text-8xl font-black text-neutral-800 tracking-widest uppercase">
-                            {`${project.jargon} ${project.jargon} ${project.jargon}`}
-                        </div>
-                    </div>
-                </div>
+            <aside className="fixed top-0 left-0 w-[15%] h-screen z-0 border-r border-white/5 flex flex-col items-center justify-center">
+                <PersonaRevealSidebar arcana={project.arcana} />
             </aside>
 
 

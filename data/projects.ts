@@ -11,6 +11,7 @@ export interface Project {
     thumbnail: string;   // Path to main image (e.g., '/images/thumb1.webp')
     video: string;       // Path to video
     gallery: string[];   // Array of secondary image paths
+    arcana: string;      // Tarot/Arcana persona name
 }
 
 export const PROJECTS: Project[] = [
@@ -26,7 +27,8 @@ export const PROJECTS: Project[] = [
         description: 'A comprehensive redesign of the Computer Science faculty website. The goal was to modernize the information architecture while introducing a distinct visual identity that reflects the forward-thinking nature of the department. Built with Next.js and Framer Motion for seamless page transitions.',
         thumbnail: '/img/ilkomWeb.avif',
         video: '', // Placeholder
-        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'] // Using existing images
+        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'], // Using existing images
+        arcana: 'THE MAGICIAN'
     },
     {
         id: '02',
@@ -40,7 +42,8 @@ export const PROJECTS: Project[] = [
         description: 'MyMeet is a high-performance video conferencing application designed for low-bandwidth environments. It utilizes adaptive bitrate streaming and a custom signaling server to ensure stable connections. The UI focuses on clarity and accessibility.',
         thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
-        gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif']
+        gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
+        arcana: 'THE LOVERS'
     },
     {
         id: '03',
@@ -54,7 +57,8 @@ export const PROJECTS: Project[] = [
         description: 'SIM (Schedule Integrated Manager) fixes the chaos of university course planning. It features an automated conflict detection algorithm and a drag-and-drop interface for ease of use. The backend is powered by Python/Django.',
         thumbnail: '/img/ilkomWeb.avif', // Placeholder
         video: '',
-        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif']
+        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'],
+        arcana: 'JUSTICE'
     },
     {
         id: '04',
@@ -68,6 +72,7 @@ export const PROJECTS: Project[] = [
         description: 'A minimalist task management dashboard that emphasizes "flow state". It uses a dark-mode-first design language and supports keyboard shortcuts for rapid task entry. Local-first architecture ensures instant interactions.',
         thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
-        gallery: ['/img/HeroGate.avif', '/img/il*komWeb.avif']
+        gallery: ['/img/HeroGate.avif', '/img/il*komWeb.avif'],
+        arcana: 'THE CHARIOT'
     }
 ];

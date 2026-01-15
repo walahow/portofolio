@@ -7,6 +7,7 @@ import ProjectCard from "./ProjectCard";
 import { PROJECTS } from "@/data/projects";
 import { usePerformanceStore } from "@/store/usePerformanceStore";
 import DynamicProjectHeader from "./DynamicProjectHeader";
+import SocialSidebar from "./SocialSidebar";
 import { useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -134,6 +135,14 @@ export default function ProjectGallery() {
 
             {/* Desktop Vertical Sidebar (Fixed Spine) */}
             {/* Desktop Vertical Sidebar Removed per user request */}
+            <SocialSidebar />
+
+            {/* VERTICAL RIGHT LABEL */}
+            <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:block pointer-events-none mix-blend-difference">
+                <p className="text-xs font-mono py-6 pb-12 font-bold text-gray-400 opacity-50 tracking-widest whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
+                    Atta Zulfahrizan Portofolio - type shi
+                </p>
+            </div>
 
             <div className="space-y-[24rem]">
                 {[...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS].map((project, index) => (

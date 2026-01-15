@@ -26,7 +26,7 @@ const socialData = [
         short: "IG",
         platform: "INSTAGRAM",
         arcana: "XVII. STAR",
-        url: "https://www.instagram.com/walawalaho_?igsh=emFlOWd1ZWxndWl3",
+        url: "https://www.instagram.com/walawalaho_?igsh=emFlOWd1ZWxndWl3make ",
         themeColor: "#e11d48" // Aesthetic Red/Pink
     }
 ];
@@ -35,13 +35,17 @@ export default function SocialSidebar() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
     return (
-        <div className="fixed left-6 top-32 z-50 flex flex-col items-center gap-2 hidden md:flex">
+        <div className="fixed left-6 top-16 z-50 flex flex-col items-center gap-2 hidden md:flex select-none">
             {/* DECORATIVE LINE TOP */}
+            <span className="[writing-mode:vertical-rl] text-[12px] font-mono tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
+                [ SOCIAL \\
+            </span>
             <div className="w-[1px] h-12 bg-white/20" />
+
 
             {/* ACCORDION CONTAINER */}
             <LayoutGroup>
-                <motion.div layout className="flex flex-col gap-2">
+                <motion.div layout className="flex flex-col gap-2 pointer-events-auto">
                     {socialData.map((item) => (
                         <SocialItem
                             key={item.id}
@@ -56,6 +60,9 @@ export default function SocialSidebar() {
 
             {/* DECORATIVE LINE BOTTOM */}
             <div className="w-[1px] h-12 bg-white/20" />
+            <span className="[writing-mode:vertical-rl] text-[12px] font-mono tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
+                // LINKS ]
+            </span>
         </div>
     );
 }

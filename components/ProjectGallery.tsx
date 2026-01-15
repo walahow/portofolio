@@ -6,12 +6,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectCard from "./ProjectCard";
 import { PROJECTS } from "@/data/projects";
 import { usePerformanceStore } from "@/store/usePerformanceStore";
+import DynamicProjectHeader from "./DynamicProjectHeader";
+import { useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ProjectGallery() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { enableAnimations } = usePerformanceStore();
+    const [activeProject, setActiveProject] = useState(PROJECTS[0]);
 
     useLayoutEffect(() => {
         if (!enableAnimations) {
@@ -27,6 +30,23 @@ export default function ProjectGallery() {
             mm.add("(min-width: 0px)", () => {
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
                 cards.forEach((card) => {
+                    // ACTIVE PROJECT DETECTION
+                    ScrollTrigger.create({
+                        trigger: card,
+                        start: "top 70%", // More generous active window
+                        end: "bottom 30%", // More generous active window
+                        onEnter: () => {
+                            const projectId = card.getAttribute("data-id");
+                            const found = PROJECTS.find(p => p.id === projectId);
+                            if (found) setActiveProject(found);
+                        },
+                        onEnterBack: () => {
+                            const projectId = card.getAttribute("data-id");
+                            const found = PROJECTS.find(p => p.id === projectId);
+                            if (found) setActiveProject(found);
+                        }
+                    });
+
                     gsap.timeline({
                         scrollTrigger: {
                             trigger: card,
@@ -45,7 +65,7 @@ export default function ProjectGallery() {
                                 scale: 1,
                                 filter: "grayscale(0) brightness(1)",
                                 opacity: 1,
-                                duration: 1,
+                                duration: 0.75,
                                 ease: "power2.out" // Smooth entry
                             }
                         )
@@ -54,7 +74,7 @@ export default function ProjectGallery() {
                             scale: 1,
                             filter: "grayscale(0) brightness(1)",
                             opacity: 1,
-                            duration: 0.5, // The "Hold" duration
+                            duration: 1.5, // MUCH longer hold (50% of total timeline)
                             ease: "none"
                         })
                         .to(card,
@@ -62,7 +82,7 @@ export default function ProjectGallery() {
                                 scale: 0.95,
                                 filter: "grayscale(1) brightness(0.8)",
                                 opacity: 0.7,
-                                duration: 1,
+                                duration: 0.75,
                                 ease: "power2.in" // Smooth exit
                             }
                         );
@@ -109,15 +129,19 @@ export default function ProjectGallery() {
             {/* Mobile Header (Horizontal) */}
             {/* Mobile Header (Horizontal) Removed */}
 
+            {/* DYNAMIC HEADER */}
+            <DynamicProjectHeader title={activeProject.title} role={activeProject.roles.slice(0, 2).join(" & ")} />
+
             {/* Desktop Vertical Sidebar (Fixed Spine) */}
             {/* Desktop Vertical Sidebar Removed per user request */}
 
-            <div className="space-y-[8rem]">
+            <div className="space-y-[24rem]">
                 {[...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS].map((project, index) => (
                     <ProjectCard
                         key={`${project.id}-${index}`} // Unique key for duplicated items
                         id={project.id}
                         title={project.title}
+                        stack={project.stack}
                         slug={project.slug}
                         category={project.category}
                         year={project.year}

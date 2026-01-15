@@ -9,13 +9,14 @@ import { useCursorStore } from '@/store/useCursorStore';
 interface ProjectCardProps {
     id: string;
     title: string;
+    stack: string;
     slug: string;
     category: string;
     year: string;
     image?: string;
 }
 
-export default function ProjectCard({ id, title, slug, category, year, image }: ProjectCardProps) {
+export default function ProjectCard({ id, title, stack, slug, category, year, image }: ProjectCardProps) {
     const cardRef = useRef<HTMLAnchorElement>(null);
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
     const { startTransition } = useTransitionStore();
@@ -25,6 +26,7 @@ export default function ProjectCard({ id, title, slug, category, year, image }: 
         <Link
             href={`/project/${slug}`}
             ref={cardRef}
+            data-id={id}
             className="project-card block w-full origin-center cursor-none opacity-80 hover:[filter:none!important]" // Removed will-change-transform for mobile performance
             onClick={(e) => {
                 e.preventDefault();
@@ -69,10 +71,10 @@ export default function ProjectCard({ id, title, slug, category, year, image }: 
             <div className="flex justify-between items-start font-mono text-sm uppercase tracking-tight border-t border-white/20 pt-4">
                 <div className="flex gap-8">
                     <span className="opacity-50">{id}</span>
-                    <span>{title}</span>
+                    <span className="text-gray-500">{stack}</span>
                 </div>
                 <div className="flex gap-8 text-right">
-                    <span>{category}</span>
+                    <span className="text-gray-500">{category}</span>
                     <span className="opacity-50">{year}</span>
                 </div>
             </div>

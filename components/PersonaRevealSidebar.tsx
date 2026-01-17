@@ -213,13 +213,13 @@ export function PersonaParallaxText() {
         return - (value * speed) % loopHeight;
     });
 
-    const PARALLAX_TEXT = "CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART";
+    const PARALLAX_TEXT = "Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart";
 
     return (
         <motion.div
             className="fixed top-0 pointer-events-none z-0 select-none whitespace-nowrap overflow-visible"
             style={{
-                left: '4rem',
+                left: '1rem',
                 y: parallaxY,
                 writingMode: "vertical-rl",
                 rotate: 180,

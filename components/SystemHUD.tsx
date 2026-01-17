@@ -112,7 +112,7 @@ export default function SystemHUD() {
             {/* 1. CENTER: UPTIME OR BACK */}
             <div className="absolute font-mono text-sm font-bold tracking-widest z-10 flex flex-col items-center justify-center">
                 {isProjectPage ? (
-                    <span>BACK</span>
+                    <span>HOME</span>
                 ) : (
                     <span className={uptime > MAX_UPTIME - 10 ? "text-red-500 animate-pulse" : ""}>
                         {formatTime(uptime)}
@@ -128,9 +128,9 @@ export default function SystemHUD() {
                 {/* Use SVG for Circular Text */}
                 <svg viewBox="0 0 100 100" className="w-full h-full opacity-80 overflow-visible">
                     <path id="textPath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
-                    <text className="text-[10px] uppercase font-mono tracking-[4px]" fill="currentColor">
+                    <text className="text-[14px] uppercase font-mono tracking-[2px]" fill="currentColor">
                         <textPath href="#textPath" startOffset="0%">
-                            {isProjectPage ? " RETURN || RETURN" : " SCROLL || SCROLL"}
+                            {isProjectPage ? " SCROLL || SCROLL" : " SCROLL || SCROLL"}
                         </textPath>
                     </text>
                 </svg>

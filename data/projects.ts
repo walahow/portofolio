@@ -76,7 +76,7 @@ export const PROJECTS: Project[] = [
         description: 'A minimalist task management dashboard that emphasizes "flow state". It uses a dark-mode-first design language and supports keyboard shortcuts for rapid task entry. Local-first architecture ensures instant interactions.',
         thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
-        gallery: ['/img/HeroGate.avif', '/img/il*komWeb.avif'],
+        gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
         arcana: 'CHARIOT',
         overviewHeading: 'PRODUCTION FLOW'
     }

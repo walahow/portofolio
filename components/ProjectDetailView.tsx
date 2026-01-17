@@ -166,7 +166,10 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 >
                     {/* Title Overlay - Overlapping border */}
                     <div className="absolute top-[24vh] right-8 z-50 mix-blend-difference pointer-events-none">
-                        <h1 className="text-6xl md:text-9xl font-bold tracking-tighter text-white">
+                        <h1
+                            className="text-6xl md:text-9xl font-bold tracking-tighter text-white"
+                            style={{ fontFamily: 'var(--font-playfair), serif' }}
+                        >
                             {project.title}
                         </h1>
                         <div className="flex gap-4 mt-4 font-mono text-sm text-neutral-400">

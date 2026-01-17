@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectCard from "./ProjectCard";
@@ -9,6 +9,7 @@ import { usePerformanceStore } from "@/store/usePerformanceStore";
 import DynamicProjectHeader from "./DynamicProjectHeader";
 import SocialSidebar from "./SocialSidebar";
 import { useState } from "react";
+import { useLenis } from "./SmoothScroll";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,36 @@ export default function ProjectGallery() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { enableAnimations } = usePerformanceStore();
     const [activeProject, setActiveProject] = useState(PROJECTS[0]);
+    const { lenis } = useLenis();
+
+    // Initial Scroll to Middle (50%)
+    useEffect(() => {
+        if (!lenis) return;
+
+        const cards = document.querySelectorAll(".project-card");
+        if (cards.length > 0) {
+            // User requested to start in the middle to allow scrolling up/down without teleporting immediately.
+            // 50% index is the safest bet for the "middle" of the duplicated list.
+            const targetIndex = Math.floor(cards.length * 0.5);
+            const targetCard = cards[targetIndex] as HTMLElement;
+
+            if (targetCard) {
+                // TIMEOUT REQUIRED: Global ScrollReset.tsx (Parent) runs its effect AFTER this (Child),
+                // resetting scroll to 0. We wait a reasonable amount to override it.
+                // Increased to 100ms to be safer.
+                setTimeout(() => {
+                    // Force Lenis to acknowledge the new content height immediately
+                    lenis.resize();
+                    ScrollTrigger.refresh();
+
+                    lenis.scrollTo(targetCard, {
+                        immediate: true,
+                        offset: -window.innerHeight * 0.25 // Center the card roughly (1/4 down screen)
+                    });
+                }, 100);
+            }
+        }
+    }, [lenis]);
 
     useLayoutEffect(() => {
         if (!enableAnimations) {

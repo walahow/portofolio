@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useLenis } from '@/components/SmoothScroll'; // Import useLenis
 import { useTransitionStore } from '@/store/useTransitionStore'; // Import Transition Store
-import PersonaRevealSidebar from './PersonaRevealSidebar';
+import PersonaRevealSidebar, { PersonaParallaxText } from './PersonaRevealSidebar';
 import ProjectDetailGallery from './ProjectDetailGallery';
 
 interface ProjectDetailViewProps {
@@ -125,7 +125,14 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     return (
         <main className="min-h-screen bg-[#050505] w-full relative">
 
+            {/* --- 0. BACKGROUND LAYER (Parallax Text) --- */}
+            {/* z-0 so it sits BEHIND the z-10 content content */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <PersonaParallaxText />
+            </div>
+
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
+            {/* z-50 to stay ON TOP of everything (Interactive Text) */}
             <aside className="fixed top-0 left-0 w-[15%] h-screen z-50 border-r border-white/5 flex flex-col items-center justify-center">
                 <PersonaRevealSidebar arcana={project.arcana} />
             </aside>

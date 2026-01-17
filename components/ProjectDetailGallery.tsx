@@ -17,8 +17,9 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
 
     // PARAMETERS
     const START_X = 12.5; // vw
-    // Extended scroll to ensure full exit
-    const END_X = -230; // vw 
+    // Reduced scroll to prevent empty space (Content approx 150vw wide)
+    // Adjusted to -175vw to leave a little bit of "black space" breathing room
+    const END_X = -175; // vw 
     const TRACK_LENGTH = Math.abs(END_X - START_X); // Total distance structure moves
 
     // Horizontal Scroll Logic
@@ -31,7 +32,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     ];
 
     return (
-        <section ref={targetRef} className="relative h-[500vh] bg-[#050505]">
+        <section ref={targetRef} className="relative h-[400vh] bg-[#050505]">
             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
 
                 {/* Decorative Label */}

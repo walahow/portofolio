@@ -10,28 +10,8 @@ interface PersonaRevealSidebarProps {
 
 export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarProps) {
     // --- PARALLAX JARGON LOGIC ---
-    const { scrollY } = useScroll();
+    // (Moved to PersonaParallaxText component)
 
-    // Parallax Factor: 0.2 (Requested "x=x.2")
-    // Looping Logic:
-    // We render the text multiple times.
-    // We assume a rough height for the text block to calculate the wrap point.
-    // Text: "CHANGE MY OWN HEART" (19 chars + spaces) at text-[12rem] (approx 192px per em?).
-    // Vertical writing text height is substantial.
-    // Let's rely on percentage or a large enough pixel loop.
-    // Better yet, use a repeating pattern with a CSS transform.
-
-    // Let's try a pure transform approach.
-    // Moving UP 2.0px for every 1px scrolled DOWN.
-    const parallaxY = useTransform(scrollY, (value) => {
-        const speed = 2.0; // 200% speed
-        // We modulate by a "Loop Size". 
-        // We need to estimate the loop size. 
-        // Let's assume the text block height is roughly 2500px (12rem * ~12 chars visible? No, 12rem is font size).
-        // Let's set a wrap point. If we render 2 copies, we wrap when we've moved 1 length.
-        const loopHeight = 3000; // Approx height of one text block to wrap smoothly
-        return - (value * speed) % loopHeight;
-    });
 
     // --- INTERACTIVE SIDEBAR LOGIC ---
     const [status, setStatus] = useState<'idle' | 'hover' | 'revealed'>('idle');
@@ -176,76 +156,79 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
 
     const animState = (isActive || isGlitching) ? "glitching" : "idle";
 
-    // Repeated text for looping
+    return (
+        <div
+            className="fixed left-0 top-0 h-full w-[15%] flex flex-col items-start justify-start z-40 pointer-events-none mix-blend-difference select-none"
+        >
+            <div
+                className="relative flex items-center justify-center pointer-events-auto cursor-pointer"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleClick}
+            >
+                {/* Layers */}
+                <motion.h1
+                    className="text-7xl md:text-9xl font-black tracking-tighter leading-none uppercase"
+                    style={redChannelStyle}
+                    variants={glitchVariants}
+                    animate={animState}
+                >
+                    {displayText}
+                </motion.h1>
+
+                <motion.h1
+                    className="text-7xl md:text-9xl font-black tracking-tighter leading-none uppercase"
+                    style={cyanChannelStyle}
+                    variants={{
+                        ...glitchVariants,
+                        glitching: {
+                            ...glitchVariants.glitching,
+                            x: [0, 5, -5, 3, -3, 0, 8, -8, 0],
+                        }
+                    }}
+                    animate={animState}
+                >
+                    {displayText}
+                </motion.h1>
+
+                <motion.h1
+                    className="text-7xl md:text-9xl font-black tracking-tighter leading-none relative z-10 uppercase"
+                    style={mainStyle}
+                >
+                    {displayText}
+                </motion.h1>
+            </div>
+        </div>
+    );
+}
+
+// --- NEW COMPONENT: SEPARATED PARALLAX TEXT ---
+export function PersonaParallaxText() {
+    const { scrollY } = useScroll();
+
+    // Moving UP 2.0px for every 1px scrolled DOWN.
+    const parallaxY = useTransform(scrollY, (value) => {
+        const speed = 2.0;
+        const loopHeight = 3000;
+        return - (value * speed) % loopHeight;
+    });
+
     const PARALLAX_TEXT = "CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART";
 
     return (
-        <>
-            {/* 1. INTERACTIVE SIDEBAR (FIXED LEFT) */}
-            <div
-                className="fixed left-0 top-0 h-full w-[15%] flex flex-col items-start justify-start z-40 pointer-events-none mix-blend-difference select-none"
-            >
-                <div
-                    className="relative flex items-center justify-center pointer-events-auto cursor-pointer"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={handleClick}
-                >
-                    {/* Layers */}
-                    <motion.h1
-                        className="text-7xl md:text-9xl font-black tracking-tighter leading-none uppercase"
-                        style={redChannelStyle}
-                        variants={glitchVariants}
-                        animate={animState}
-                    >
-                        {displayText}
-                    </motion.h1>
-
-                    <motion.h1
-                        className="text-7xl md:text-9xl font-black tracking-tighter leading-none uppercase"
-                        style={cyanChannelStyle}
-                        variants={{
-                            ...glitchVariants,
-                            glitching: {
-                                ...glitchVariants.glitching,
-                                x: [0, 5, -5, 3, -3, 0, 8, -8, 0],
-                            }
-                        }}
-                        animate={animState}
-                    >
-                        {displayText}
-                    </motion.h1>
-
-                    <motion.h1
-                        className="text-7xl md:text-9xl font-black tracking-tighter leading-none relative z-10 uppercase"
-                        style={mainStyle}
-                    >
-                        {displayText}
-                    </motion.h1>
-                </div>
-            </div>
-
-            {/* 2. PARALLAX JARGON (FIXED BACKGROUND) */}
-            {/* 
-                We use a tall container and translate it.
-                Since it's fixed, we need to ensure the loop is seamless.
-                Moving UP means negative Y.
-            */}
-            <motion.div
-                className="fixed top-0 pointer-events-none z-0 select-none whitespace-nowrap overflow-visible"
-                style={{
-                    left: '4rem',
-                    y: parallaxY,
-                    writingMode: "vertical-rl",
-                    rotate: 180,
-                    fontFamily: "var(--font-playfair), serif",
-                }}
-            >
-                <h1 className="text-[10rem] font-black tracking-tighter text-[#444] italic"
-                >
-                    {PARALLAX_TEXT}
-                </h1>
-            </motion.div>
-        </>
+        <motion.div
+            className="fixed top-0 pointer-events-none z-0 select-none whitespace-nowrap overflow-visible"
+            style={{
+                left: '4rem',
+                y: parallaxY,
+                writingMode: "vertical-rl",
+                rotate: 180,
+                fontFamily: "var(--font-playfair), serif",
+            }}
+        >
+            <h1 className="text-[10rem] font-black tracking-tighter text-[#444] italic">
+                {PARALLAX_TEXT}
+            </h1>
+        </motion.div>
     );
 }

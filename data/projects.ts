@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/ilkomWeb.avif',
         video: '', // Placeholder
         gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'], // Using existing images
-        arcana: 'THE MAGICIAN'
+        arcana: 'MAGICIAN'
     },
     {
         id: '02',
@@ -43,7 +43,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
-        arcana: 'THE LOVERS'
+        arcana: 'LOVERS'
     },
     {
         id: '03',
@@ -73,6 +73,6 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/il*komWeb.avif'],
-        arcana: 'THE CHARIOT'
+        arcana: 'CHARIOT'
     }
 ];

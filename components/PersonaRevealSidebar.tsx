@@ -36,7 +36,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
     // --- INTERACTIVE SIDEBAR LOGIC ---
     const [status, setStatus] = useState<'idle' | 'hover' | 'revealed'>('idle');
     const [isActive, setIsActive] = useState(false);
-    const [displayText, setDisplayText] = useState("PERSONA");
+    const [displayText, setDisplayText] = useState("ARCANA");
 
     // Cursor Store Integration
     const { setIsHovered, setCursorText, setCursorVariant } = useCursorStore();
@@ -157,7 +157,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
     const baseStyle: React.CSSProperties = {
         writingMode: "vertical-lr",
         transform: "rotate(0deg)",
-        fontFamily: "var(--font-mono), monospace",
+        fontFamily: "var(--font-playfair), serif",
         lineHeight: 1.0,
     };
 
@@ -177,7 +177,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
     const animState = (isActive || isGlitching) ? "glitching" : "idle";
 
     // Repeated text for looping
-    const PARALLAX_TEXT = "CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART";
+    const PARALLAX_TEXT = "CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART // CHANGE MY OWN HEART";
 
     return (
         <>
@@ -193,7 +193,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
                 >
                     {/* Layers */}
                     <motion.h1
-                        className="text-7xl md:text-8xl font-bold tracking-tighter leading-none"
+                        className="text-7xl md:text-9xl font-black tracking-tighter leading-none uppercase"
                         style={redChannelStyle}
                         variants={glitchVariants}
                         animate={animState}
@@ -202,7 +202,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
                     </motion.h1>
 
                     <motion.h1
-                        className="text-7xl md:text-8xl font-bold tracking-tighter leading-none"
+                        className="text-7xl md:text-9xl font-black tracking-tighter leading-none uppercase"
                         style={cyanChannelStyle}
                         variants={{
                             ...glitchVariants,
@@ -217,7 +217,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
                     </motion.h1>
 
                     <motion.h1
-                        className="text-7xl md:text-8xl font-bold tracking-tighter leading-none relative z-10"
+                        className="text-7xl md:text-9xl font-black tracking-tighter leading-none relative z-10 uppercase"
                         style={mainStyle}
                     >
                         {displayText}
@@ -234,17 +234,14 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
             <motion.div
                 className="fixed top-0 pointer-events-none z-0 select-none whitespace-nowrap overflow-visible"
                 style={{
-                    left: '1rem',
+                    left: '4rem',
                     y: parallaxY,
                     writingMode: "vertical-rl",
-                    transform: "rotate(180deg)",
-                    fontFamily: "var(--font-mono), monospace",
+                    rotate: 180,
+                    fontFamily: "var(--font-playfair), serif",
                 }}
             >
-                <h1 className="text-[12rem] font-black tracking-tighter text-transparent stroke-white"
-                    style={{
-                        WebkitTextStroke: "2px rgba(255, 255, 255, 0.15)"
-                    }}
+                <h1 className="text-[10rem] font-black tracking-tighter text-[#444] italic"
                 >
                     {PARALLAX_TEXT}
                 </h1>

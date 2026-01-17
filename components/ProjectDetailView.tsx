@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useLenis } from '@/components/SmoothScroll'; // Import useLenis
 import { useTransitionStore } from '@/store/useTransitionStore'; // Import Transition Store
 import PersonaRevealSidebar from './PersonaRevealSidebar';
+import ProjectDetailGallery from './ProjectDetailGallery';
 
 interface ProjectDetailViewProps {
     project: Project;
@@ -125,7 +126,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
         <main className="min-h-screen bg-[#050505] w-full relative">
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
-            <aside className="fixed top-0 left-0 w-[15%] h-screen z-0 border-r border-white/5 flex flex-col items-center justify-center">
+            <aside className="fixed top-0 left-0 w-[15%] h-screen z-50 border-r border-white/5 flex flex-col items-center justify-center">
                 <PersonaRevealSidebar arcana={project.arcana} />
             </aside>
 
@@ -203,51 +204,9 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                     </motion.div>
                 </div>
 
-                {/* Remainder of content (Video/Gallery) needs to be pushed down or wrapped */}
-                <div className="px-12 pb-48 max-w-5xl mx-auto pt-24">
-
-                    {/* Video (if valid, else placeholder logic) */}
-                    <div className="w-full aspect-video bg-neutral-900 mb-24 overflow-hidden relative group">
-                        {project.video ? (
-                            <video
-                                src={project.video}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center text-neutral-700 font-mono">
-                                [ VIDEO PLACEHOLDER ]
-                            </div>
-                        )}
-                    </div>
-
-                    <br />
-                    <br />
-
-                    {/* Gallery Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-1 gap-48">
-                        {project.gallery.map((img, i) => {
-                            // First 2 images are smaller and centered
-                            const isSmall = i === 0 || i === 1;
-                            return (
-                                <div
-                                    key={i}
-                                    className={`relative bg-neutral-900 overflow-hidden ${isSmall ? 'w-full md:w-2/3 mx-auto aspect-[4/3]' : 'w-full aspect-[4/3]'}`}
-                                >
-                                    <Image
-                                        src={img}
-                                        alt={`Gallery ${i}`}
-                                        fill
-                                        className="object-cover hover:scale-105 transition-transform duration-700"
-                                    />
-                                </div>
-                            );
-                        })}
-                    </div>
-
+                {/* Remainder of content (Video/Gallery) -> Now Sticky Horizontal Gallery */}
+                <div className="relative w-full z-10">
+                    <ProjectDetailGallery project={project} />
                 </div>
 
                 {/* --- DEEP SCROLL FOOTER --- */}

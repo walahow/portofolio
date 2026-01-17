@@ -107,7 +107,7 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
                             variants={glitchVariants}
                             animate={isGlitching ? "glitching" : "idle"}
                         >
-                            <span className="font-bold text-4xl md:text-5xl tracking-tighter font-mono">
+                            <span className="font-bold text-6xl md:text-8xl tracking-tighter font-mono">
                                 {scrambleTitle}
                             </span>
                         </motion.div>
@@ -124,13 +124,13 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
                             }}
                             animate={isGlitching ? "glitching" : "idle"}
                         >
-                            <span className="font-bold text-4xl md:text-5xl tracking-tighter font-mono">
+                            <span className="font-bold text-6xl md:text-8xl tracking-tighter font-mono">
                                 {scrambleTitle}
                             </span>
                         </motion.div>
 
                         {/* Layer 3: Main White Text */}
-                        <span className="relative z-10 font-bold text-4xl md:text-5xl tracking-tighter font-mono text-white">
+                        <span className="relative z-10 font-bold text-6xl md:text-8xl tracking-tighter font-mono text-white">
                             {scrambleTitle}
                         </span>
                     </motion.div>
@@ -146,7 +146,7 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
                         animate={{ y: 0, opacity: 0.6 }}
                         exit={{ y: -20, opacity: 0 }}
                         transition={{ duration: 0.45, ease: "easeOut", delay: 0.05 }}
-                        className="text-xs md:text-sm font-mono uppercase tracking-[0.2em] text-white/80"
+                        className="text-xs md:text-lg font-mono uppercase tracking-[0.2em] text-white/80"
                     >
                         {role}
                     </motion.p>

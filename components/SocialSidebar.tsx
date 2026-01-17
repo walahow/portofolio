@@ -37,7 +37,7 @@ export default function SocialSidebar() {
     return (
         <div className="fixed left-6 top-16 z-50 flex flex-col items-center gap-2 hidden md:flex select-none">
             {/* DECORATIVE LINE TOP */}
-            <span className="[writing-mode:vertical-rl] text-[12px] font-mono tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
+            <span className="[writing-mode:vertical-rl] text-[12px] font-[var(--font-playfair)] tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
                 [ SOCIAL \\
             </span>
             <div className="w-[1px] h-12 bg-white/20" />
@@ -60,7 +60,7 @@ export default function SocialSidebar() {
 
             {/* DECORATIVE LINE BOTTOM */}
             <div className="w-[1px] h-12 bg-white/20" />
-            <span className="[writing-mode:vertical-rl] text-[12px] font-mono tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
+            <span className="[writing-mode:vertical-rl] text-[12px] font-[var(--font-playfair)] tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
                 // LINKS ]
             </span>
         </div>
@@ -127,7 +127,7 @@ function SocialItem({ item, isHovered, setHovered, isAnyHovered }: {
                 className="w-full h-12 flex items-center justify-center shrink-0"
             >
                 <motion.span
-                    className="font-mono text-sm font-bold tracking-wider"
+                    className="font-[var(--font-playfair)] text-sm font-bold tracking-wider"
                     animate={{
                         color: isHovered ? item.themeColor : '#ffffff',
                         scale: isHovered ? 1.2 : 1

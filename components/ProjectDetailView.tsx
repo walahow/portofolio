@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useLenis } from '@/components/SmoothScroll'; // Import useLenis
 import { useTransitionStore } from '@/store/useTransitionStore'; // Import Transition Store
+import { useTimerStore } from '@/store/useTimerStore';
+import { useIntroStore } from '@/store/useIntroStore';
 import PersonaRevealSidebar, { PersonaParallaxText } from './PersonaRevealSidebar';
 import ProjectDetailGallery from './ProjectDetailGallery';
 
@@ -23,6 +25,14 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     // Global Smooth Scroll Control
     const { lenis } = useLenis();
     const { startTransition } = useTransitionStore();
+
+    // Ensure system is active (Fix for missing HUD on direct load)
+    useEffect(() => {
+        // We need to dynamically import stores or just assume they are available
+        // But better to just use them directly if imported
+        useTimerStore.getState().setSystemActive(true);
+        useIntroStore.getState().setEntered(true);
+    }, []);
 
     // Curtain Animation
     // ... (rest of animations) ...
@@ -125,15 +135,17 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     return (
         <main className="min-h-screen bg-[#050505] w-full relative">
 
-            {/* --- 0. BACKGROUND LAYER (Parallax Text) --- */}
+            {/* --- 0. BACKGROUND LAYER (Parallax Text & Border) --- */}
             {/* z-0 so it sits BEHIND the z-10 content content */}
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <PersonaParallaxText />
+                {/* Sidebar Border - Moved here to be behind content */}
+                <div className="absolute top-0 left-0 w-[15%] h-full border-r border-white/5" />
             </div>
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
             {/* z-50 to stay ON TOP of everything (Interactive Text) */}
-            <aside className="fixed top-0 left-0 w-[15%] h-screen z-50 border-r border-white/5 flex flex-col items-center justify-center">
+            <aside className="fixed top-0 left-0 w-[15%] h-screen z-50 flex flex-col items-center justify-center">
                 <PersonaRevealSidebar arcana={project.arcana} />
             </aside>
 

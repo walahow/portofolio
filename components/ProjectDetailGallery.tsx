@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue, useSpring } from 'framer-motion';
 import Image from 'next/image';
 import { Project } from '@/data/projects';
 
@@ -15,15 +15,23 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
         target: targetRef,
     });
 
+    // Dampening Logic to smooth the transition
+    const smoothProgress = useSpring(scrollYProgress, {
+        mass: 0.1,
+        stiffness: 100,
+        damping: 20,
+        restDelta: 0.001
+    });
+
     // PARAMETERS
     const START_X = 12.5; // vw
     // Reduced scroll to prevent empty space (Content approx 150vw wide)
-    // Adjusted to -175vw to leave a little bit of "black space" breathing room
-    const END_X = -175; // vw 
+    // Adjusted to -200vw to accommodate larger gaps (8vw)
+    const END_X = -200; // vw 
     const TRACK_LENGTH = Math.abs(END_X - START_X); // Total distance structure moves
 
     // Horizontal Scroll Logic
-    const x = useTransform(scrollYProgress, [0, 1], [`${START_X}vw`, `${END_X}vw`]);
+    const x = useTransform(smoothProgress, [0, 1], [`${START_X}vw`, `${END_X}vw`]);
 
     // Combine Video and Gallery into one array for unified mapping
     const assets = [
@@ -42,19 +50,19 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
 
                 <motion.div
                     style={{ x }}
-                    className="flex gap-20"
+                    className="flex gap-[16vw]"
                 >
                     {assets.map((asset, index) => {
                         // CALCULATE FOCUS POINT
                         // We need the scroll progress (0-1) where this item is CENTERED.
                         // Formula: p = (ItemsOffset + ItemWidth/2 - 30) / TRACK_LENGTH
                         // Constant "30" comes from: TargetCenter (42.5) - StartX (12.5)
-                        // Asset Widths: Video=60, Img=45. Gap=4 (approx for gap-20)
+                        // Asset Widths: Video=60, Img=45. Gap=8 (8vw)
 
                         let offset = 0;
                         for (let i = 0; i < index; i++) {
                             const w = (i === 0) ? 60 : 45;
-                            offset += w + 4; // Width + Gap
+                            offset += w + 8; // Width + Gap (8vw)
                         }
 
                         const myWidth = (index === 0) ? 60 : 45;
@@ -66,7 +74,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
                                 asset={asset}
                                 index={index}
                                 centerP={centerP}
-                                scrollYProgress={scrollYProgress}
+                                scrollYProgress={smoothProgress}
                             />
                         );
                     })}

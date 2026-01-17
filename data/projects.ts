@@ -50,7 +50,7 @@ export const PROJECTS: Project[] = [
     },
     {
         id: '03',
-        title: 'Schedule Integrated Manager',
+        title: 'S.I.M',
         stack: 'MYSQL • LARAVEL • TAILWIND',
         slug: 'sim',
         category: 'Web Dev',

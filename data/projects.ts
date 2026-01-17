@@ -30,7 +30,7 @@ export const PROJECTS: Project[] = [
         video: '', // Placeholder
         gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'], // Using existing images
         arcana: 'MAGICIAN',
-        overviewHeading: '// DIGITAL CAMPUS'
+        overviewHeading: 'DIGITAL CAMPUS'
     },
     {
         id: '02',
@@ -46,7 +46,7 @@ export const PROJECTS: Project[] = [
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
         arcana: 'LOVERS',
-        overviewHeading: '// VIRTUAL BRIDGE'
+        overviewHeading: 'VIRTUAL BRIDGE'
     },
     {
         id: '03',
@@ -62,7 +62,7 @@ export const PROJECTS: Project[] = [
         video: '',
         gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'],
         arcana: 'JUSTICE',
-        overviewHeading: '// SYSTEM ARCHITECTURE'
+        overviewHeading: 'SYSTEM ARCHITECTURE'
     },
     {
         id: '04',
@@ -78,6 +78,6 @@ export const PROJECTS: Project[] = [
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/il*komWeb.avif'],
         arcana: 'CHARIOT',
-        overviewHeading: '// PRODUCTION FLOW'
+        overviewHeading: 'PRODUCTION FLOW'
     }
 ];

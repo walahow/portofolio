@@ -261,7 +261,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                         </h2>
 
                         {/* THE PROGRESS BAR (Visual Feedback of "Effort") */}
-                        <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-8 pb-8 mb-24">
+                        <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-8">
                             <motion.div
                                 className="h-full bg-white"
                                 style={{

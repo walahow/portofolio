@@ -12,6 +12,7 @@ export interface Project {
     video: string;       // Path to video
     gallery: string[];   // Array of secondary image paths
     arcana: string;      // Tarot/Arcana persona name
+    overviewHeading?: string; // Custom heading for Project Overview
 }
 
 export const PROJECTS: Project[] = [
@@ -28,7 +29,8 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/ilkomWeb.avif',
         video: '', // Placeholder
         gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'], // Using existing images
-        arcana: 'MAGICIAN'
+        arcana: 'MAGICIAN',
+        overviewHeading: '// DIGITAL CAMPUS'
     },
     {
         id: '02',
@@ -43,7 +45,8 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
-        arcana: 'LOVERS'
+        arcana: 'LOVERS',
+        overviewHeading: '// VIRTUAL BRIDGE'
     },
     {
         id: '03',
@@ -58,7 +61,8 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/ilkomWeb.avif', // Placeholder
         video: '',
         gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'],
-        arcana: 'JUSTICE'
+        arcana: 'JUSTICE',
+        overviewHeading: '// SYSTEM ARCHITECTURE'
     },
     {
         id: '04',
@@ -73,6 +77,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/HeroGate.avif', // Placeholder
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/il*komWeb.avif'],
-        arcana: 'CHARIOT'
+        arcana: 'CHARIOT',
+        overviewHeading: '// PRODUCTION FLOW'
     }
 ];

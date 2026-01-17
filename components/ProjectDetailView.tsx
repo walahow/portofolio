@@ -173,24 +173,31 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 <div className="relative px-4 md:px-12 w-full z-50 pointer-events-none -mt-20 md:-mt-40">
                     <motion.div
                         style={{ opacity: descOpacity, y: descY }}
-                        className="mx-auto max-w-4xl bg-[#0A0A0A] text-neutral-300 p-8 md:p-24 shadow-2xl pointer-events-auto border border-white/10 backdrop-blur-sm"
+                        className="mx-auto max-w-4xl bg-[#0A0A0A] text-neutral-300 p-8 md:p-24 shadow-2xl pointer-events-auto border border-white/10 backdrop-blur-sm flex flex-col items-start"
                     >
-                        <h2 className="text-3xl md:text-5xl font-light mb-12 tracking-tight text-white">
-                            Project Overview
-                        </h2>
-                        <div className="text-lg md:text-xl leading-relaxed font-light text-neutral-400">
+                        <div className="mb-24 text-left">
+                            <h2
+                                className="text-4xl md:text-5xl font-medium italic tracking-tight text-white mb-4"
+                                style={{ fontFamily: 'var(--font-playfair), serif' }}
+                            >
+                                {project.overviewHeading || project.title}
+                            </h2>
+                            {/* Decorative Separator Dot optional, but user liked the huge gap */}
+                        </div>
+
+                        <div className="text-sm leading-loose text-left text-gray-300 font-mono max-w-lg">
                             {project.description}
                         </div>
 
                         {/* Additional Metadata Block */}
-                        <div className="mt-16 pt-16 border-t border-white/10 grid grid-cols-2 gap-8 font-mono text-sm uppercase tracking-widest text-neutral-500">
+                        <div className="mt-16 pt-16 border-t border-white/10 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
                             <div>
                                 <span className="block text-white mb-2">Role</span>
-                                {project.roles.join(', ')}
+                                <div>[ {project.roles.join(' + ')} ]</div>
                             </div>
                             <div>
                                 <span className="block text-white mb-2">Year</span>
-                                {project.year}
+                                <div>[ {project.year} ]</div>
                             </div>
                         </div>
                     </motion.div>
@@ -254,7 +261,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                         </h2>
 
                         {/* THE PROGRESS BAR (Visual Feedback of "Effort") */}
-                        <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-8">
+                        <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-8 pb-8 mb-24">
                             <motion.div
                                 className="h-full bg-white"
                                 style={{

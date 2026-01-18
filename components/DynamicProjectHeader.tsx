@@ -88,7 +88,7 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
     };
 
     return (
-        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center pointer-events-none mix-blend-difference">
+        <div className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[70] flex flex-col items-center pointer-events-none mix-blend-difference">
 
             {/* TITLE CONTAINER (GLITCH + SCRAMBLE) */}
             <div className="relative mb-2 min-h-[2rem] flex items-center justify-center">
@@ -107,7 +107,7 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
                             variants={glitchVariants}
                             animate={isGlitching ? "glitching" : "idle"}
                         >
-                            <span className="font-bold text-6xl md:text-8xl tracking-tighter font-mono">
+                            <span className="font-bold text-5xl md:text-8xl tracking-tighter font-[var(--font-playfair)] whitespace-nowrap">
                                 {scrambleTitle}
                             </span>
                         </motion.div>
@@ -124,13 +124,13 @@ export default function DynamicProjectHeader({ title, role }: DynamicProjectHead
                             }}
                             animate={isGlitching ? "glitching" : "idle"}
                         >
-                            <span className="font-bold text-6xl md:text-8xl tracking-tighter font-mono">
+                            <span className="font-bold text-5xl md:text-8xl tracking-tighter font-[var(--font-playfair)] whitespace-nowrap">
                                 {scrambleTitle}
                             </span>
                         </motion.div>
 
                         {/* Layer 3: Main White Text */}
-                        <span className="relative z-10 font-bold text-6xl md:text-8xl tracking-tighter font-mono text-white">
+                        <span className="relative z-10 font-bold text-5xl md:text-8xl tracking-tighter font-[var(--font-playfair)] text-white whitespace-nowrap">
                             {scrambleTitle}
                         </span>
                     </motion.div>

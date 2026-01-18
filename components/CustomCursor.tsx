@@ -21,6 +21,7 @@ export default function CustomCursor() {
     const pathname = usePathname();
 
     const [progress, setProgress] = useState(0); // 0 to 100
+    const [isVisible, setIsVisible] = useState(false);
     const rotate = useMotionValue(0);
     const isHolding = useRef(false);
     const progressRef = useRef(0);
@@ -90,6 +91,22 @@ export default function CustomCursor() {
     }, [pathname, setIsHovered, setCursorText, setCursorVariant]);
 
     useEffect(() => {
+        let timer: NodeJS.Timeout;
+
+        // Force hidden initially (fix for HMR/re-mount)
+        setIsVisible(false);
+
+        // Center cursor on mount
+        if (typeof window !== 'undefined') {
+            mouseX.set(window.innerWidth / 2);
+            mouseY.set(window.innerHeight / 2);
+
+            // Delay visibility - Increased to 2.5s to be obvious
+            timer = setTimeout(() => {
+                setIsVisible(true);
+            }, 2500);
+        }
+
         const updateMousePosition = (e: MouseEvent) => {
             // Update raw MotionValues directly
             mouseX.set(e.clientX);
@@ -107,15 +124,37 @@ export default function CustomCursor() {
             isHolding.current = false;
         };
 
+        const updateTouchPosition = (e: TouchEvent) => {
+            if (e.touches.length > 0) {
+                mouseX.set(e.touches[0].clientX);
+                mouseY.set(e.touches[0].clientY);
+            }
+        };
+
         window.addEventListener('mousemove', updateMousePosition);
+        window.addEventListener('touchmove', updateTouchPosition, { passive: true });
+        window.addEventListener('touchstart', updateTouchPosition, { passive: true });
+
+        // Bind both mouse and touch to hold logic
         window.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('touchstart', handleMouseDown, { passive: true });
+
         window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('touchend', handleMouseUp);
 
         return () => {
             window.removeEventListener('mousemove', updateMousePosition);
+            window.removeEventListener('touchmove', updateTouchPosition);
+            window.removeEventListener('touchstart', updateTouchPosition);
+
             window.removeEventListener('mousedown', handleMouseDown);
+            window.removeEventListener('touchstart', handleMouseDown);
+
             window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener('touchend', handleMouseUp);
+
             if (rafId.current) cancelAnimationFrame(rafId.current);
+            clearTimeout(timer);
         };
     }, []);
 
@@ -161,7 +200,12 @@ export default function CustomCursor() {
     const showDelayedRing = true;
 
     return (
-        <div className="hidden md:block pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
+        <motion.div
+            className="fixed inset-0 z-[9999] overflow-hidden pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isVisible ? 1 : 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+        >
             {/* ELEMENT 1: INSTANT LAYER (Dot OR Text) */}
             <motion.div
                 className="absolute top-0 left-0 flex items-center justify-center will-change-transform mix-blend-difference"
@@ -304,6 +348,6 @@ export default function CustomCursor() {
                     </motion.div>
                 </>
             )}
-        </div>
+        </motion.div>
     );
 }

@@ -155,24 +155,26 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
         if (p >= 1) return end;
         // Peak scramble at 50%
         const randomThreshold = Math.sin(p * Math.PI);
-        const currentLength = Math.floor(start.length + (end.length - start.length) * p);
+        const maxLength = Math.max(start.length, end.length);
         let str = "";
-        for (let i = 0; i < currentLength; i++) {
+        for (let i = 0; i < maxLength; i++) {
             if (Math.random() < randomThreshold * 0.4) {
                 str += chars[Math.floor(Math.random() * chars.length)];
             } else {
+                const charStart = (i < start.length) ? start[i] : "";
+                const charEnd = (i < end.length) ? end[i] : "";
                 if (Math.random() < p) {
-                    str += (i < end.length) ? end[i] : "";
+                    str += charEnd || " ";
                 } else {
-                    str += (i < start.length) ? start[i] : "";
+                    str += charStart || " ";
                 }
             }
         }
-        return str || start;
+        return str;
     };
 
     const displayedName = resolveMorph(progress, "Atta Zulfahrizan", "Walaho");
-    const displayedTitle = resolveMorph(progress, "[ ATTA ZULFAHRIZAN'S PORTFOLIO ]", "[ WALAHO'S PORTFOLIO ]");
+    const displayedTitle = resolveMorph(progress, "ATTA ZULFAHRIZAN'S PORTFOLIO", "WALAHO'S PORTFOLIO");
 
 
     // VARIANTS
@@ -228,10 +230,23 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                     }}
                 >
                     {/* 2. INTERACTION LAYER (Grayscale via Physics Progress) */}
+
+                    {/* MOBILE IMG */}
                     <motion.img
                         src="/img/HeroGate.avif"
                         alt=""
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover md:hidden block"
+                        style={{
+                            filter: `grayscale(${Math.max(0, 100 - progress)}%)`,
+                            willChange: "filter"
+                        }}
+                    />
+
+                    {/* DESKTOP IMG */}
+                    <motion.img
+                        src="/img/HeroGate.avif"
+                        alt=""
+                        className="w-full h-full object-cover hidden md:block"
                         style={{
                             filter: `grayscale(${Math.max(0, 100 - progress)}%)`,
                             willChange: "filter"
@@ -245,20 +260,24 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
             {/* --- 4 CORNER LAYOUT --- */}
 
             {/* Top Left */}
-            <div className="absolute top-8 left-8 text-md text-gray-500 tracking-widest pointer-events-none z-10">
+            <div className="absolute top-8 right-2 text-xl md:text-2xl text-gray-500 tracking-widest pointer-events-none z-10 [writing-mode:vertical-rl]">
                 {displayedTitle}
             </div>
 
+            <div className="absolute top-8 right-22 text-xl md:text-2xl text-gray-500 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
+                [ 2005 ]
+            </div>
+
             {/* Top Right */}
-            <div className="absolute top-8 right-8 text-md text-gray-500 text-right pointer-events-none z-10">
-                MEDAN, ID // 24.12.2005
+            <div className="absolute top-8 right-12 text-xl md:text-2xl text-gray-500 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
+                MEDAN, ID // DECEMBER 24
             </div>
 
             {/* Bottom Left - IDENTITY MORPH (Animated Entrance) */}
             <div className="absolute bottom-8 left-8 text-left pointer-events-none z-10 block">
                 {/* Name Morph with Typing Effect */}
                 <motion.h1
-                    className="text-4xl md:text-4xl font-bold mb-2 text-white flex"
+                    className="text-3xl md:text-5xl font-bold mb-4 text-white flex"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -283,19 +302,15 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                     initial="hidden"
                     animate="visible"
                 >
-                    <motion.p className="text-sm md:text-base text-gray-300" variants={charVariants}>
+                    <motion.p className="text-xl md:text-2xl text-gray-300" variants={charVariants}>
                         Creative Technologist
                     </motion.p>
-                    <motion.p className="text-xs text-gray-500 uppercase mt-1" variants={charVariants}>
+                    <motion.p className="text-sm md:text-base text-gray-500 uppercase mt-2" variants={charVariants}>
                         Web • Photo • 3D • Mobile
                     </motion.p>
                 </motion.div>
             </div>
 
-            {/* Bottom Right - Interaction Hint */}
-            <div className="absolute bottom-8 right-8 text-xl text-white animate-pulse pointer-events-none z-10">
-                [ HOLD TO ENTER ]
-            </div>
 
             {/* Bottom Progress Bar */}
             <div className="absolute bottom-0 left-0 w-full h-2 bg-foreground/10 z-20 pointer-events-none">

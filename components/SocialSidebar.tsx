@@ -35,7 +35,7 @@ export default function SocialSidebar() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
     return (
-        <div className="fixed left-6 top-16 z-50 flex flex-col items-center gap-2 hidden md:flex select-none">
+        <div className="fixed left-0 top-0 md:left-6 md:top-16 z-50 flex flex-col items-center gap-2 select-none origin-top-left scale-[0.6] md:scale-100 p-2 md:p-0">
             {/* DECORATIVE LINE TOP */}
             <span className="[writing-mode:vertical-rl] text-[12px] font-[var(--font-playfair)] tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
                 [ SOCIAL \\
@@ -79,6 +79,13 @@ function SocialItem({ item, isHovered, setHovered, isAnyHovered }: {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => {
+                const isMobile = window.innerWidth < 768; // Mobile Breakpoint
+                if (isMobile && !isHovered) {
+                    e.preventDefault();
+                    setHovered(item.id);
+                }
+            }}
             onMouseEnter={() => setHovered(item.id)}
             onMouseLeave={() => setHovered(null)}
             className="relative flex flex-col items-center justify-end overflow-hidden border border-white/20 bg-black/80 backdrop-blur-sm cursor-pointer transition-colors duration-300"

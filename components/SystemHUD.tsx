@@ -107,7 +107,7 @@ export default function SystemHUD() {
                 setCursorText("");
                 setCursorVariant('default');
             }}
-            className={`fixed top-32 right-8 z-50 flex items-center justify-center w-32 h-32 mix-blend-difference text-white transition-transform duration-500 ${isProjectPage ? "cursor-none hover:scale-110" : "pointer-events-none"}`}
+            className={`fixed top-4 right-0 md:top-32 md:right-8 z-50 flex items-center justify-center w-20 h-20 md:w-32 md:h-32 mix-blend-difference text-white transition-transform duration-500 ${isProjectPage ? "cursor-none hover:scale-110" : "pointer-events-none"}`}
         >
             {/* 1. CENTER: UPTIME OR BACK */}
             <div className="absolute font-mono text-sm font-bold tracking-widest z-10 flex flex-col items-center justify-center">

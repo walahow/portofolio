@@ -58,15 +58,15 @@ export default function ProjectGallery() {
         const ctx = gsap.context(() => {
             const mm = gsap.matchMedia();
 
-            // DESKTOP & MOBILE: Full Experience for ALL (Filter + Scrub)
-            mm.add("(min-width: 0px)", () => {
+            // DESKTOP: Full Scrub Experience (Original)
+            mm.add("(min-width: 768px)", () => {
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
                 cards.forEach((card) => {
                     // ACTIVE PROJECT DETECTION
                     ScrollTrigger.create({
                         trigger: card,
-                        start: "top 70%", // More generous active window
-                        end: "bottom 30%", // More generous active window
+                        start: "top 70%",
+                        end: "bottom 30%",
                         onEnter: () => {
                             const projectId = card.getAttribute("data-id");
                             const found = PROJECTS.find(p => p.id === projectId);
@@ -98,15 +98,14 @@ export default function ProjectGallery() {
                                 filter: "grayscale(0) brightness(1)",
                                 opacity: 1,
                                 duration: 0.75,
-                                ease: "power2.out" // Smooth entry
+                                ease: "power2.out"
                             }
                         )
-                        // HOLD PHASE: Stay centered and colored for a bit
                         .to(card, {
                             scale: 1,
                             filter: "grayscale(0) brightness(1)",
                             opacity: 1,
-                            duration: 2.0, // Long symmetrical hold (66% of timeline)
+                            duration: 2.0,
                             ease: "none"
                         })
                         .to(card,
@@ -115,33 +114,52 @@ export default function ProjectGallery() {
                                 filter: "grayscale(1) brightness(0.8)",
                                 opacity: 0.7,
                                 duration: 0.75,
-                                ease: "power2.in" // Smooth exit
+                                ease: "power2.in"
                             }
                         );
                 });
             });
 
-            // MOBILE: HIGH PERFORMANCE MODE (DISABLED - USING FULL EXPERIENCE)
-            // 1. No Scrub
-            // 2. Play Once (Don't reverse on leave)
-            // mm.add("(max-width: 767px)", () => {
-            mm.add("(max-width: -1px)", () => { // Disable this block effectively
+            // MOBILE: STRICT FOCUS (Center = Color, Else = Grayscale)
+            // Using standard ScrollTrigger with toggleActions for snappy response
+            mm.add("(max-width: 767px)", () => {
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
                 cards.forEach((card) => {
+                    // Update Header
+                    ScrollTrigger.create({
+                        trigger: card,
+                        start: "top 50%",
+                        end: "bottom 50%",
+                        onEnter: () => {
+                            const projectId = card.getAttribute("data-id");
+                            const found = PROJECTS.find(p => p.id === projectId);
+                            if (found) setActiveProject(found);
+                        },
+                        onEnterBack: () => {
+                            const projectId = card.getAttribute("data-id");
+                            const found = PROJECTS.find(p => p.id === projectId);
+                            if (found) setActiveProject(found);
+                        }
+                    });
+
+                    // Strict Visibility/Color Animation
                     gsap.fromTo(card,
                         {
-                            opacity: 0,
-                            scale: 0.95, // Reduced scale delta for cheaper repaint
+                            filter: "grayscale(1) brightness(0.6)", // Darker/Grayer by default
+                            scale: 0.95,
+                            opacity: 0.6
                         },
                         {
-                            opacity: 1,
+                            filter: "grayscale(0) brightness(1)",
                             scale: 1,
-                            duration: 0.6,
-                            ease: "power1.out",
+                            opacity: 1,
+                            duration: 1.0,
+                            ease: "power2.inOut",
                             scrollTrigger: {
                                 trigger: card,
-                                start: "top 90%",
-                                once: true, // IMPORTANT: Animation only runs once. No constant listening.
+                                start: "top 60%", // Activate when near center
+                                end: "bottom 40%", // Deactivate when leaving center
+                                toggleActions: "play reverse play reverse", // Play on enter, reverse on leave
                             }
                         }
                     );
@@ -169,13 +187,13 @@ export default function ProjectGallery() {
             <SocialSidebar />
 
             {/* VERTICAL RIGHT LABEL */}
-            <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:block pointer-events-none mix-blend-difference">
-                <p className="text-xs font-mono py-6 pb-12 font-bold text-gray-400 opacity-50 tracking-widest whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
+            <div className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 pointer-events-none mix-blend-difference">
+                <p className="text-[10px] md:text-xs font-mono m-1 font-bold text-gray-400 opacity-50 tracking-widest whitespace-nowrap [writing-mode:vertical-rl] rotate-180 leading-none">
                     Atta Zulfahrizan Portofolio - type shi
                 </p>
             </div>
 
-            <div className="space-y-[24rem]">
+            <div className="space-y-[12rem]">
                 {[...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS].map((project, index) => (
                     <ProjectCard
                         key={`${project.id}-${index}`} // Unique key for duplicated items

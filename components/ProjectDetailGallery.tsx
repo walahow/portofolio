@@ -43,10 +43,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
         <section ref={targetRef} className="relative h-[400vh] bg-[#050505]">
             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
 
-                {/* Decorative Label */}
-                <div className="absolute top-12 right-12 z-20 font-mono text-xs text-white/50 tracking-widest uppercase">
-                    01 / VISUAL ASSETS
-                </div>
+
 
                 <motion.div
                     style={{ x }}

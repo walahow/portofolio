@@ -128,8 +128,8 @@ export default function ProjectGallery() {
                     // Update Header
                     ScrollTrigger.create({
                         trigger: card,
-                        start: "top 50%",
-                        end: "bottom 50%",
+                        start: "top 60%",
+                        end: "bottom 40%",
                         onEnter: () => {
                             const projectId = card.getAttribute("data-id");
                             const found = PROJECTS.find(p => p.id === projectId);

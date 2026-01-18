@@ -21,6 +21,18 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     const containerRef = useRef(null);
     const { scrollY } = useScroll();
     const router = useRouter();
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Initial Screen Check for Responsive Animation
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Global Smooth Scroll Control
     const { lenis } = useLenis();
@@ -39,12 +51,24 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
 
     // Curtain Animation
     // Map scroll 0 -> 200px (increased sensitivity) to animation values
+
+    // DESKTOP: 15% Sidebar
     // Width: 117.65% -> 100% (Starts by covering the 15% sidebar relative to current 85% container)
     // MarginLeft: -17.65% -> 0% (Starts shifted left to cover sidebar)
-    // Height: 100vh -> 70vh (Shrinks vertically too)
-    // MarginTop: 0vh -> 15vh (Pushes top down to create centered shrink effect)
-    const width = useTransform(scrollY, [0, 200], ['117.65%', '100%']);
-    const marginLeft = useTransform(scrollY, [0, 200], ['-17.65%', '0%']);
+
+    // MOBILE: 20% Sidebar
+    // Width: 125% -> 100% (Starts by covering the 20% sidebar relative to current 80% container)
+    // MarginLeft: -25% -> 0% (Starts shifted left)
+
+    const widthDesktop = useTransform(scrollY, [0, 200], ['117.65%', '100%']);
+    const marginLeftDesktop = useTransform(scrollY, [0, 200], ['-17.65%', '0%']);
+
+    const widthMobile = useTransform(scrollY, [0, 200], ['125%', '100%']);
+    const marginLeftMobile = useTransform(scrollY, [0, 200], ['-25%', '0%']);
+
+    const width = isMobile ? widthMobile : widthDesktop;
+    const marginLeft = isMobile ? marginLeftMobile : marginLeftDesktop;
+
     const height = useTransform(scrollY, [0, 200], ['100vh', '140vh']);
     const marginTop = useTransform(scrollY, [0, 200], ['0vh', '-20vh']);
     const y = useTransform(scrollY, [0, 200], [0, 200]);
@@ -140,18 +164,18 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <PersonaParallaxText />
                 {/* Sidebar Border - Moved here to be behind content */}
-                <div className="absolute top-0 left-0 w-[15%] h-full border-r border-white/5" />
+                <div className="absolute top-0 left-0 w-[20%] md:w-[15%] h-full border-r border-white/5" />
             </div>
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
             {/* z-50 to stay ON TOP of everything (Interactive Text) */}
-            <aside className="fixed top-0 left-0 w-[15%] h-screen z-50 flex flex-col items-center justify-center">
+            <aside className="fixed top-0 left-0 w-[20%] md:w-[15%] h-screen z-50 flex flex-col items-center justify-center">
                 <PersonaRevealSidebar arcana={project.arcana} />
             </aside>
 
 
             {/* --- RIGHT COLUMN (SCROLLABLE CONTENT) --- */}
-            <div ref={containerRef} className="relative ml-[15%] w-[85%] z-10 bg-[#050505]">
+            <div ref={containerRef} className="relative ml-[20%] md:ml-[15%] w-[80%] md:w-[85%] z-10 bg-[#050505]">
 
                 {/* 1. HERO CURTAIN (Merged Container) */}
                 <motion.div
@@ -162,7 +186,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                         marginTop,
                         y
                     }}
-                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col bg-[#050505] py-[35vh]"
+                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col bg-[#050505] pt-[25vh] pb-0 md:py-[35vh]"
                 >
                     {/* Title Overlay - Overlapping border */}
                     <div className="absolute top-[24vh] right-8 z-50 mix-blend-difference pointer-events-none">
@@ -193,14 +217,14 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 </motion.div>
 
                 {/* 2. MAIN CONTENT STACK - Overlapping Card Container */}
-                <div className="relative px-4 md:px-12 w-full z-50 pointer-events-none -mt-20 md:-mt-40">
+                <div className="relative pl-4 pr-0 md:px-12 w-full z-50 pointer-events-none -mt-20 md:-mt-40">
                     <motion.div
                         style={{ opacity: descOpacity, y: descY }}
                         className="mx-auto max-w-4xl bg-[#0A0A0A] text-neutral-300 p-8 md:p-24 shadow-2xl pointer-events-auto border border-white/10 backdrop-blur-sm flex flex-col items-start"
                     >
-                        <div className="mb-24 text-left">
+                        <div className="mb-8 md:mb-24 text-left">
                             <h2
-                                className="text-4xl md:text-5xl font-medium italic tracking-tight text-white mb-4"
+                                className="text-[20px] md:text-5xl font-medium italic tracking-tight text-white mb-4"
                                 style={{ fontFamily: 'var(--font-playfair), serif' }}
                             >
                                 {project.overviewHeading || project.title}
@@ -208,12 +232,12 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                             {/* Decorative Separator Dot optional, but user liked the huge gap */}
                         </div>
 
-                        <div className="text-sm leading-loose text-left text-gray-300 font-mono max-w-lg">
+                        <div className="text-[12px] md:text-sm leading-loose text-left text-gray-300 font-mono max-w-lg">
                             {project.description}
                         </div>
 
                         {/* Additional Metadata Block */}
-                        <div className="mt-16 pt-16 border-t border-white/10 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
+                        <div className="mt-8 pt-8 md:mt-16 md:pt-16 border-t border-white/10 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
                             <div>
                                 <span className="block text-white mb-2">Role</span>
                                 <div>[ {project.roles.join(' + ')} ]</div>
@@ -227,7 +251,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 </div>
 
                 {/* Remainder of content (Video/Gallery) -> Now Sticky Horizontal Gallery */}
-                <div className="relative w-full z-10">
+                <div className="relative w-full z-10 -mt-[20vh] md:mt-0">
                     <ProjectDetailGallery project={project} />
                 </div>
 

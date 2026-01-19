@@ -158,7 +158,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
 
     return (
         <div
-            className="fixed left-0 top-0 h-full w-[20%] md:w-[15%] flex flex-col items-start justify-start z-40 pointer-events-none mix-blend-difference select-none"
+            className="fixed left-0 md:-left-2 top-0 h-full w-[20%] md:w-[15%] flex flex-col items-start justify-start z-40 pointer-events-none mix-blend-difference select-none"
         >
             <div
                 className="relative flex items-center justify-center pointer-events-auto cursor-pointer"
@@ -168,7 +168,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
             >
                 {/* Layers */}
                 <motion.h1
-                    className="text-5xl md:text-7xl font-black tracking-tighter leading-none uppercase"
+                    className="text-5xl md:text-9xl font-black tracking-tighter leading-none uppercase"
                     style={redChannelStyle}
                     variants={glitchVariants}
                     animate={animState}
@@ -177,7 +177,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
                 </motion.h1>
 
                 <motion.h1
-                    className="text-5xl md:text-7xl font-black tracking-tighter leading-none uppercase"
+                    className="text-5xl md:text-9xl font-black tracking-tighter leading-none uppercase"
                     style={cyanChannelStyle}
                     variants={{
                         ...glitchVariants,
@@ -192,7 +192,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
                 </motion.h1>
 
                 <motion.h1
-                    className="text-5xl md:text-7xl font-black tracking-tighter leading-none relative z-10 uppercase"
+                    className="text-5xl md:text-9xl font-black tracking-tighter leading-none relative z-10 uppercase"
                     style={mainStyle}
                 >
                     {displayText}
@@ -226,7 +226,7 @@ export function PersonaParallaxText() {
 
     return (
         <motion.div
-            className="fixed top-0 pointer-events-none z-0 select-none whitespace-nowrap overflow-visible left-0 md:left-4"
+            className="fixed top-0 pointer-events-none z-0 select-none whitespace-nowrap overflow-visible left-0 md:left-10"
             style={{
                 y: parallaxY,
                 writingMode: "vertical-rl",
@@ -234,7 +234,7 @@ export function PersonaParallaxText() {
                 fontFamily: "var(--font-playfair), serif",
             }}
         >
-            <h1 className="text-[4rem] md:text-[6rem] font-black tracking-tighter text-[#444] italic">
+            <h1 className="text-[4rem] md:text-[10rem] font-black tracking-tighter text-[#444] italic">
                 {PARALLAX_TEXT}
             </h1>
         </motion.div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, MotionValue, useSpring } from 'framer-motion';
 import Image from 'next/image';
 import { Project } from '@/data/projects';
@@ -23,12 +23,44 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
         restDelta: 0.001
     });
 
-    // PARAMETERS
+    // Responsive sizing state
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    useEffect(() => {
+        const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
+        checkDesktop();
+        window.addEventListener('resize', checkDesktop);
+        return () => window.removeEventListener('resize', checkDesktop);
+    }, []);
+
+    // PARAMETERS (Responsive)
+    // Mobile: Video 75vw, Img 70vw
+    // Desktop: Video 50vw, Img 45vw
+    const VIDEO_W = isDesktop ? 50 : 75;
+    const IMG_W = isDesktop ? 45 : 70;
+    const GAP = isDesktop ? 10 : 5; // 10vw Desktop, 5vw mobile
+
     const START_X = 12.5; // vw
-    // Reduced scroll to prevent empty space (Content approx 150vw wide)
-    // Adjusted to -240vw to accommodate mixed sizes (Video 75vw, Img 70vw) and gaps (5vw)
-    const END_X = -240; // vw 
-    const TRACK_LENGTH = Math.abs(END_X - START_X); // Total distance structure moves
+
+    // Calculate Total Width dynamically to determine END_X
+    // Assets: 1 Video + N Images
+    // Width = VIDEO_W + (N * IMG_W) + (TotalGaps * GAP)
+    const totalAssets = 1 + project.gallery.length;
+    const totalWidth = VIDEO_W + (project.gallery.length * IMG_W) + ((totalAssets - 1) * GAP);
+
+    // We want to scroll until the last item is roughly centered or visible.
+    // Let's aim to have the last item centered.
+    // Last Item Center offset = TotalWidth - (LastWidth / 2)
+    // But x transform moves the whole strip.
+    // When X = END_X, the strip is shifted left by END_X.
+
+    // Simplified END_X calculation:
+    // We want the last item to be fully viewed.
+    // END_X = - (TotalWidth - 100vw + Padding)
+    // Let's stick to the previous feeling: END_X ~ - (TotalWidth - ViewportHalf)
+    const END_X = -(totalWidth - 50); // Approximation
+
+    const TRACK_LENGTH = Math.abs(END_X - START_X);
 
     // Horizontal Scroll Logic
     const x = useTransform(smoothProgress, [0, 1], [`${START_X}vw`, `${END_X}vw`]);
@@ -45,23 +77,18 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
 
 
                 <motion.div
-                    style={{ x }}
-                    className="flex gap-[5vw]"
+                    style={{ x, gap: `${GAP}vw` }}
+                    className="flex"
                 >
                     {assets.map((asset, index) => {
                         // CALCULATE FOCUS POINT
-                        // We need the scroll progress (0-1) where this item is CENTERED.
-                        // Formula: p = (ItemsOffset + ItemWidth/2 - 30) / TRACK_LENGTH
-                        // Constant "30" comes from: TargetCenter (42.5) - StartX (12.5)
-                        // Asset Widths: Video=75, Img=70. Gap=5 (5vw)
-
                         let offset = 0;
                         for (let i = 0; i < index; i++) {
-                            const w = (i === 0) ? 75 : 70;
-                            offset += w + 5; // Width + Gap (5vw)
+                            const w = (i === 0) ? VIDEO_W : IMG_W;
+                            offset += w + GAP;
                         }
 
-                        const myWidth = (index === 0) ? 75 : 70;
+                        const myWidth = (index === 0) ? VIDEO_W : IMG_W;
                         const centerP = (offset + (myWidth / 2) - 30) / TRACK_LENGTH;
 
                         return (
@@ -71,6 +98,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
                                 index={index}
                                 centerP={centerP}
                                 scrollYProgress={smoothProgress}
+                                width={myWidth}
                             />
                         );
                     })}
@@ -85,12 +113,14 @@ function GalleryItem({
     asset,
     index,
     centerP,
-    scrollYProgress
+    scrollYProgress,
+    width
 }: {
     asset: any,
     index: number,
     centerP: number,
-    scrollYProgress: MotionValue
+    scrollYProgress: MotionValue,
+    width: number
 }) {
     // FOCUS LOGIC
     // Create a plateau around the calculated center point.
@@ -117,9 +147,10 @@ function GalleryItem({
         <motion.div
             style={{
                 filter: useTransform(grayscale, (v) => `grayscale(${v})`),
-                opacity
+                opacity,
+                width: `${width}vw`
             }}
-            className={`relative flex-shrink-0 bg-neutral-900 overflow-hidden ${asset.type === 'video' ? 'w-[75vw] aspect-video' : 'w-[70vw] aspect-[4/3]'
+            className={`relative flex-shrink-0 bg-neutral-900 overflow-hidden ${asset.type === 'video' ? 'aspect-video' : 'aspect-[4/3]'
                 }`}
         >
             {asset.type === 'video' ? (

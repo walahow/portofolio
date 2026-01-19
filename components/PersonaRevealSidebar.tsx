@@ -205,10 +205,19 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
 // --- NEW COMPONENT: SEPARATED PARALLAX TEXT ---
 export function PersonaParallaxText() {
     const { scrollY } = useScroll();
+    const [isMobile, setIsMobile] = useState(false);
 
-    // Moving UP 2.0px for every 1px scrolled DOWN.
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Moving UP 2.0px for every 1px scrolled DOWN on Desktop.
+    // Moving UP 1.0px for every 1px scrolled DOWN on Mobile (1:1).
     const parallaxY = useTransform(scrollY, (value) => {
-        const speed = 2.0;
+        const speed = isMobile ? 1.0 : 2.0;
         const loopHeight = 3000;
         return - (value * speed) % loopHeight;
     });

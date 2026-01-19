@@ -26,8 +26,8 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     // PARAMETERS
     const START_X = 12.5; // vw
     // Reduced scroll to prevent empty space (Content approx 150vw wide)
-    // Adjusted to -200vw to accommodate larger gaps (8vw)
-    const END_X = -200; // vw 
+    // Adjusted to -240vw to accommodate mixed sizes (Video 75vw, Img 70vw) and gaps (5vw)
+    const END_X = -240; // vw 
     const TRACK_LENGTH = Math.abs(END_X - START_X); // Total distance structure moves
 
     // Horizontal Scroll Logic
@@ -44,25 +44,24 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
 
 
-
                 <motion.div
                     style={{ x }}
-                    className="flex gap-[16vw]"
+                    className="flex gap-[5vw]"
                 >
                     {assets.map((asset, index) => {
                         // CALCULATE FOCUS POINT
                         // We need the scroll progress (0-1) where this item is CENTERED.
                         // Formula: p = (ItemsOffset + ItemWidth/2 - 30) / TRACK_LENGTH
                         // Constant "30" comes from: TargetCenter (42.5) - StartX (12.5)
-                        // Asset Widths: Video=60, Img=45. Gap=8 (8vw)
+                        // Asset Widths: Video=75, Img=70. Gap=5 (5vw)
 
                         let offset = 0;
                         for (let i = 0; i < index; i++) {
-                            const w = (i === 0) ? 60 : 45;
-                            offset += w + 8; // Width + Gap (8vw)
+                            const w = (i === 0) ? 75 : 70;
+                            offset += w + 5; // Width + Gap (5vw)
                         }
 
-                        const myWidth = (index === 0) ? 60 : 45;
+                        const myWidth = (index === 0) ? 75 : 70;
                         const centerP = (offset + (myWidth / 2) - 30) / TRACK_LENGTH;
 
                         return (
@@ -120,7 +119,7 @@ function GalleryItem({
                 filter: useTransform(grayscale, (v) => `grayscale(${v})`),
                 opacity
             }}
-            className={`relative flex-shrink-0 bg-neutral-900 overflow-hidden ${asset.type === 'video' ? 'w-[60vw] aspect-video' : 'w-[45vw] aspect-[4/3]'
+            className={`relative flex-shrink-0 bg-neutral-900 overflow-hidden ${asset.type === 'video' ? 'w-[75vw] aspect-video' : 'w-[70vw] aspect-[4/3]'
                 }`}
         >
             {asset.type === 'video' ? (

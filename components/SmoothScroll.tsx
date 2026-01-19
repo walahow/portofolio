@@ -29,7 +29,7 @@ export default function SmoothScroll({
     useEffect(() => {
         // Initialize Lenis on all devices
         const lenisInstance = new Lenis({
-            lerp: 0.1, // Smoother damping for "soft stop" effect
+            lerp: 0.08, // Smoother damping for "soft stop" effect
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
@@ -38,7 +38,7 @@ export default function SmoothScroll({
             syncTouch: true, // Force sync touch for better control
             // @ts-ignore - 'overscroll' might not be in the types but usually respected or handled by infinite
             overscroll: !isHome, // Disable overscroll damping on home (since it's infinite)
-            touchMultiplier: isHome ? 1.5 : 2,
+            touchMultiplier: isHome ? 0.8 : 1, // Reduced sensitivity (was 1.5 : 2)
         });
 
         // Synchronize Lenis with GSAP's ticker

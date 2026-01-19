@@ -17,9 +17,9 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
 
     // Dampening Logic to smooth the transition
     const smoothProgress = useSpring(scrollYProgress, {
-        mass: 0.1,
-        stiffness: 100,
-        damping: 20,
+        mass: 0.2,      // Heavier -> Smoother/Slower reaction
+        stiffness: 90,  // Softer spring
+        damping: 25,    // More friction -> Less jitter
         restDelta: 0.001
     });
 
@@ -73,7 +73,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
 
     return (
         <section ref={targetRef} className="relative h-[400vh] bg-[#050505]">
-            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+            <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
 
 
                 <motion.div

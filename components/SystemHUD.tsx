@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTimerStore } from '@/store/useTimerStore';
 import { useCursorStore } from '@/store/useCursorStore';
@@ -11,15 +11,16 @@ import { motion } from 'framer-motion';
 export default function SystemHUD() {
     const pathname = usePathname();
     const router = useRouter();
-    const { uptime, tick, isSystemActive, setOverheated } = useTimerStore();
+    const { uptime, tick, isSystemActive, isOverheated, setOverheated } = useTimerStore();
     const { lenis } = useLenis();
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
     const { startTransition } = useTransitionStore();
 
     const [rotation, setRotation] = useState(0);
+    const lastTriggeredTime = useRef(0);
 
     // Thermal Limit (Seconds)
-    const MAX_UPTIME = 15;
+    const MAX_UPTIME = 60;
 
     // Formatting MM:SS
     const formatTime = (seconds: number) => {
@@ -27,6 +28,8 @@ export default function SystemHUD() {
         const s = (seconds % 60).toString().padStart(2, '0');
         return `${m}:${s}`;
     };
+
+    // ... (rest of the file until the effect)
 
     // Lenis Scroll Listener for Kinetic Rotation
     useEffect(() => {
@@ -62,13 +65,14 @@ export default function SystemHUD() {
     useEffect(() => {
 
 
-        const shouldTick = pathname === '/' && isSystemActive;
-
+        const shouldTick = pathname === '/' && isSystemActive && !isOverheated; // Pause if overheated
         if (!shouldTick) return;
 
-        if (uptime >= MAX_UPTIME) {
+        // Check for overheat at multiples of MAX_UPTIME
+        if (uptime > 0 && uptime % MAX_UPTIME === 0 && uptime !== lastTriggeredTime.current) {
+            console.log(`SystemHUD: Overheating triggered at ${uptime}s`);
             setOverheated(true);
-            return;
+            lastTriggeredTime.current = uptime;
         }
 
         const interval = setInterval(() => {
@@ -76,7 +80,7 @@ export default function SystemHUD() {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [pathname, isSystemActive, uptime, tick, router, setOverheated]);
+    }, [pathname, isSystemActive, isOverheated, uptime, tick, router, setOverheated]);
 
     const isProjectPage = pathname.startsWith('/project/');
 
@@ -85,7 +89,7 @@ export default function SystemHUD() {
 
     const handleBack = () => {
         if (isProjectPage) {
-            startTransition();
+            startTransition('down');
             setTimeout(() => {
                 router.push('/');
             }, 800);
@@ -114,7 +118,7 @@ export default function SystemHUD() {
                 {isProjectPage ? (
                     <span>HOME</span>
                 ) : (
-                    <span className={uptime > MAX_UPTIME - 10 ? "text-red-500 animate-pulse" : ""}>
+                    <span className={(uptime % MAX_UPTIME) >= (MAX_UPTIME - 10) && !isOverheated ? "text-red-500 animate-pulse" : ""}>
                         {formatTime(uptime)}
                     </span>
                 )}

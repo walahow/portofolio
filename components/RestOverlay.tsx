@@ -6,7 +6,7 @@ import { useCursorStore } from '@/store/useCursorStore';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function RestOverlay() {
-    const { isOverheated, reset } = useTimerStore();
+    const { isOverheated, coolDown } = useTimerStore();
     const { setCursorText, setCursorVariant } = useCursorStore();
     const [canReboot, setCanReboot] = useState(false);
 
@@ -21,7 +21,8 @@ export default function RestOverlay() {
     }, [isOverheated]);
 
     const handleReboot = () => {
-        reset(); // Resets uptime to 0 and isOverheated to false
+        console.log("RestOverlay: Reboot clicked");
+        coolDown(); // Just clears overheated flag, keeps uptime
     };
 
     // Variants (Vertical Shutter)
@@ -65,48 +66,62 @@ export default function RestOverlay() {
 
                     {/* 3. COOLDOWN / ACTION BUTTON */}
                     <div className="h-32 flex items-center justify-center">
-                        {canReboot ? (
-                            <div
-                                onClick={handleReboot}
-                                onMouseEnter={() => {
-                                    setCursorText("CLICK");
-                                    setCursorVariant('click');
-                                }}
-                                onMouseLeave={() => {
-                                    setCursorText("");
-                                    setCursorVariant('default');
-                                }}
-                                className="relative flex items-center justify-center w-24 h-24 md:w-32 md:h-32 cursor-none group hover:scale-110 transition-transform duration-500"
-                            >
-                                {/* CENTER TEXT */}
-                                <div className="absolute z-10 font-mono text-sm font-bold tracking-widest text-white">
-                                    BACK
-                                </div>
-
-                                {/* OUTER RING */}
+                        <AnimatePresence mode="wait">
+                            {canReboot ? (
                                 <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                                    className="absolute w-full h-full flex items-center justify-center"
+                                    key="reboot-button"
+                                    initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+                                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                    exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+                                    transition={{ duration: 0.5, ease: "easeOut" }}
+                                    onClick={handleReboot}
+                                    onMouseEnter={() => {
+                                        setCursorText("CLICK");
+                                        setCursorVariant('click');
+                                    }}
+                                    onMouseLeave={() => {
+                                        setCursorText("");
+                                        setCursorVariant('default');
+                                    }}
+                                    className="relative flex items-center justify-center w-24 h-24 md:w-32 md:h-32 cursor-none group hover:scale-110 transition-transform duration-500"
                                 >
-                                    <svg viewBox="0 0 100 100" className="w-full h-full opacity-80 overflow-visible text-white">
-                                        <path id="restTextPath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
-                                        <text className="text-[14px] uppercase font-mono tracking-[2px]" fill="currentColor">
-                                            <textPath href="#restTextPath" startOffset="0%">
-                                                REBOOT || SYSTEM || REBOOT || SYSTEM
-                                            </textPath>
-                                        </text>
-                                    </svg>
+                                    {/* CENTER TEXT */}
+                                    <div className="absolute z-10 font-mono text-sm font-bold tracking-widest text-white">
+                                        BACK
+                                    </div>
+
+                                    {/* OUTER RING */}
+                                    <motion.div
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                                        className="absolute w-full h-full flex items-center justify-center"
+                                    >
+                                        <svg viewBox="0 0 100 100" className="w-full h-full opacity-80 overflow-visible text-white">
+                                            <path id="restTextPath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                                            <text className="text-[14px] uppercase font-mono tracking-[2px]" fill="currentColor">
+                                                <textPath href="#restTextPath" startOffset="0%">
+                                                    REBOOT || SYSTEM || REBOOT || SYSTEM
+                                                </textPath>
+                                            </text>
+                                        </svg>
+                                    </motion.div>
                                 </motion.div>
-                            </div>
-                        ) : (
-                            <div className="flex flex-col items-center gap-3">
-                                <div className="w-5 h-5 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
-                                <span className="text-xs text-neutral-500 tracking-widest">
-                                    cooling down...
-                                </span>
-                            </div>
-                        )}
+                            ) : (
+                                <motion.div
+                                    key="cooldown-spinner"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+                                    transition={{ duration: 0.5, ease: "easeOut" }}
+                                    className="flex flex-col items-center gap-3"
+                                >
+                                    <div className="w-5 h-5 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
+                                    <span className="text-xs text-neutral-500 tracking-widest">
+                                        cooling down...
+                                    </span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </motion.div>
             )}

@@ -35,7 +35,12 @@ export default function SocialSidebar() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
     return (
-        <div className="fixed left-0 top-0 md:left-6 md:top-16 z-50 flex flex-col items-center gap-2 select-none origin-top-left scale-[0.6] md:scale-100 p-2 md:p-0">
+        <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.5 }}
+            className="fixed left-0 top-0 md:left-6 md:top-16 z-50 flex flex-col items-center gap-2 select-none origin-top-left scale-[0.6] md:scale-100 p-2 md:p-0"
+        >
             {/* DECORATIVE LINE TOP */}
             <span className="[writing-mode:vertical-rl] text-[12px] font-[var(--font-playfair)] tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
                 [ SOCIAL \\
@@ -45,7 +50,12 @@ export default function SocialSidebar() {
 
             {/* ACCORDION CONTAINER */}
             <LayoutGroup>
-                <motion.div layout className="flex flex-col gap-2 pointer-events-auto">
+                <motion.div
+                    className="flex flex-col gap-2 pointer-events-auto"
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.5 }}
+                >
                     {socialData.map((item) => (
                         <SocialItem
                             key={item.id}
@@ -63,7 +73,7 @@ export default function SocialSidebar() {
             <span className="[writing-mode:vertical-rl] text-[12px] font-[var(--font-playfair)] tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
                 // LINKS ]
             </span>
-        </div>
+        </motion.div>
     );
 }
 

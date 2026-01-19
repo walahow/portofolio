@@ -10,15 +10,30 @@ import { useTimerStore } from "@/store/useTimerStore";
 import { useState } from "react";
 
 import { useIntroStore } from "@/store/useIntroStore";
+import { useTransitionStore } from "@/store/useTransitionStore";
 
 export default function Home() {
   const { isEntered, setEntered, hasLoaded, setHasLoaded } = useIntroStore();
   const { setSystemActive } = useTimerStore();
+  const { startTransition, triggerReveal } = useTransitionStore();
   const [isLoading, setIsLoading] = useState(!hasLoaded);
 
   const handleEnter = () => {
-    setEntered(true);
-    setSystemActive(true);
+    // 1. Start Curtain
+    startTransition();
+
+    // 2. Wait for cover (approx 800ms to match shutter animation)
+    setTimeout(() => {
+      setEntered(true);
+      setSystemActive(true);
+
+      // 3. Trigger Reveal
+      // Small delay to ensure React has swapped components
+      setTimeout(() => {
+        triggerReveal();
+      }, 50);
+
+    }, 800);
   };
 
   const handlePreloaderComplete = () => {
@@ -41,13 +56,7 @@ export default function Home() {
       </AnimatePresence>
 
       {isEntered && (
-        <motion.div
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        >
-          <ProjectGallery />
-        </motion.div>
+        <ProjectGallery />
       )}
     </main>
   );

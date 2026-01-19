@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function ShutterOverlay() {
-    const { isTransitioning, endTransition } = useTransitionStore();
+    const { isTransitioning, endTransition, shouldReveal, direction } = useTransitionStore();
     const pathname = usePathname();
     const [prevPath, setPrevPath] = useState(pathname);
 
@@ -27,27 +27,60 @@ export default function ShutterOverlay() {
 
     const [shutterState, setShutterState] = useState<'HIDDEN_BOTTOM' | 'COVERING' | 'HIDDEN_TOP'>('HIDDEN_BOTTOM');
 
+    // Flag to force instant positioning (snap)
+    const [isSnapping, setIsSnapping] = useState(false);
+
     useEffect(() => {
         if (isTransitioning) {
-            // Start closing
-            setShutterState('COVERING');
+            if (direction === 'down') {
+                // WIPE DOWN: Start from Top -> Cover Center
+                // We are likely resting at HIDDEN_BOTTOM. Snap to HIDDEN_TOP first.
+                setIsSnapping(true);
+                setShutterState('HIDDEN_TOP');
+
+                // Allow render frame to snap, then animate to COVERING
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        setIsSnapping(false);
+                        setShutterState('COVERING');
+                    });
+                });
+            } else {
+                // WIPE UP (Default): Start from Bottom -> Cover Center
+                // We are resting at HIDDEN_BOTTOM. Just animate.
+                setShutterState('COVERING');
+            }
         }
-    }, [isTransitioning]);
+    }, [isTransitioning, direction]);
 
     useEffect(() => {
         if (pathname !== prevPath) {
             setPrevPath(pathname);
             // If we were covering, now trigger reveal
             if (isTransitioning) {
-                // The navigation happened. Now we lift the shutter.
-                // We need a small delay perhaps to ensure render? 
-                // Next.js is fast, but let's give it a frame.
+                // The navigation happened. Now we lift/drop the shutter.
                 setTimeout(() => {
-                    setShutterState('HIDDEN_TOP');
+                    if (direction === 'down') {
+                        // WIPE DOWN Reveal: Center -> Bottom
+                        setShutterState('HIDDEN_BOTTOM');
+                    } else {
+                        // WIPE UP Reveal: Center -> Top
+                        setShutterState('HIDDEN_TOP');
+                    }
                 }, 100);
             }
         }
-    }, [pathname, prevPath, isTransitioning]);
+        // Also react to manual triggers
+        if (shouldReveal && isTransitioning) {
+            setTimeout(() => {
+                if (direction === 'down') {
+                    setShutterState('HIDDEN_BOTTOM');
+                } else {
+                    setShutterState('HIDDEN_TOP');
+                }
+            }, 100);
+        }
+    }, [pathname, prevPath, isTransitioning, shouldReveal, direction]);
 
     // Cleanup: When animation to HIDDEN_TOP completes, reset to HIDDEN_BOTTOM and updates store
     const handleAnimationComplete = () => {
@@ -58,9 +91,9 @@ export default function ShutterOverlay() {
     };
 
     const variants = {
-        HIDDEN_BOTTOM: { y: "105%", transition: { duration: 0 } }, // Extra 5% to be safe
-        COVERING: { y: "0%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const } }, // Smooth strong ease
-        HIDDEN_TOP: { y: "-105%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const } }
+        HIDDEN_BOTTOM: { y: "105%", transition: { duration: isSnapping ? 0 : 0.8, ease: [0.76, 0, 0.24, 1] as const } },
+        COVERING: { y: "0%", transition: { duration: isSnapping ? 0 : 0.8, ease: [0.76, 0, 0.24, 1] as const } },
+        HIDDEN_TOP: { y: "-105%", transition: { duration: isSnapping ? 0 : 0.8, ease: [0.76, 0, 0.24, 1] as const } }
     };
 
     return (
@@ -70,10 +103,24 @@ export default function ShutterOverlay() {
             variants={variants}
             onAnimationComplete={() => {
                 // Only trigger cleanup logic if we finished the reveal 
-                if (shutterState === 'HIDDEN_TOP') {
-                    // We need to snap back to bottom safely without animating across screen
-                    // The variant transition: { duration: 0 } handles the snap in the next render
-                    handleAnimationComplete();
+                // If we ended at HIDDEN_TOP (Wipe Up), we need to reset to bottom eventually?
+                // actually, for the next transition (which might be Down), we snap to Top anyway.
+                // But for next transition (Up), we need to be at Bottom.
+
+                // Case 1: Finished WIPE UP (at HIDDEN_TOP)
+                if (shutterState === 'HIDDEN_TOP' && direction === 'up') {
+                    endTransition();
+                    // Snap back to bottom for readiness
+                    setIsSnapping(true);
+                    setShutterState('HIDDEN_BOTTOM');
+                    // Reset snap flag next tick
+                    requestAnimationFrame(() => setIsSnapping(false));
+                }
+
+                // Case 2: Finished WIPE DOWN (at HIDDEN_BOTTOM)
+                if (shutterState === 'HIDDEN_BOTTOM' && direction === 'down') {
+                    endTransition();
+                    // Already at bottom, no snap needed.
                 }
             }}
             className="fixed inset-0 z-[100] bg-[#080808] pointer-events-none" // High Z-Index, slightly lighter black for visibility

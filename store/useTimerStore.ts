@@ -5,9 +5,10 @@ interface TimerState {
     isOverheated: boolean;
     isSystemActive: boolean; // True when user has passed the HeroGate
     tick: () => void;
-    reset: () => void;
+    resetSystem: () => void;
     setOverheated: (status: boolean) => void;
     setSystemActive: (status: boolean) => void;
+    coolDown: () => void;
 }
 
 export const useTimerStore = create<TimerState>((set) => ({
@@ -15,7 +16,14 @@ export const useTimerStore = create<TimerState>((set) => ({
     isOverheated: false,
     isSystemActive: false,
     tick: () => set((state) => ({ uptime: state.uptime + 1 })),
-    reset: () => set({ uptime: 0, isOverheated: false }),
+    resetSystem: () => {
+        console.log("TimerStore: RESET SYSTEM called");
+        set({ uptime: 0, isOverheated: false });
+    },
     setOverheated: (status) => set({ isOverheated: status }),
     setSystemActive: (status) => set({ isSystemActive: status }),
+    coolDown: () => set((state) => {
+        console.log("TimerStore: COOLDOWN called. Current Uptime:", state.uptime);
+        return { isOverheated: false };
+    }),
 }));

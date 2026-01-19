@@ -233,7 +233,7 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
 
                     {/* MOBILE IMG */}
                     <motion.img
-                        src="/img/HeroGate.avif"
+                        src="/img/HeroGateMobile.avif"
                         alt=""
                         className="w-full h-full object-cover md:hidden block"
                         style={{

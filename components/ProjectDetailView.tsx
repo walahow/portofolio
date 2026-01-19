@@ -157,14 +157,14 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     });
 
     return (
-        <main className="min-h-screen bg-[#050505] w-full relative">
+        <main className="min-h-screen bg-[var(--background)] w-full relative">
 
             {/* --- 0. BACKGROUND LAYER (Parallax Text & Border) --- */}
             {/* z-0 so it sits BEHIND the z-10 content content */}
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <PersonaParallaxText />
                 {/* Sidebar Border - Moved here to be behind content */}
-                <div className="absolute top-0 left-0 w-[20%] md:w-[15%] h-full border-r border-white/5" />
+                {/* Sidebar Border Removed */}
             </div>
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
@@ -175,7 +175,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
 
 
             {/* --- RIGHT COLUMN (SCROLLABLE CONTENT) --- */}
-            <div ref={containerRef} className="relative ml-[20%] md:ml-[15%] w-[80%] md:w-[85%] z-10 bg-[#050505]">
+            <div ref={containerRef} className="relative ml-[20%] md:ml-[15%] w-[80%] md:w-[85%] z-10 bg-[var(--background)]">
 
                 {/* 1. HERO CURTAIN (Merged Container) */}
                 <motion.div
@@ -186,7 +186,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                         marginTop,
                         y
                     }}
-                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col bg-[#050505] pt-[25vh] pb-0 md:py-[35vh]"
+                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col bg-[var(--background)] pt-[25vh] pb-0 md:py-[35vh]"
                 >
                     {/* Title Overlay - Overlapping border */}
                     <div className="absolute top-[24vh] right-8 z-50 mix-blend-difference pointer-events-none">
@@ -220,11 +220,11 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 <div className="relative pl-4 pr-0 md:px-12 w-full z-50 pointer-events-none -mt-20 md:-mt-40">
                     <motion.div
                         style={{ opacity: descOpacity, y: descY }}
-                        className="mx-auto max-w-4xl bg-[#0A0A0A] text-neutral-300 p-8 md:p-24 shadow-2xl pointer-events-auto border border-white/10 backdrop-blur-sm flex flex-col items-start"
+                        className="mx-auto max-w-4xl bg-[var(--card-background)] text-[var(--foreground)] p-8 md:p-24 shadow-2xl pointer-events-auto border border-[var(--foreground)]/10 backdrop-blur-sm flex flex-col items-start"
                     >
                         <div className="mb-8 md:mb-24 text-left">
                             <h2
-                                className="text-[20px] md:text-5xl font-medium italic tracking-tight text-white mb-4"
+                                className="text-[20px] md:text-5xl font-medium italic tracking-tight text-[var(--foreground)] mb-4"
                                 style={{ fontFamily: 'var(--font-playfair), serif' }}
                             >
                                 {project.overviewHeading || project.title}
@@ -232,18 +232,18 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                             {/* Decorative Separator Dot optional, but user liked the huge gap */}
                         </div>
 
-                        <div className="text-[12px] md:text-sm leading-loose text-left text-gray-300 font-mono max-w-lg">
+                        <div className="text-[12px] md:text-sm leading-loose text-left text-[var(--muted-foreground)] font-mono max-w-lg">
                             {project.description}
                         </div>
 
                         {/* Additional Metadata Block */}
                         <div className="mt-8 pt-8 md:mt-16 md:pt-16 border-t border-white/10 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
                             <div>
-                                <span className="block text-white mb-2">Role</span>
+                                <span className="block text-[var(--foreground)] mb-2">Role</span>
                                 <div>[ {project.roles.join(' + ')} ]</div>
                             </div>
                             <div>
-                                <span className="block text-white mb-2">Year</span>
+                                <span className="block text-[var(--foreground)] mb-2">Year</span>
                                 <div>[ {project.year} ]</div>
                             </div>
                         </div>
@@ -251,7 +251,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 </div>
 
                 {/* Remainder of content (Video/Gallery) -> Now Sticky Horizontal Gallery */}
-                <div className="relative w-full z-10 -mt-[20vh] md:mt-0">
+                <div className="relative w-full z-10 mt-0 md:mt-0">
                     <ProjectDetailGallery project={project} />
                 </div>
 

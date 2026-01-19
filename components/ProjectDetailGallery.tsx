@@ -36,9 +36,9 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     // PARAMETERS (Responsive)
     // Mobile: Video 75vw, Img 70vw
     // Desktop: Video 50vw, Img 45vw
-    const VIDEO_W = isDesktop ? 50 : 75;
-    const IMG_W = isDesktop ? 45 : 70;
-    const GAP = isDesktop ? 10 : 5; // 10vw Desktop, 5vw mobile
+    const VIDEO_W = isDesktop ? 50 : 100; // 100% on mobile
+    const IMG_W = isDesktop ? 45 : 100;   // 100% on mobile
+    const GAP = isDesktop ? 10 : 0; // Gap logic handled by flex-gap on mobile
 
     const START_X = 12.5; // vw
 
@@ -49,15 +49,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     const totalWidth = VIDEO_W + (project.gallery.length * IMG_W) + ((totalAssets - 1) * GAP);
 
     // We want to scroll until the last item is roughly centered or visible.
-    // Let's aim to have the last item centered.
-    // Last Item Center offset = TotalWidth - (LastWidth / 2)
-    // But x transform moves the whole strip.
-    // When X = END_X, the strip is shifted left by END_X.
-
-    // Simplified END_X calculation:
-    // We want the last item to be fully viewed.
-    // END_X = - (TotalWidth - 100vw + Padding)
-    // Let's stick to the previous feeling: END_X ~ - (TotalWidth - ViewportHalf)
+    // END_X ~ - (TotalWidth - ViewportHalf)
     const END_X = -(totalWidth - 50); // Approximation
 
     const TRACK_LENGTH = Math.abs(END_X - START_X);
@@ -72,13 +64,14 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     ];
 
     return (
-        <section ref={targetRef} className="relative h-[400vh] bg-[#050505]">
-            <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
-
-
+        <section
+            ref={targetRef}
+            className={`relative bg-[var(--background)] transition-all duration-500 ${isDesktop ? 'h-[400vh]' : 'h-auto py-20 pb-40'}`}
+        >
+            <div className={`${isDesktop ? 'sticky top-0 flex h-[100dvh] items-center overflow-hidden' : 'w-full'}`}>
                 <motion.div
-                    style={{ x, gap: `${GAP}vw` }}
-                    className="flex"
+                    style={isDesktop ? { x, gap: `${GAP}vw` } : {}}
+                    className={`${isDesktop ? 'flex' : 'flex flex-col gap-32 px-4 w-full'}`}
                 >
                     {assets.map((asset, index) => {
                         // CALCULATE FOCUS POINT
@@ -99,6 +92,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
                                 centerP={centerP}
                                 scrollYProgress={smoothProgress}
                                 width={myWidth}
+                                isDesktop={isDesktop}
                             />
                         );
                     })}
@@ -114,42 +108,79 @@ function GalleryItem({
     index,
     centerP,
     scrollYProgress,
-    width
+    width,
+    isDesktop
 }: {
     asset: any,
     index: number,
     centerP: number,
     scrollYProgress: MotionValue,
-    width: number
+    width: number,
+    isDesktop: boolean
 }) {
-    // FOCUS LOGIC
-    // Create a plateau around the calculated center point.
-    // 0 = Full Color, 1 = Grayscale
-    // Range: [Start Gray, Start Color, End Color, End Gray]
-    // Width: +/- 0.05 around center (10% of scroll duration)
-
-    // Clamp centerP to handle edge cases (though math should be robust)
+    // DESKTOP HORIZONTAL FOCUS LOGIC
     const p = centerP;
-
-    const grayscale = useTransform(
+    const desktopGrayscale = useTransform(
         scrollYProgress,
         [p - 0.15, p - 0.05, p + 0.05, p + 0.15],
         [1, 0, 0, 1]
     );
-
-    const opacity = useTransform(
+    const desktopOpacity = useTransform(
         scrollYProgress,
         [p - 0.2, p - 0.05, p + 0.05, p + 0.2],
         [0.3, 1, 1, 0.3]
     );
 
+    // MOBILE VERTICAL FOCUS LOGIC
+    // We need a ref to track this specific item's position in the viewport
+    const itemRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress: mobileScrollYProgress } = useScroll({
+        target: itemRef,
+        offset: ["start end", "end start"]
+    });
+
+    // Mobile Animations:
+    // 0 = entering from bottom, 0.5 = center, 1 = leaving top
+    // Focus peak around 0.5
+    const mobileGrayscale = useTransform(
+        mobileScrollYProgress,
+        [0.1, 0.4, 0.6, 0.9],
+        [1, 0, 0, 1]
+    );
+
+    const mobileScale = useTransform(
+        mobileScrollYProgress,
+        [0.1, 0.4, 0.6, 0.9],
+        [0.9, 1.05, 1.05, 0.9]
+    );
+
+    // We can also add a slight opacity fade at the very edges to smooth entry/exit
+    const mobileOpacity = useTransform(
+        mobileScrollYProgress,
+        [0, 0.2, 0.8, 1],
+        [0.8, 1, 1, 0.8]
+    );
+
+
+    // Conditional Styles
+    const desktopStyles = {
+        filter: useTransform(desktopGrayscale, (v) => `grayscale(${v})`),
+        opacity: desktopOpacity,
+        width: `${width}vw`
+    };
+
+    // Note: On mobile, we use the mobile-specific motion values
+    const mobileStyles = {
+        filter: useTransform(mobileGrayscale, (v) => `grayscale(${v})`),
+        scale: mobileScale,
+        opacity: mobileOpacity,
+        width: '100%'
+    };
+
     return (
         <motion.div
-            style={{
-                filter: useTransform(grayscale, (v) => `grayscale(${v})`),
-                opacity,
-                width: `${width}vw`
-            }}
+            ref={itemRef}
+            style={isDesktop ? desktopStyles : mobileStyles}
             className={`relative flex-shrink-0 bg-neutral-900 overflow-hidden ${asset.type === 'video' ? 'aspect-video' : 'aspect-[4/3]'
                 }`}
         >

@@ -10,6 +10,7 @@ import ScrollReset from "@/components/ScrollReset";
 import SystemHUD from "@/components/SystemHUD";
 import RestOverlay from "@/components/RestOverlay";
 import ShutterOverlay from "@/components/ShutterOverlay";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -52,6 +53,7 @@ export default function RootLayout({
           <SystemHUD />
           <NoiseOverlay />
           <ShutterOverlay />
+          <ThemeSwitcher />
           <CustomCursor />
           {children}
         </SmoothScroll>

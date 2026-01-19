@@ -2,7 +2,18 @@
 
 :root {
   --background: #050505;
+  --card-background: #0A0A0A;
   --foreground: #Eaeaea;
+  --muted-foreground: #888888;
+  --project-gallery-bg: transparent;
+}
+
+[data-theme='light'] {
+  --background: #Eaeaea;
+  --card-background: #F0F0F0;
+  --foreground: #050505;
+  --muted-foreground: #666666;
+  --project-gallery-bg: #0c0e12;
 }
 
 @theme inline {
@@ -13,7 +24,7 @@
 
 html {
   overscroll-behavior-y: none;
-  background-color: #050505;
+  background-color: var(--background);
   height: 100%;
 }
 

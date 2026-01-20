@@ -17,9 +17,9 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
 
     // Dampening Logic to smooth the transition
     const smoothProgress = useSpring(scrollYProgress, {
-        mass: 0.2,      // Heavier -> Smoother/Slower reaction
-        stiffness: 90,  // Softer spring
-        damping: 25,    // More friction -> Less jitter
+        mass: 0.5,      // Heavier -> Smoother/Slower reaction (was 0.2)
+        stiffness: 90,  // (Unchanged)
+        damping: 50,    // More friction -> No jitter (was 25)
         restDelta: 0.001
     });
 
@@ -36,11 +36,11 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     // PARAMETERS (Responsive)
     // Mobile: Video 75vw, Img 70vw
     // Desktop: Video 50vw, Img 45vw
-    const VIDEO_W = isDesktop ? 50 : 100; // 100% on mobile
-    const IMG_W = isDesktop ? 45 : 100;   // 100% on mobile
-    const GAP = isDesktop ? 10 : 0; // Gap logic handled by flex-gap on mobile
+    const VIDEO_W = isDesktop ? 65 : 100; // 100% on mobile
+    const IMG_W = isDesktop ? 55 : 100;   // 100% on mobile
+    const GAP = isDesktop ? 5 : 0; // Gap logic handled by flex-gap on mobile
 
-    const START_X = 12.5; // vw
+    const START_X = 17.5; // vw (Center of 65vw item: 50 - 32.5 = 17.5)
 
     // Calculate Total Width dynamically to determine END_X
     // Assets: 1 Video + N Images
@@ -48,14 +48,19 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     const totalAssets = 1 + project.gallery.length;
     const totalWidth = VIDEO_W + (project.gallery.length * IMG_W) + ((totalAssets - 1) * GAP);
 
-    // We want to scroll until the last item is roughly centered or visible.
-    // END_X ~ - (TotalWidth - ViewportHalf)
-    const END_X = -(totalWidth - 50); // Approximation
+    // We want to scroll until the last item is CENTERED.
+    // Position of Last Item Center = totalWidth - (IMG_W / 2)
+    // We want this position to coincide with Viewport Center (50vw)
+    // So: START_X + x_translation = 50 - (totalWidth - IMG_W/2)
+    // Wait, simpler: The track ends when Last Item Center is at 50vw.
+    // END_X = 50 - (totalWidth - IMG_W / 2);
+    const END_X = 50 - totalWidth + (IMG_W / 2);
 
     const TRACK_LENGTH = Math.abs(END_X - START_X);
 
     // Horizontal Scroll Logic
-    const x = useTransform(smoothProgress, [0, 1], [`${START_X}vw`, `${END_X}vw`]);
+    // We subtract 8rem (half of the 16rem sidebar) to center visually in the remaining space
+    const x = useTransform(smoothProgress, [0, 1], [`calc(${START_X}vw - 8rem)`, `calc(${END_X}vw - 8rem)`]);
 
     // Combine Video and Gallery into one array for unified mapping
     const assets = [
@@ -82,7 +87,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
                         }
 
                         const myWidth = (index === 0) ? VIDEO_W : IMG_W;
-                        const centerP = (offset + (myWidth / 2) - 30) / TRACK_LENGTH;
+                        const centerP = (offset + (myWidth / 2) - START_X) / TRACK_LENGTH;
 
                         return (
                             <GalleryItem
@@ -122,12 +127,14 @@ function GalleryItem({
     const p = centerP;
     const desktopGrayscale = useTransform(
         scrollYProgress,
-        [p - 0.15, p - 0.05, p + 0.05, p + 0.15],
+        // Widened range: Transition starts 0.25 away (was 0.15)
+        [p - 0.25, p - 0.05, p + 0.05, p + 0.25],
         [1, 0, 0, 1]
     );
     const desktopOpacity = useTransform(
         scrollYProgress,
-        [p - 0.2, p - 0.05, p + 0.05, p + 0.2],
+        // Widened range: Transition starts 0.35 away (was 0.2)
+        [p - 0.35, p - 0.1, p + 0.1, p + 0.35],
         [0.3, 1, 1, 0.3]
     );
 

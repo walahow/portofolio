@@ -60,11 +60,11 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     // Width: 125% -> 100% (Starts by covering the 20% sidebar relative to current 80% container)
     // MarginLeft: -25% -> 0% (Starts shifted left)
 
-    const widthDesktop = useTransform(scrollY, [0, 200], ['117.65%', '100%']);
-    const marginLeftDesktop = useTransform(scrollY, [0, 200], ['-17.65%', '0%']);
+    const widthDesktop = useTransform(scrollY, [0, 200], ['calc(100% + 16rem)', 'calc(100% + 0rem)']);
+    const marginLeftDesktop = useTransform(scrollY, [0, 200], ['-16rem', '0rem']);
 
-    const widthMobile = useTransform(scrollY, [0, 200], ['125%', '100%']);
-    const marginLeftMobile = useTransform(scrollY, [0, 200], ['-25%', '0%']);
+    const widthMobile = useTransform(scrollY, [0, 200], ['calc(100% + 6rem)', 'calc(100% + 0rem)']);
+    const marginLeftMobile = useTransform(scrollY, [0, 200], ['-6rem', '0rem']);
 
     const width = isMobile ? widthMobile : widthDesktop;
     const marginLeft = isMobile ? marginLeftMobile : marginLeftDesktop;
@@ -169,13 +169,13 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
             {/* z-50 to stay ON TOP of everything (Interactive Text) */}
-            <aside className="fixed top-0 left-0 w-[20%] md:w-[15%] h-screen z-50 flex flex-col items-center justify-center">
+            <aside className="fixed top-0 left-0 w-24 md:w-64 h-screen z-50 flex flex-col items-center justify-center">
                 <PersonaRevealSidebar arcana={project.arcana} />
             </aside>
 
 
             {/* --- RIGHT COLUMN (SCROLLABLE CONTENT) --- */}
-            <div ref={containerRef} className="relative ml-[20%] md:ml-[15%] w-[80%] md:w-[85%] z-10 bg-[var(--background)]">
+            <div ref={containerRef} className="relative ml-24 md:ml-64 w-[calc(100%-6rem)] md:w-[calc(100%-16rem)] z-10 bg-[var(--background)]">
 
                 {/* 1. HERO CURTAIN (Merged Container) */}
                 <motion.div
@@ -224,15 +224,14 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                     >
                         <div className="mb-8 md:mb-24 text-left">
                             <h2
-                                className="text-[20px] md:text-5xl font-medium italic tracking-tight text-[var(--foreground)] mb-4"
-                                style={{ fontFamily: 'var(--font-playfair), serif' }}
+                                className="text-xl md:text-5xl font-medium italic tracking-tight text-[var(--foreground)] mb-4 font-playfair"
                             >
                                 {project.overviewHeading || project.title}
                             </h2>
                             {/* Decorative Separator Dot optional, but user liked the huge gap */}
                         </div>
 
-                        <div className="text-[12px] md:text-sm leading-loose text-left text-[var(--muted-foreground)] font-mono max-w-lg">
+                        <div className="text-xs md:text-sm leading-loose text-left text-[var(--muted-foreground)] font-mono max-w-lg">
                             {project.description}
                         </div>
 

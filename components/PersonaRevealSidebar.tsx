@@ -158,7 +158,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
 
     return (
         <div
-            className="fixed left-0 md:-left-2 top-0 h-full w-[20%] md:w-[15%] flex flex-col items-start justify-start z-40 pointer-events-none mix-blend-difference select-none"
+            className="fixed left-0 md:-left-2 top-0 h-full w-24 md:w-64 flex flex-col items-start justify-start z-40 pointer-events-none mix-blend-difference select-none"
         >
             <div
                 className="relative flex items-center justify-center pointer-events-auto cursor-pointer"
@@ -222,21 +222,23 @@ export function PersonaParallaxText() {
         return - (value * speed) % loopHeight;
     });
 
-    const PARALLAX_TEXT = "Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart";
+    const PARALLAX_TEXT = "Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart Change My Own Heart // Change My Own Heart //";
 
     return (
-        <motion.div
-            className="fixed top-0 pointer-events-none z-0 select-none whitespace-nowrap overflow-visible left-0 md:left-10"
-            style={{
-                y: parallaxY,
-                writingMode: "vertical-rl",
-                rotate: 180,
-                fontFamily: "var(--font-playfair), serif",
-            }}
-        >
-            <h1 className="text-[4rem] md:text-[10rem] font-black tracking-tighter text-[#444] italic">
-                {PARALLAX_TEXT}
-            </h1>
-        </motion.div>
+        <div className="fixed top-0 left-0 h-full w-24 md:w-64 z-0 pointer-events-none flex flex-col items-end justify-center">
+            <motion.div
+                className="whitespace-nowrap overflow-visible pr-[8px] md:pr-[16px]"
+                style={{
+                    y: parallaxY,
+                    writingMode: "vertical-rl",
+                    rotate: 180,
+                    fontFamily: "var(--font-playfair), serif",
+                }}
+            >
+                <h1 className="text-[4rem] md:text-[10rem] font-black tracking-tighter text-[#444] italic">
+                    {PARALLAX_TEXT}
+                </h1>
+            </motion.div>
+        </div>
     );
 }

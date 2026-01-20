@@ -33,10 +33,15 @@ body {
   color: var(--foreground);
   font-family: var(--font-mono), monospace;
   overflow-x: hidden;
-  cursor: none;
+  /* cursor: none;  <-- REMOVED to allow default cursor on mobile by default */
   touch-action: pan-y;
   overscroll-behavior-y: none;
   height: 100%;
+}
+
+.force-no-cursor,
+.force-no-cursor * {
+  cursor: none !important;
 }
 
 @keyframes noise-shift {

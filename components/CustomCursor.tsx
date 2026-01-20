@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useRef } from "react";
 import { useCursorStore } from "@/store/useCursorStore";
+import { useIntroStore } from "@/store/useIntroStore"; // Added Import
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import clsx from "clsx";
 
@@ -18,6 +19,7 @@ export default function CustomCursor() {
     const springY = useSpring(mouseY, springConfig);
 
     const { isHovered, cursorText, cursorVariant, setIsHovered, setCursorText, setCursorVariant } = useCursorStore();
+    const { isEntered } = useIntroStore(); // Added Hook Call
     const pathname = usePathname();
 
     const [progress, setProgress] = useState(0); // 0 to 100
@@ -158,6 +160,34 @@ export default function CustomCursor() {
         };
     }, []);
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // LOGIC:
+    // Desktop: Always Show
+    // Mobile: Show ONLY if Home AND Gate Not Yet Open (!isEntered)
+    const isHome = pathname === '/';
+    const shouldShow = !isMobile || (isHome && !isEntered);
+
+    useEffect(() => {
+        if (shouldShow) {
+            document.body.classList.add('force-no-cursor');
+        } else {
+            document.body.classList.remove('force-no-cursor');
+        }
+
+        // Cleanup on unmount
+        return () => {
+            document.body.classList.remove('force-no-cursor');
+        }
+    }, [shouldShow]);
+
     // Force reset if cursorText changes
     useEffect(() => {
         if (cursorText !== "HOLD" && (isHolding.current || progressRef.current > 0)) {
@@ -170,6 +200,9 @@ export default function CustomCursor() {
             setProgress(0);
         }
     }, [cursorText]);
+
+    // If we shouldn't show the custom cursor, render nothing
+    if (!shouldShow) return null;
 
     const isClickVariant = cursorVariant === 'click';
 

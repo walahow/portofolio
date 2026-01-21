@@ -38,7 +38,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     // Desktop: Video 50vw, Img 45vw
     const VIDEO_W = isDesktop ? 65 : 100; // 100% on mobile
     const IMG_W = isDesktop ? 55 : 100;   // 100% on mobile
-    const GAP = isDesktop ? 5 : 0; // Gap logic handled by flex-gap on mobile
+    const GAP = isDesktop ? 15 : 0; // Gap logic handled by flex-gap on mobile
 
     const START_X = 17.5; // vw (Center of 65vw item: 50 - 32.5 = 17.5)
 
@@ -71,7 +71,8 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     return (
         <section
             ref={targetRef}
-            className={`relative bg-[var(--background)] transition-all duration-500 ${isDesktop ? 'h-[400vh]' : 'h-auto py-20 pb-40'}`}
+            className={`relative transition-all duration-500 ${isDesktop ? 'h-[400vh]' : 'h-auto py-20 pb-40'}`}
+            style={{ backgroundColor: 'var(--project-gallery-bg)' }}
         >
             <div className={`${isDesktop ? 'sticky top-0 flex h-[100dvh] items-center overflow-hidden' : 'w-full'}`}>
                 <motion.div

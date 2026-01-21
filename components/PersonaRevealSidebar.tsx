@@ -141,7 +141,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
         lineHeight: 1.0,
     };
 
-    const mainStyle: React.CSSProperties = { ...baseStyle, color: "#FFFFFF" };
+    const mainStyle: React.CSSProperties = { ...baseStyle, color: "var(--arcana-text)" };
 
     // Glitch styles
     const glitchBase: React.CSSProperties = {
@@ -235,7 +235,10 @@ export function PersonaParallaxText() {
                     fontFamily: "var(--font-playfair), serif",
                 }}
             >
-                <h1 className="text-[4rem] md:text-[10rem] font-black tracking-tighter text-[#444] italic">
+                <h1
+                    className="text-[4rem] md:text-[10rem] font-black tracking-tighter italic transition-colors duration-500"
+                    style={{ color: 'var(--parallax-text)' }}
+                >
                     {PARALLAX_TEXT}
                 </h1>
             </motion.div>

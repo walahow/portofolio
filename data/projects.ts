@@ -13,6 +13,7 @@ export interface Project {
     gallery: string[];   // Array of secondary image paths
     arcana: string;      // Tarot/Arcana persona name
     overviewHeading?: string; // Custom heading for Project Overview
+    theme?: 'light' | 'dark'; // NEW: Theme preference
 }
 
 export const PROJECTS: Project[] = [
@@ -30,7 +31,8 @@ export const PROJECTS: Project[] = [
         video: '', // Placeholder
         gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'], // Using existing images
         arcana: 'MAGICIAN',
-        overviewHeading: 'DIGITAL CAMPUS'
+        overviewHeading: 'DIGITAL CAMPUS',
+        theme: 'dark'
     },
     {
         id: '02',
@@ -46,7 +48,8 @@ export const PROJECTS: Project[] = [
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
         arcana: 'LOVERS',
-        overviewHeading: 'VIRTUAL BRIDGE'
+        overviewHeading: 'VIRTUAL BRIDGE',
+        theme: 'light'
     },
     {
         id: '03',
@@ -62,7 +65,8 @@ export const PROJECTS: Project[] = [
         video: '',
         gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'],
         arcana: 'JUSTICE',
-        overviewHeading: 'SYSTEM ARCHITECTURE'
+        overviewHeading: 'SYSTEM ARCHITECTURE',
+        theme: 'dark'
     },
     {
         id: '04',
@@ -78,6 +82,7 @@ export const PROJECTS: Project[] = [
         video: '',
         gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
         arcana: 'CHARIOT',
-        overviewHeading: 'PRODUCTION FLOW'
+        overviewHeading: 'PRODUCTION FLOW',
+        theme: 'light'
     }
 ];

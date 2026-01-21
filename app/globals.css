@@ -1,19 +1,86 @@
 @import "tailwindcss";
 
 :root {
+  /* GLOBAL BASE */
   --background: hsl(0 0% 3%);
-  --card-background: hsl(0 0% 4%);
   --foreground: hsl(0 0% 92%);
   --muted-foreground: hsl(0 0% 53%);
+
+  /* PROJECT DETAIL VIEW SPECIFIC */
+  --sidebar-bg: transparent;
+  /* Line 172 */
+  --main-content-bg: hsl(0 0% 3%);
+  /* Line 178 */
+  --curtain-bg: hsl(0 0% 3%);
+  /* Line 189 */
+
+  --card-background: hsl(0 0% 4%);
+  /* Line 223 (bg) */
+  --card-text: hsl(0 0% 92%);
+  /* Line 223 (text) */
+  --card-border: hsl(0 0% 100% / 0.1);
+  /* Line 223 (border) */
+
+  --overview-text: hsl(0 0% 92%);
+  /* Line 227 */
+  --description-text: hsl(0 0% 53%);
+  /* Line 234 */
+
+  --next-project-label: hsl(0 0% 100% / 0.5);
+  /* Line 262 */
+  --next-project-title: hsl(0 0% 100%);
+  /* Line 263 */
+  --progress-bar-fill: hsl(0 0% 100%);
+  /* Line 270 */
+  --progress-bar-track: hsl(0 0% 100% / 0.1);
+  /* Line 270 */
+  --next-project-hint: hsl(0 0% 100% / 0.3);
+  /* Line 277 */
+  --next-project-line: hsl(0 0% 100% / 0.1);
+
+  /* PROJECT DETAIL GALLERY SPECIFIC */
   --project-gallery-bg: transparent;
+  /* Line 74 */
+
+  /* PERSONA REVEAL SIDEBAR SPECIFIC */
+  --arcana-text: #FFFFFF;
+  /* Arcana Main Text */
+  --parallax-text: #444444;
+  /* Line 238 */
 }
 
 [data-theme='light'] {
-  --background: hsl(0 0% 92%);
-  --card-background: hsl(0 0% 94%);
-  --foreground: hsl(0 0% 2%);
+  /* GLOBAL BASE */
+  --background: hsl(0 0% 95%);
+  --foreground: hsl(0 0% 10%);
   --muted-foreground: hsl(0 0% 40%);
-  --project-gallery-bg: hsl(0 0% 2%);
+
+  /* PROJECT DETAIL VIEW SPECIFIC */
+  --sidebar-bg: transparent;
+  --main-content-bg: hsl(0 0% 95%);
+  --curtain-bg: hsl(0 0% 95%);
+
+  --card-background: hsl(0 0% 100%);
+  --card-text: hsl(0 0% 10%);
+  --card-border: hsl(0 0% 0% / 0.05);
+  /* Softer border for light mode */
+
+  --overview-text: hsl(0 0% 10%);
+  --description-text: hsl(0 0% 40%);
+
+  --next-project-label: hsl(0 0% 0% / 0.5);
+  --next-project-title: hsl(0 0% 10%);
+  --progress-bar-fill: hsl(0 0% 10%);
+  --progress-bar-track: hsl(0 0% 0% / 0.1);
+  --next-project-hint: hsl(0 0% 0% / 0.5);
+  --next-project-line: hsl(0 0% 0% / 0.1);
+
+  /* PROJECT DETAIL GALLERY SPECIFIC */
+  --project-gallery-bg: hsl(0 0% 95%);
+
+  /* PERSONA REVEAL SIDEBAR SPECIFIC */
+  --arcana-text: #1a1a1a;
+  --parallax-text: #e5e5e5;
 }
 
 @theme inline {

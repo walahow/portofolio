@@ -161,7 +161,7 @@ export default function DynamicProjectHeader({ title, role, projectId, projectIn
             <div className="w-full px-4 md:px-12 flex justify-center items-end gap-2 md:gap-2 pb-4">
                 {/* Project ID */}
                 <div className="overflow-hidden">
-                    <span className="text-md md:text-xl font-playfair uppercase tracking-widest text-white/95">
+                    <span className="text-md md:text-xl font-playfair font-bold uppercase tracking-widest text-white/95">
                         {projectId}
                     </span>
                 </div>

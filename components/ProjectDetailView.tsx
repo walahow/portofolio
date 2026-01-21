@@ -23,6 +23,17 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     const router = useRouter();
     const [isMobile, setIsMobile] = useState(false);
 
+    // Apply Theme
+    useEffect(() => {
+        if (project.theme) {
+            document.documentElement.setAttribute('data-theme', project.theme);
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        // Cleanup defaults to dark/original if unmounting (optional, but good practice if navigating to non-project pages)
+        // For now, next page will overwrite or we stay on same theme
+    }, [project.theme]);
+
     // Initial Screen Check for Responsive Animation
     useEffect(() => {
         const checkMobile = () => {
@@ -169,13 +180,16 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
             {/* z-50 to stay ON TOP of everything (Interactive Text) */}
-            <aside className="fixed top-0 left-0 w-24 md:w-64 h-screen z-50 flex flex-col items-center justify-center">
+            <aside
+                className="fixed top-0 left-0 w-24 md:w-64 h-screen z-50 flex flex-col items-center justify-center transition-colors duration-500"
+                style={{ backgroundColor: 'var(--sidebar-bg)' }}
+            >
                 <PersonaRevealSidebar arcana={project.arcana} />
             </aside>
 
 
             {/* --- RIGHT COLUMN (SCROLLABLE CONTENT) --- */}
-            <div ref={containerRef} className="relative ml-24 md:ml-64 w-[calc(100%-6rem)] md:w-[calc(100%-16rem)] z-10 bg-[var(--background)]">
+            <div ref={containerRef} className="relative ml-24 md:ml-64 w-[calc(100%-6rem)] md:w-[calc(100%-16rem)] z-10 bg-[var(--main-content-bg)] transition-colors duration-500">
 
                 {/* 1. HERO CURTAIN (Merged Container) */}
                 <motion.div
@@ -184,9 +198,10 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                         marginLeft,
                         height,
                         marginTop,
-                        y
+                        y,
+                        backgroundColor: 'var(--curtain-bg)'
                     }}
-                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col bg-[var(--background)] pt-[25vh] pb-0 md:py-[35vh]"
+                    className="relative w-full overflow-visible mb-24 z-40 flex flex-col pt-[25vh] pb-0 md:py-[35vh] transition-colors duration-500"
                 >
                     {/* Title Overlay - Overlapping border */}
                     <div className="absolute top-[24vh] right-8 z-50 mix-blend-difference pointer-events-none">
@@ -220,32 +235,46 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 <div className="relative pl-4 pr-0 md:px-12 w-full z-50 pointer-events-none -mt-20 md:-mt-40">
                     <motion.div
                         style={{ opacity: descOpacity, y: descY }}
-                        className="mx-auto max-w-4xl bg-[var(--card-background)] text-[var(--foreground)] p-8 md:p-24 shadow-2xl pointer-events-auto border border-[var(--foreground)]/10 backdrop-blur-sm flex flex-col items-start"
+                        className="mx-auto max-w-4xl p-8 md:p-24 shadow-2xl pointer-events-auto backdrop-blur-sm flex flex-col items-start transition-colors duration-500"
                     >
-                        <div className="mb-8 md:mb-24 text-left">
-                            <h2
-                                className="text-xl md:text-5xl font-medium italic tracking-tight text-[var(--foreground)] mb-4 font-playfair"
+                        {/* Applied styles via style prop to ensure variables take precedence over any tailwind conflicts */}
+                        <div
+                            className="absolute inset-0 z-[-1]"
+                            style={{
+                                backgroundColor: 'var(--card-background)',
+                                border: '1px solid var(--card-border)'
+                            }}
+                        />
+                        <div className="relative z-10 w-full">
+                            <div className="mb-8 md:mb-24 text-left">
+                                <h2
+                                    className="text-xl md:text-5xl font-medium italic tracking-tight mb-4 font-playfair transition-colors duration-500"
+                                    style={{ color: 'var(--overview-text)' }}
+                                >
+                                    {project.overviewHeading || project.title}
+                                </h2>
+                                {/* Decorative Separator Dot optional, but user liked the huge gap */}
+                            </div>
+
+                            <div
+                                className="text-xs md:text-sm leading-loose text-left font-mono max-w-lg transition-colors duration-500"
+                                style={{ color: 'var(--description-text)' }}
                             >
-                                {project.overviewHeading || project.title}
-                            </h2>
-                            {/* Decorative Separator Dot optional, but user liked the huge gap */}
-                        </div>
-
-                        <div className="text-xs md:text-sm leading-loose text-left text-[var(--muted-foreground)] font-mono max-w-lg">
-                            {project.description}
-                        </div>
-
-                        {/* Additional Metadata Block */}
-                        <div className="mt-8 pt-8 md:mt-16 md:pt-16 border-t border-white/10 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
-                            <div>
-                                <span className="block text-[var(--foreground)] mb-2">Role</span>
-                                <div>[ {project.roles.join(' + ')} ]</div>
+                                {project.description}
                             </div>
-                            <div>
-                                <span className="block text-[var(--foreground)] mb-2">Year</span>
-                                <div>[ {project.year} ]</div>
+
+                            {/* Additional Metadata Block */}
+                            <div className="mt-8 pt-8 md:mt-16 md:pt-16 border-t border-white/10 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
+                                <div>
+                                    <span className="block mb-2" style={{ color: 'var(--card-text)' }}>Role</span>
+                                    <div style={{ color: 'var(--description-text)' }}>[ {project.roles.join(' + ')} ]</div>
+                                </div>
+                                <div>
+                                    <span className="block mb-2" style={{ color: 'var(--card-text)' }}>Year</span>
+                                    <div style={{ color: 'var(--description-text)' }}>[ {project.year} ]</div>
+                                </div>
                             </div>
-                        </div>
+                        </div>{/* End relative z-10 */}
                     </motion.div>
                 </div>
 
@@ -255,26 +284,31 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                 </div>
 
                 {/* --- DEEP SCROLL FOOTER --- */}
-                <div ref={footerRef} className="relative w-full h-[80vh] flex flex-col items-center justify-center mt-32 border-t border-white/10">
+                <div
+                    ref={footerRef}
+                    className="relative w-full h-[80vh] flex flex-col items-center justify-center mt-32 border-t transition-colors duration-500"
+                    style={{ borderColor: 'var(--next-project-line)' }}
+                >
 
                     {/* Sticky/Fixed Center Content */}
                     <div className="sticky top-0 h-full flex flex-col items-center justify-center space-y-4">
-                        <span className="text-white/50 text-sm tracking-widest">NEXT PROJECT</span>
-                        <h2 className="text-5xl md:text-7xl font-bold text-white text-center">
+                        <span className="text-sm tracking-widest transition-colors duration-500" style={{ color: 'var(--next-project-label)' }}>NEXT PROJECT</span>
+                        <h2 className="text-5xl md:text-7xl font-bold text-center transition-colors duration-500" style={{ color: 'var(--next-project-title)' }}>
                             {nextProject.title}
                         </h2>
 
                         {/* THE PROGRESS BAR (Visual Feedback of "Effort") */}
-                        <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-8">
+                        <div className="w-64 h-1 rounded-full overflow-hidden mt-8 transition-colors duration-500" style={{ backgroundColor: 'var(--progress-bar-track)' }}>
                             <motion.div
-                                className="h-full bg-white"
+                                className="h-full"
                                 style={{
                                     scaleX: scrollYProgress,
-                                    transformOrigin: "left"
+                                    transformOrigin: "left",
+                                    backgroundColor: 'var(--progress-bar-fill)'
                                 }}
                             />
                         </div>
-                        <p className="text-xs text-white/30 mt-2">KEEP SCROLLING TO ENTER</p>
+                        <p className="text-xs mt-2 transition-colors duration-500" style={{ color: 'var(--next-project-hint)' }}>KEEP SCROLLING TO ENTER</p>
                     </div>
 
                 </div>

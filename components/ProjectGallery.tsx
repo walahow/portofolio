@@ -88,44 +88,34 @@ export default function ProjectGallery() {
                         }
                     });
 
-                    gsap.timeline({
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: true,
-                        }
-                    })
-                        .fromTo(card,
-                            {
-                                scale: 0.95,
-                                filter: "grayscale(1) brightness(0.8)",
-                                opacity: 0.7
-                            },
-                            {
-                                scale: 1,
-                                filter: "grayscale(0) brightness(1)",
-                                opacity: 1,
-                                duration: 0.75,
-                                ease: "power2.out"
-                            }
-                        )
-                        .to(card, {
-                            scale: 1,
+                    // DESKTOP: Focus Animation (Trigger-based, like Mobile)
+                    gsap.fromTo(card,
+                        {
+                            filter: "grayscale(1) brightness(0.8)",
+                            scale: 0.95,
+                            opacity: 0.7
+                        },
+                        {
                             filter: "grayscale(0) brightness(1)",
+                            scale: 1,
                             opacity: 1,
-                            duration: 2.0,
-                            ease: "none"
-                        })
-                        .to(card,
-                            {
-                                scale: 0.95,
-                                filter: "grayscale(1) brightness(0.8)",
-                                opacity: 0.7,
-                                duration: 0.75,
-                                ease: "power2.in"
+                            duration: 1.0, // Matches mobile duration for consistent feel
+                            ease: "power2.inOut", // Starts slow, providing a natural "delay" feel
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 70%", // Focus earlier (lower on screen)
+                                end: "bottom 30%", // Unfocus later (higher on screen)
+                                toggleActions: "play reverse play reverse",
+                            },
+                            delay: 0.25, // Explicit wait time before animating to color
+                            onStart: () => {
+                                card.classList.add("is-focused");
+                            },
+                            onReverseComplete: () => {
+                                card.classList.remove("is-focused");
                             }
-                        );
+                        }
+                    );
                 });
             });
 
@@ -189,7 +179,7 @@ export default function ProjectGallery() {
     }, [enableAnimations]);
 
     return (
-        <div ref={containerRef} className="min-h-screen pt-4 pb-24 px-4 sm:px-24 w-full mx-auto bg-[var(--project-gallery-bg)] transition-colors duration-500">
+        <div ref={containerRef} className="min-h-screen pt-4 pb-24 px-4 sm:px-24 w-full mx-auto bg-[#050505] transition-colors duration-500">
             {/* Top Spacer for Scroll Physics Damping */}
             <div className="h-32 w-full" />
 

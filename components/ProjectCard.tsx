@@ -27,7 +27,7 @@ export default function ProjectCard({ id, title, stack, slug, category, year, im
             href={`/project/${slug}`}
             ref={cardRef}
             data-id={id}
-            className="project-card block w-full origin-center cursor-none opacity-80 hover:[filter:none!important]" // Removed will-change-transform for mobile performance
+            className="project-card group/card block w-full origin-center cursor-none opacity-80 group-[.is-focused]/card:hover:[filter:none!important]" // Added conditional hover for filter
             onClick={(e) => {
                 e.preventDefault();
                 startTransition();
@@ -56,7 +56,7 @@ export default function ProjectCard({ id, title, stack, slug, category, year, im
                         alt={title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-all duration-700 group-hover:scale-105"
+                        className="object-cover transition-all duration-700 group-[.is-focused]/card:group-hover:scale-105" // Conditional scale
                     />
                 ) : (
                     <>

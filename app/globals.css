@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: hsl(0 0% 2%);
+  --background: hsl(0 0% 3%);
   --card-background: hsl(0 0% 4%);
   --foreground: hsl(0 0% 92%);
   --muted-foreground: hsl(0 0% 53%);
@@ -13,7 +13,7 @@
   --card-background: hsl(0 0% 94%);
   --foreground: hsl(0 0% 2%);
   --muted-foreground: hsl(0 0% 40%);
-  --project-gallery-bg: hsl(220 20% 6%);
+  --project-gallery-bg: hsl(0 0% 2%);
 }
 
 @theme inline {

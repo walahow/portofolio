@@ -39,13 +39,13 @@ export default function SocialSidebar() {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.5 }}
-            className="fixed left-0 top-0 md:left-6 md:top-16 z-50 flex flex-col items-center gap-2 select-none origin-top-left scale-[0.6] md:scale-100 p-2 md:p-0"
+            className="fixed left-0 top-4 md:left-6 md:top-16 z-50 flex flex-col items-center gap-2 select-none origin-top-left scale-[0.6] md:scale-100 p-2 md:p-0"
         >
             {/* DECORATIVE LINE TOP */}
-            <span className="[writing-mode:vertical-rl] text-[12px] font-[var(--font-playfair)] tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
+            <span className="[writing-mode:vertical-rl] text-[14px] font-[var(--font-playfair)] tracking-[0.2em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
                 [ SOCIAL \\
             </span>
-            <div className="w-[1px] h-12 bg-white/20" />
+            <div className="w-[1px] h-12 bg-white/15" />
 
 
             {/* ACCORDION CONTAINER */}
@@ -69,8 +69,8 @@ export default function SocialSidebar() {
             </LayoutGroup>
 
             {/* DECORATIVE LINE BOTTOM */}
-            <div className="w-[1px] h-12 bg-white/20" />
-            <span className="[writing-mode:vertical-rl] text-[12px] font-[var(--font-playfair)] tracking-[0.3em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
+            <div className="w-[1px] h-12 bg-white/15" />
+            <span className="[writing-mode:vertical-rl] text-[14px] font-[var(--font-playfair)] tracking-[0.2em] text-white/80 hover:text-white transition-colors duration-300 cursor-default">
                 // LINKS ]
             </span>
         </motion.div>
@@ -144,7 +144,7 @@ function SocialItem({ item, isHovered, setHovered, isAnyHovered }: {
                 className="w-full h-12 flex items-center justify-center shrink-0"
             >
                 <motion.span
-                    className="font-[var(--font-playfair)] text-sm font-bold tracking-wider"
+                    className="font-[var(--font-playfair)] text-xs font-bold tracking-wider"
                     animate={{
                         color: isHovered ? item.themeColor : '#ffffff',
                         scale: isHovered ? 1.2 : 1

@@ -70,12 +70,10 @@ export default function ProjectCard({ id, title, stack, slug, category, year, im
 
             <div className="flex justify-between items-start font-mono text-sm uppercase tracking-tight border-t border-white/20 pt-4">
                 <div className="flex gap-8">
-                    <span className="opacity-50">{id}</span>
-                    <span className="text-gray-500">{stack}</span>
+                    <span className="opacity-55">{stack}</span>
                 </div>
                 <div className="flex gap-8 text-right">
-                    <span className="text-gray-500">{category}</span>
-                    <span className="opacity-50">{year}</span>
+                    <span className="opacity-55">{category}</span>
                 </div>
             </div>
         </Link>

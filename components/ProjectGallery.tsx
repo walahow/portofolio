@@ -17,6 +17,7 @@ export default function ProjectGallery() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { enableAnimations } = usePerformanceStore();
     const [activeProject, setActiveProject] = useState(PROJECTS[0]);
+    const [activeIndex, setActiveIndex] = useState(0); // Track formatted index
     const { lenis } = useLenis();
 
     // Initial Scroll to Middle (50%)
@@ -61,7 +62,7 @@ export default function ProjectGallery() {
             // DESKTOP: Full Scrub Experience (Original)
             mm.add("(min-width: 768px)", () => {
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
-                cards.forEach((card) => {
+                cards.forEach((card, i) => {
                     // ACTIVE PROJECT DETECTION
                     ScrollTrigger.create({
                         trigger: card,
@@ -70,12 +71,20 @@ export default function ProjectGallery() {
                         onEnter: () => {
                             const projectId = card.getAttribute("data-id");
                             const found = PROJECTS.find(p => p.id === projectId);
-                            if (found) setActiveProject(found);
+                            if (found) {
+                                setActiveProject(found);
+                                const realIndex = (i % PROJECTS.length) + 1;
+                                setActiveIndex(realIndex);
+                            }
                         },
                         onEnterBack: () => {
                             const projectId = card.getAttribute("data-id");
                             const found = PROJECTS.find(p => p.id === projectId);
-                            if (found) setActiveProject(found);
+                            if (found) {
+                                setActiveProject(found);
+                                const realIndex = (i % PROJECTS.length) + 1;
+                                setActiveIndex(realIndex);
+                            }
                         }
                     });
 
@@ -124,7 +133,7 @@ export default function ProjectGallery() {
             // Using standard ScrollTrigger with toggleActions for snappy response
             mm.add("(max-width: 767px)", () => {
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
-                cards.forEach((card) => {
+                cards.forEach((card, i) => {
                     // Update Header
                     ScrollTrigger.create({
                         trigger: card,
@@ -133,12 +142,20 @@ export default function ProjectGallery() {
                         onEnter: () => {
                             const projectId = card.getAttribute("data-id");
                             const found = PROJECTS.find(p => p.id === projectId);
-                            if (found) setActiveProject(found);
+                            if (found) {
+                                setActiveProject(found);
+                                const realIndex = (i % PROJECTS.length) + 1;
+                                setActiveIndex(realIndex);
+                            }
                         },
                         onEnterBack: () => {
                             const projectId = card.getAttribute("data-id");
                             const found = PROJECTS.find(p => p.id === projectId);
-                            if (found) setActiveProject(found);
+                            if (found) {
+                                setActiveProject(found);
+                                const realIndex = (i % PROJECTS.length) + 1;
+                                setActiveIndex(realIndex);
+                            }
                         }
                     });
 
@@ -180,15 +197,20 @@ export default function ProjectGallery() {
             {/* Mobile Header (Horizontal) Removed */}
 
             {/* DYNAMIC HEADER */}
-            <DynamicProjectHeader title={activeProject.title} role={activeProject.roles.slice(0, 2).join(" & ")} />
+            <DynamicProjectHeader
+                title={activeProject.title}
+                role={activeProject.roles.slice(0, 2).join(" & ")}
+                projectId={activeProject.id}
+                projectIndex={activeIndex.toString().padStart(2, '0')}
+            />
 
             {/* Desktop Vertical Sidebar (Fixed Spine) */}
             {/* Desktop Vertical Sidebar Removed per user request */}
             <SocialSidebar />
 
             {/* VERTICAL RIGHT LABEL */}
-            <div className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 pointer-events-none mix-blend-difference">
-                <p className="text-[10px] md:text-xs font-mono m-1 font-bold text-gray-400 opacity-50 tracking-widest whitespace-nowrap [writing-mode:vertical-rl] rotate-180 leading-none">
+            <div className="fixed right-0 md:right-6 top-100 -translate-y-1/2 z-50 pointer-events-none mix-blend-difference">
+                <p className="text-[10px] md:text-xs font-mono m-1 font-bold text-white opacity-45 tracking-widest whitespace-nowrap [writing-mode:vertical-rl] rotate-180 leading-none">
                     Atta Zulfahrizan Portofolio - type shi
                 </p>
             </div>

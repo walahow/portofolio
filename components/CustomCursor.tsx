@@ -18,7 +18,7 @@ export default function CustomCursor() {
     const springX = useSpring(mouseX, springConfig);
     const springY = useSpring(mouseY, springConfig);
 
-    const { isHovered, cursorText, cursorVariant, setIsHovered, setCursorText, setCursorVariant } = useCursorStore();
+    const { isHovered, cursorText, cursorVariant, setIsHovered, setCursorText, setCursorVariant, theme } = useCursorStore();
     const { isEntered } = useIntroStore(); // Added Hook Call
     const pathname = usePathname();
 
@@ -160,6 +160,35 @@ export default function CustomCursor() {
         };
     }, []);
 
+    // --- COLOR THEME LOGIC ---
+    useEffect(() => {
+        const root = document.documentElement;
+
+        // If theme is explicitly set by ProjectDetailView (via store)
+        if (theme) {
+            // Logic:
+            // If theme is LIGHT -> Content is Light -> Cursor should be DARK (Contrast)
+            // If theme is DARK -> Content is Dark -> Cursor should be LIGHT (Contrast)
+
+            if (theme === 'light') {
+                // Light Content -> Dark Cursor
+                root.style.setProperty('--cursor-color', 'hsl(0 0% 10%)');       // Dark Grey
+                root.style.setProperty('--cursor-text-color', 'hsl(0 0% 95%)');  // Light Text
+            } else {
+                // Dark Content -> Light Cursor
+                root.style.setProperty('--cursor-color', 'hsl(0 0% 95%)');       // Light Grey
+                root.style.setProperty('--cursor-text-color', 'hsl(0 0% 10%)');  // Dark Text
+            }
+        } else {
+            // Default/Fallback behavior (e.g. Home Page)
+            // Revert to global CSS variable defaults (which adhere to global theme)
+            // We can just remove the inline property to let globals.css take over
+            root.style.removeProperty('--cursor-color');
+            root.style.removeProperty('--cursor-text-color');
+        }
+
+    }, [theme]);
+
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -241,7 +270,7 @@ export default function CustomCursor() {
         >
             {/* ELEMENT 1: INSTANT LAYER (Dot OR Text) */}
             <motion.div
-                className="absolute top-0 left-0 flex items-center justify-center will-change-transform mix-blend-difference"
+                className="absolute top-0 left-0 flex items-center justify-center will-change-transform"
                 style={{
                     x: mouseX,
                     y: mouseY,
@@ -250,7 +279,8 @@ export default function CustomCursor() {
             >
                 {/* 1a. DOT: Visible when NOT active */}
                 <motion.div
-                    className="bg-white rounded-full"
+                    className="rounded-full"
+                    style={{ backgroundColor: 'var(--cursor-color)' }}
                     animate={{
                         width: isActive ? 0 : DOT_SIZE,
                         height: isActive ? 0 : DOT_SIZE,
@@ -269,8 +299,9 @@ export default function CustomCursor() {
                             exit={{ opacity: 0, scale: 0.8 }}
                             transition={{ duration: 0.2 }}
                             className={clsx(
-                                "absolute text-xs uppercase font-bold tracking-wider text-white whitespace-nowrap font-serif"
+                                "absolute text-xs uppercase font-bold tracking-wider whitespace-nowrap font-serif"
                             )}
+                            style={{ color: 'var(--cursor-text-color)' }}
                         >
                             {cursorText || (isHoldMode ? 'HOLD' : 'VIEW')}
                         </motion.span>
@@ -281,14 +312,16 @@ export default function CustomCursor() {
             {/* ELEMENT 2: DELAYED RING (Normal State -> Solid Active State) */}
             <motion.div
                 className={clsx(
-                    "absolute top-0 left-0 flex items-center justify-center rounded-full mix-blend-difference will-change-transform",
+                    "absolute top-0 left-0 flex items-center justify-center rounded-full will-change-transform",
                     isActive
-                        ? "bg-white" // Solid white
-                        : "bg-transparent border border-white" // Ring
+                        ? "" // Solid (color set via style)
+                        : "bg-transparent border" // Ring
                 )}
                 style={{
                     x: springX,
                     y: springY,
+                    backgroundColor: isActive ? 'var(--cursor-color)' : 'transparent',
+                    borderColor: isActive ? 'transparent' : 'var(--cursor-color)',
                 }}
                 transformTemplate={({ x, y }) => `translate3d(${x}, ${y}, 0) translate(-50%, -50%)`}
                 animate={{
@@ -332,7 +365,7 @@ export default function CustomCursor() {
                                 cx="50%"
                                 cy="50%"
                                 r="40%"
-                                stroke="white"
+                                stroke="var(--cursor-color)"
                                 strokeWidth="4"
                                 fill="transparent"
                                 pathLength={1}
@@ -368,7 +401,7 @@ export default function CustomCursor() {
                                 cx="50%"
                                 cy="50%"
                                 r="45%"
-                                stroke="white"
+                                stroke="var(--cursor-color)"
                                 strokeWidth="3"
                                 fill="transparent"
                                 pathLength={1}

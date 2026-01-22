@@ -9,6 +9,8 @@ interface CursorState {
     setCursorText: (text: string) => void;
     cursorVariant: CursorVariant;
     setCursorVariant: (variant: CursorVariant) => void;
+    theme: string | null;
+    setTheme: (theme: string | null) => void;
 }
 
 export const useCursorStore = create<CursorState>((set) => ({
@@ -18,4 +20,6 @@ export const useCursorStore = create<CursorState>((set) => ({
     setCursorText: (text) => set({ cursorText: text }),
     cursorVariant: 'default',
     setCursorVariant: (variant) => set({ cursorVariant: variant }),
+    theme: null,
+    setTheme: (theme) => set({ theme }),
 }));

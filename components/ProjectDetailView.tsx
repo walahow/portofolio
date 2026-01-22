@@ -11,6 +11,7 @@ import { useTimerStore } from '@/store/useTimerStore';
 import { useIntroStore } from '@/store/useIntroStore';
 import PersonaRevealSidebar, { PersonaParallaxText } from './PersonaRevealSidebar';
 import ProjectDetailGallery from './ProjectDetailGallery';
+import { useCursorStore } from '@/store/useCursorStore';
 
 interface ProjectDetailViewProps {
     project: Project;
@@ -23,15 +24,23 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     const router = useRouter();
     const [isMobile, setIsMobile] = useState(false);
 
-    // Apply Theme
+    // Apply Theme - REMOVED GLOBAL EFFECT
+    // We now apply theme directly to the <main> element below to prevent mobile chrome flickering
+    // useEffect(() => {
+    //     if (project.theme) {
+    //         document.documentElement.setAttribute('data-theme', project.theme);
+    //     } else {
+    //         document.documentElement.removeAttribute('data-theme');
+    // Apply Theme to Cursor Store (for Custom Cursor color)
     useEffect(() => {
-        if (project.theme) {
-            document.documentElement.setAttribute('data-theme', project.theme);
-        } else {
-            document.documentElement.removeAttribute('data-theme');
-        }
-        // Cleanup defaults to dark/original if unmounting (optional, but good practice if navigating to non-project pages)
-        // For now, next page will overwrite or we stay on same theme
+        // Set the cursor theme to match project
+        // Note: Project theme ('light'/'dark') implies the CONTENT theme.
+        // CustomCursor will interpret this to pick a contrasting color.
+        useCursorStore.getState().setTheme(project.theme || 'dark');
+
+        return () => {
+            useCursorStore.getState().setTheme(null);
+        };
     }, [project.theme]);
 
     // Initial Screen Check for Responsive Animation
@@ -168,7 +177,10 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
     });
 
     return (
-        <main className="min-h-screen bg-[var(--background)] w-full relative">
+        <main
+            className="min-h-screen bg-[var(--background)] w-full relative"
+            data-theme={project.theme}
+        >
 
             {/* --- 0. BACKGROUND LAYER (Parallax Text & Border) --- */}
             {/* z-0 so it sits BEHIND the z-10 content content */}

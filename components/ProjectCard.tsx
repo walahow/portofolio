@@ -14,9 +14,10 @@ interface ProjectCardProps {
     category: string;
     year: string;
     image?: string;
+    theme?: 'light' | 'dark';
 }
 
-export default function ProjectCard({ id, title, stack, slug, category, year, image }: ProjectCardProps) {
+export default function ProjectCard({ id, title, stack, slug, category, year, image, theme }: ProjectCardProps) {
     const cardRef = useRef<HTMLAnchorElement>(null);
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
     const { startTransition } = useTransitionStore();
@@ -30,7 +31,7 @@ export default function ProjectCard({ id, title, stack, slug, category, year, im
             className="project-card group/card block w-full origin-center cursor-none opacity-80 group-[.is-focused]/card:hover:[filter:none!important]" // Added conditional hover for filter
             onClick={(e) => {
                 e.preventDefault();
-                startTransition();
+                startTransition('up', theme);
                 // Wait for shutter to close (approx 800ms) before navigating
                 setTimeout(() => {
                     router.push(`/project/${slug}`);

@@ -98,7 +98,7 @@ function SocialItem({ item, isHovered, setHovered, isAnyHovered }: {
             }}
             onMouseEnter={() => setHovered(item.id)}
             onMouseLeave={() => setHovered(null)}
-            className="relative flex flex-col items-center justify-end overflow-hidden border border-white/20 bg-black/80 backdrop-blur-sm cursor-pointer transition-colors duration-300"
+            className="relative flex flex-col items-center justify-end overflow-hidden border border-white/20 bg-[hsl(0,0%,10%)] backdrop-blur-sm cursor-pointer transition-colors duration-300"
             style={{
                 borderColor: isHovered ? item.themeColor : 'rgba(255,255,255,0.2)',
                 boxShadow: isHovered ? `0 0 15px -5px ${item.themeColor}` : 'none'

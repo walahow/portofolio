@@ -179,7 +179,7 @@ export default function ProjectGallery() {
     }, [enableAnimations]);
 
     return (
-        <div ref={containerRef} className="min-h-screen pt-4 pb-24 px-4 sm:px-24 w-full mx-auto bg-[#050505] transition-colors duration-500">
+        <div ref={containerRef} className="min-h-screen pt-4 pb-24 px-4 sm:px-24 w-full mx-auto bg-[hsl(0,0%,6%)] transition-colors duration-500">
             {/* Top Spacer for Scroll Physics Damping */}
             <div className="h-32 w-full" />
 
@@ -216,6 +216,7 @@ export default function ProjectGallery() {
                         category={project.category}
                         year={project.year}
                         image={project.thumbnail}
+                        theme={project.theme}
                     />
                 ))}
             </div>

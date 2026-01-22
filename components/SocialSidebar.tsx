@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 
 // --- DATA STRUCTURE (Persona Lore) ---
@@ -33,6 +33,14 @@ const socialData = [
 
 export default function SocialSidebar() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     return (
         <motion.div
@@ -63,6 +71,7 @@ export default function SocialSidebar() {
                             isHovered={hoveredId === item.id}
                             setHovered={setHoveredId}
                             isAnyHovered={hoveredId !== null}
+                            isMobile={isMobile}
                         />
                     ))}
                 </motion.div>
@@ -77,11 +86,12 @@ export default function SocialSidebar() {
     );
 }
 
-function SocialItem({ item, isHovered, setHovered, isAnyHovered }: {
+function SocialItem({ item, isHovered, setHovered, isAnyHovered, isMobile }: {
     item: typeof socialData[0],
     isHovered: boolean,
     setHovered: (id: string | null) => void,
-    isAnyHovered: boolean
+    isAnyHovered: boolean,
+    isMobile: boolean
 }) {
     return (
         <motion.a
@@ -90,13 +100,12 @@ function SocialItem({ item, isHovered, setHovered, isAnyHovered }: {
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => {
-                const isMobile = window.innerWidth < 768; // Mobile Breakpoint
                 if (isMobile && !isHovered) {
                     e.preventDefault();
                     setHovered(item.id);
                 }
             }}
-            onMouseEnter={() => setHovered(item.id)}
+            onMouseEnter={() => !isMobile && setHovered(item.id)}
             onMouseLeave={() => setHovered(null)}
             className="relative flex flex-col items-center justify-end overflow-hidden border border-white/20 bg-[hsl(0,0%,10%)] backdrop-blur-sm cursor-pointer transition-colors duration-300"
             style={{

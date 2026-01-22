@@ -87,21 +87,21 @@ export default function ShutterOverlay() {
     // Result: Smooth transition.
 
     // Define cubic-bezier as a specific tuple to satisfy Framer Motion types
-    const easeCurve: [number, number, number, number] = [0.76, 0, 0.24, 1];
-    const baseTransition = { duration: isSnapping ? 0 : 0.8, ease: easeCurve };
+    const easeCurve: [number, number, number, number] = [0.8, 0, 0.2, 1];
+    const baseTransition = { duration: isSnapping ? 0 : 0.9, ease: easeCurve };
 
     // ACCENT LAYER VARIANTS
     const accentVariants = {
-        HIDDEN_BOTTOM: { y: "105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_BOTTOM' ? 0.3 : 0 } }, // Exit Delay (Last out)
+        HIDDEN_BOTTOM: { y: "105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_BOTTOM' ? 0.4 : 0 } }, // Exit Delay (Last out)
         COVERING: { y: "0%", transition: { ...baseTransition, delay: 0 } }, // Enter Immediate
-        HIDDEN_TOP: { y: "-105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_TOP' ? 0.3 : 0 } } // Exit Delay (Last out)
+        HIDDEN_TOP: { y: "-105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_TOP' ? 0.4 : 0 } } // Exit Delay (Last out)
     };
 
     // THEME LAYER VARIANTS
     const themeVariants = {
-        HIDDEN_BOTTOM: { y: "105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_BOTTOM' ? 0 : 0.3 } }, // Exit Immediate
-        COVERING: { y: "0%", transition: { ...baseTransition, delay: 0.5 } }, // Enter Delay (0.3s later)
-        HIDDEN_TOP: { y: "-105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_TOP' ? 0 : 0.3 } } // Exit Immediate
+        HIDDEN_BOTTOM: { y: "105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_BOTTOM' ? 0 : 0.4 } }, // Exit Immediate
+        COVERING: { y: "0%", transition: { ...baseTransition, delay: 0.4 } }, // Enter Delay (0.4s later)
+        HIDDEN_TOP: { y: "-105%", transition: { ...baseTransition, delay: shutterState === 'HIDDEN_TOP' ? 0 : 0.4 } } // Exit Immediate
     };
 
     return (

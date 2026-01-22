@@ -268,51 +268,13 @@ export default function CustomCursor() {
             animate={{ opacity: isVisible ? 1 : 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
         >
-            {/* ELEMENT 1: INSTANT LAYER (Dot OR Text) */}
-            <motion.div
-                className="absolute top-0 left-0 flex items-center justify-center will-change-transform"
-                style={{
-                    x: mouseX,
-                    y: mouseY,
-                }}
-                transformTemplate={({ x, y }) => `translate3d(${x}, ${y}, 0) translate(-50%, -50%)`}
-            >
-                {/* 1a. DOT: Visible when NOT active */}
-                <motion.div
-                    className="rounded-full"
-                    style={{ backgroundColor: 'var(--cursor-color)' }}
-                    animate={{
-                        width: isActive ? 0 : DOT_SIZE,
-                        height: isActive ? 0 : DOT_SIZE,
-                        opacity: isActive ? 0 : 1
-                    }}
-                    transition={{ duration: 0.2 }}
-                />
 
-                {/* 1b. TEXT: Visible when ACTIVE (Replaces Dot) */}
-                <AnimatePresence mode="wait">
-                    {isActive && (
-                        <motion.span
-                            key={cursorText}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.2 }}
-                            className={clsx(
-                                "absolute text-xs uppercase font-bold tracking-wider whitespace-nowrap font-serif"
-                            )}
-                            style={{ color: 'var(--cursor-text-color)' }}
-                        >
-                            {cursorText || (isHoldMode ? 'HOLD' : 'VIEW')}
-                        </motion.span>
-                    )}
-                </AnimatePresence>
-            </motion.div>
 
             {/* ELEMENT 2: DELAYED RING (Normal State -> Solid Active State) */}
             <motion.div
                 className={clsx(
                     "absolute top-0 left-0 flex items-center justify-center rounded-full will-change-transform",
+                    !theme && "mix-blend-difference", // Blend mode should apply to both Ring (border) and Solid Circle
                     isActive
                         ? "" // Solid (color set via style)
                         : "bg-transparent border" // Ring
@@ -320,8 +282,9 @@ export default function CustomCursor() {
                 style={{
                     x: springX,
                     y: springY,
-                    backgroundColor: isActive ? 'var(--cursor-color)' : 'transparent',
-                    borderColor: isActive ? 'transparent' : 'var(--cursor-color)',
+                    // FORCE White background when active and no theme (Hybrid Mode)
+                    backgroundColor: isActive ? (theme ? 'var(--cursor-color)' : '#ffffff') : 'transparent',
+                    borderColor: isActive ? 'transparent' : (theme ? 'var(--cursor-color)' : 'white'),
                 }}
                 transformTemplate={({ x, y }) => `translate3d(${x}, ${y}, 0) translate(-50%, -50%)`}
                 animate={{
@@ -344,7 +307,10 @@ export default function CustomCursor() {
                 <>
                     {/* Layer 1: Inner components (120px) */}
                     <motion.div
-                        className="absolute top-0 left-0 flex items-center justify-center rounded-full mix-blend-difference will-change-transform"
+                        className={clsx(
+                            "absolute top-0 left-0 flex items-center justify-center rounded-full will-change-transform",
+                            !theme && "mix-blend-difference"
+                        )}
                         style={{
                             x: mouseX, // INSTANT
                             y: mouseY, // INSTANT
@@ -365,7 +331,7 @@ export default function CustomCursor() {
                                 cx="50%"
                                 cy="50%"
                                 r="40%"
-                                stroke="var(--cursor-color)"
+                                stroke={theme ? "var(--cursor-color)" : "white"}
                                 strokeWidth="4"
                                 fill="transparent"
                                 pathLength={1}
@@ -380,7 +346,10 @@ export default function CustomCursor() {
 
                     {/* Layer 2: Outer components (180px) */}
                     <motion.div
-                        className="absolute top-0 left-0 flex items-center justify-center rounded-full mix-blend-difference will-change-transform"
+                        className={clsx(
+                            "absolute top-0 left-0 flex items-center justify-center rounded-full will-change-transform",
+                            !theme && "mix-blend-difference"
+                        )}
                         style={{
                             x: mouseX, // INSTANT
                             y: mouseY, // INSTANT
@@ -401,7 +370,7 @@ export default function CustomCursor() {
                                 cx="50%"
                                 cy="50%"
                                 r="45%"
-                                stroke="var(--cursor-color)"
+                                stroke={theme ? "var(--cursor-color)" : "white"}
                                 strokeWidth="3"
                                 fill="transparent"
                                 pathLength={1}
@@ -414,6 +383,54 @@ export default function CustomCursor() {
                     </motion.div>
                 </>
             )}
+            {/* ELEMENT 1: INSTANT LAYER (Dot OR Text) - MOVED TO END TO BE ON TOP */}
+            <motion.div
+                className={clsx(
+                    "absolute top-0 left-0 flex items-center justify-center will-change-transform",
+                    !theme && "mix-blend-difference" // Apply blend to container so it blends with siblings/bg
+                )}
+                style={{
+                    x: mouseX,
+                    y: mouseY,
+                    pointerEvents: 'none', // Ensure it doesn't block clicks
+                }}
+                transformTemplate={({ x, y }) => `translate3d(${x}, ${y}, 0) translate(-50%, -50%)`}
+            >
+                {/* 1a. DOT: Visible when NOT active */}
+                <motion.div
+                    className="rounded-full"
+                    // Removed mix-blend here since parent has it
+                    style={{ backgroundColor: theme ? 'var(--cursor-color)' : 'white' }}
+                    animate={{
+                        width: isActive ? 0 : DOT_SIZE,
+                        height: isActive ? 0 : DOT_SIZE,
+                        opacity: isActive ? 0 : 1
+                    }}
+                    transition={{ duration: 0.2 }}
+                />
+
+                {/* 1b. TEXT: Visible when ACTIVE (Replaces Dot) */}
+                <AnimatePresence mode="wait">
+                    {isActive && (
+                        <motion.span
+                            key={cursorText}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ duration: 0.2 }}
+                            className={clsx(
+                                "absolute text-xs uppercase font-bold tracking-wider whitespace-nowrap font-serif",
+                                !theme && "text-white" // Just white, parent handles blend
+                            )}
+                            style={{
+                                color: theme ? 'var(--cursor-text-color)' : undefined,
+                            }}
+                        >
+                            {cursorText || (isHoldMode ? 'HOLD' : 'VIEW')}
+                        </motion.span>
+                    )}
+                </AnimatePresence>
+            </motion.div>
         </motion.div>
     );
 }

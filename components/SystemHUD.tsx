@@ -130,9 +130,9 @@ export default function SystemHUD() {
                 className="absolute w-full h-full flex items-center justify-center"
             >
                 {/* Use SVG for Circular Text */}
-                <svg viewBox="0 0 100 100" className="w-full h-full opacity-80 overflow-visible">
+                <svg viewBox="0 0 100 100" className="w-full h-full opacity-50 overflow-visible">
                     <path id="textPath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
-                    <text className="text-[14px] uppercase font-mono tracking-[2px]" fill="currentColor">
+                    <text className="text-[14px] uppercase font-mono tracking-[1px]" fill="currentColor">
                         <textPath href="#textPath" startOffset="0%">
                             {isProjectPage ? " SCROLL || SCROLL" : " SCROLL || SCROLL"}
                         </textPath>

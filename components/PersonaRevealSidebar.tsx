@@ -158,7 +158,7 @@ export default function PersonaRevealSidebar({ arcana }: PersonaRevealSidebarPro
 
     return (
         <div
-            className="fixed left-0 md:-left-2 top-0 h-full w-24 md:w-64 flex flex-col items-start justify-start z-40 pointer-events-none mix-blend-difference select-none"
+            className="fixed left-0 md:-left-2 top-0 h-full w-24 md:w-64 flex flex-col items-start justify-start z-40 pointer-events-none select-none"
         >
             <div
                 className="relative flex items-center justify-center pointer-events-auto cursor-pointer"
@@ -225,7 +225,7 @@ export function PersonaParallaxText() {
     const PARALLAX_TEXT = "Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart Change My Own Heart // Change My Own Heart //";
 
     return (
-        <div className="fixed top-0 left-0 h-full w-24 md:w-64 z-0 pointer-events-none flex flex-col items-end justify-center">
+        <div className="fixed top-0 left-0 h-full w-24 md:w-64 z-20 pointer-events-none flex flex-col items-end justify-center">
             <motion.div
                 className="whitespace-nowrap overflow-visible pr-[8px] md:pr-[16px]"
                 style={{
@@ -236,7 +236,7 @@ export function PersonaParallaxText() {
                 }}
             >
                 <h1
-                    className="text-[4rem] md:text-[10rem] font-black tracking-tighter italic transition-colors duration-500"
+                    className="text-[4rem] md:text-[10rem] tracking-tighter italic transition-colors duration-500"
                     style={{ color: 'var(--parallax-text)' }}
                 >
                     {PARALLAX_TEXT}

@@ -260,16 +260,16 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
             {/* --- 4 CORNER LAYOUT --- */}
 
             {/* Top Left */}
-            <div className="absolute top-8 right-2 text-xl md:text-2xl text-gray-500 tracking-widest pointer-events-none z-10 [writing-mode:vertical-rl]">
+            <div className="absolute top-8 right-2 text-2xl md:text-2xl text-gray-300 tracking-widest pointer-events-none z-10 [writing-mode:vertical-rl]">
                 {displayedTitle}
             </div>
 
-            <div className="absolute top-8 right-22 text-xl md:text-2xl text-gray-500 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
+            <div className="absolute top-8 right-17 text-xl md:text-xl text-gray-400 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
                 [ 2005 ]
             </div>
 
             {/* Top Right */}
-            <div className="absolute top-8 right-12 text-xl md:text-2xl text-gray-500 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
+            <div className="absolute top-8 right-11 text-xl md:text-xl text-gray-400 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
                 MEDAN, ID // DECEMBER 24
             </div>
 

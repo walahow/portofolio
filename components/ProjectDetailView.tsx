@@ -173,18 +173,23 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
             {/* --- 0. BACKGROUND LAYER (Parallax Text & Border) --- */}
             {/* z-0 so it sits BEHIND the z-10 content content */}
             <div className="fixed inset-0 z-0 pointer-events-none">
-                <PersonaParallaxText />
-                {/* Sidebar Border - Moved here to be behind content */}
-                {/* Sidebar Border Removed */}
+                {/* Parallax Text Removed from here */}
             </div>
 
             {/* --- LEFT COLUMN (FIXED SIDEBAR) --- */}
             {/* z-50 to stay ON TOP of everything (Interactive Text) */}
             <aside
-                className="fixed top-0 left-0 w-24 md:w-64 h-screen z-50 flex flex-col items-center justify-center transition-colors duration-500"
+                className="fixed top-0 left-0 w-24 md:w-64 h-screen z-0 flex flex-col items-center justify-center transition-colors duration-500"
                 style={{ backgroundColor: 'var(--sidebar-bg)' }}
             >
-                <PersonaRevealSidebar arcana={project.arcana} />
+                {/* Move Parallax Text inside here so it sits ON TOP of the sidebar-bg but BEHIND the reveal text */}
+                <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                    <PersonaParallaxText />
+                </div>
+
+                <div className="relative z-10">
+                    {/* PersonaRevealSidebar moved to root to sit on top of curtain */}
+                </div>
             </aside>
 
 
@@ -264,7 +269,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
                             </div>
 
                             {/* Additional Metadata Block */}
-                            <div className="mt-8 pt-8 md:mt-16 md:pt-16 border-t border-white/10 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
+                            <div className="mt-8 pt-8 md:mt-16 md:pt-16 w-full max-w-lg flex flex-col gap-8 font-mono text-xs uppercase tracking-widest text-neutral-500 text-left">
                                 <div>
                                     <span className="block mb-2" style={{ color: 'var(--card-text)' }}>Role</span>
                                     <div style={{ color: 'var(--description-text)' }}>[ {project.roles.join(' + ')} ]</div>
@@ -316,6 +321,14 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
             </div>
 
 
-        </main>
+
+
+            {/* --- TOP LAYER (INTERACTIVE TEXT) --- */}
+            {/* Placed here to ensure it is visually on top of everything, including the curtain (z-40 > z-10 wrapper) */}
+            <div className="relative z-[60]">
+                <PersonaRevealSidebar arcana={project.arcana} />
+            </div>
+
+        </main >
     );
 }

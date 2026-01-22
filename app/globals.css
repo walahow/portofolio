@@ -2,50 +2,50 @@
 
 :root {
   /* GLOBAL BASE */
-  --background: hsl(0 0% 3%);
+  --background: hsl(0 0% 5%);
   --foreground: hsl(0 0% 92%);
   --muted-foreground: hsl(0 0% 53%);
 
   /* PROJECT DETAIL VIEW SPECIFIC */
-  --sidebar-bg: transparent;
+  --sidebar-bg: hsl(0 0% 4%);
   /* Line 172 */
-  --main-content-bg: hsl(0 0% 3%);
+  --main-content-bg: hsl(0 0% 6%);
   /* Line 178 */
-  --curtain-bg: hsl(0 0% 3%);
+  --curtain-bg: hsl(0 0% 6%);
   /* Line 189 */
 
-  --card-background: hsl(0 0% 4%);
+  --card-background: hsl(0 0% 8%);
   /* Line 223 (bg) */
   --card-text: hsl(0 0% 92%);
   /* Line 223 (text) */
   --card-border: hsl(0 0% 100% / 0.1);
   /* Line 223 (border) */
 
-  --overview-text: hsl(0 0% 92%);
+  --overview-text: hsl(0 0% 90%);
   /* Line 227 */
-  --description-text: hsl(0 0% 53%);
+  --description-text: hsl(0 0% 90%);
   /* Line 234 */
 
-  --next-project-label: hsl(0 0% 100% / 0.5);
+  --next-project-label: hsl(0 0% 90% / 0.5);
   /* Line 262 */
-  --next-project-title: hsl(0 0% 100%);
+  --next-project-title: hsl(0 0% 90%);
   /* Line 263 */
-  --progress-bar-fill: hsl(0 0% 100%);
+  --progress-bar-fill: hsl(0 0% 90%);
   /* Line 270 */
-  --progress-bar-track: hsl(0 0% 100% / 0.1);
+  --progress-bar-track: hsl(0 0% 90% / 0.1);
   /* Line 270 */
-  --next-project-hint: hsl(0 0% 100% / 0.3);
+  --next-project-hint: hsl(0 0% 90% / 0.3);
   /* Line 277 */
-  --next-project-line: hsl(0 0% 100% / 0.1);
+  --next-project-line: hsl(0 0% 90% / 0.1);
 
   /* PROJECT DETAIL GALLERY SPECIFIC */
   --project-gallery-bg: transparent;
   /* Line 74 */
 
   /* PERSONA REVEAL SIDEBAR SPECIFIC */
-  --arcana-text: #FFFFFF;
+  --arcana-text: hsl(0 0% 86%);
   /* Arcana Main Text */
-  --parallax-text: #444444;
+  --parallax-text: hsl(0 0% 56%);
   /* Line 238 */
 }
 
@@ -56,31 +56,31 @@
   --muted-foreground: hsl(0 0% 40%);
 
   /* PROJECT DETAIL VIEW SPECIFIC */
-  --sidebar-bg: transparent;
-  --main-content-bg: hsl(0 0% 95%);
-  --curtain-bg: hsl(0 0% 95%);
+  --sidebar-bg: hsl(0 0% 88%);
+  --main-content-bg: hsl(0 0% 92%);
+  --curtain-bg: hsl(0 0% 92%);
 
-  --card-background: hsl(0 0% 100%);
+  --card-background: hsl(0 0% 94%);
   --card-text: hsl(0 0% 10%);
   --card-border: hsl(0 0% 0% / 0.05);
   /* Softer border for light mode */
 
-  --overview-text: hsl(0 0% 10%);
-  --description-text: hsl(0 0% 40%);
+  --overview-text: hsl(0 0% 8%);
+  --description-text: hsl(0 0% 8%);
 
-  --next-project-label: hsl(0 0% 0% / 0.5);
-  --next-project-title: hsl(0 0% 10%);
-  --progress-bar-fill: hsl(0 0% 10%);
-  --progress-bar-track: hsl(0 0% 0% / 0.1);
-  --next-project-hint: hsl(0 0% 0% / 0.5);
-  --next-project-line: hsl(0 0% 0% / 0.1);
+  --next-project-label: hsl(0 0% 8% / 0.5);
+  --next-project-title: hsl(0 0% 8%);
+  --progress-bar-fill: hsl(0 0% 8%);
+  --progress-bar-track: hsl(0 0% 8% / 0.1);
+  --next-project-hint: hsl(0 0% 8% / 0.5);
+  --next-project-line: hsl(0 0% 8% / 0.1);
 
   /* PROJECT DETAIL GALLERY SPECIFIC */
-  --project-gallery-bg: hsl(0 0% 95%);
+  --project-gallery-bg: transparent;
 
   /* PERSONA REVEAL SIDEBAR SPECIFIC */
-  --arcana-text: #1a1a1a;
-  --parallax-text: #e5e5e5;
+  --arcana-text: hsl(0 0% 14%);
+  --parallax-text: hsl(0 0% 32%);
 }
 
 @theme inline {

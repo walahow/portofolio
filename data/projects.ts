@@ -34,7 +34,7 @@ export const PROJECTS: Project[] = [
     },
     {
         id: '02',
-        title: 'Diecast Photography',
+        title: '"Car" Photography',
         stack: 'MINI GT • INNO 64',
         slug: 'diecast-photography',
         category: 'Photography',

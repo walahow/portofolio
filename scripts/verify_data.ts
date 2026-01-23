@@ -23,9 +23,10 @@ PROJECTS.forEach(p => {
 
     // Check Gallery
     p.gallery.forEach((img, i) => {
-        const imgPath = path.join(publicDir, img);
+        const src = typeof img === 'string' ? img : img.src;
+        const imgPath = path.join(publicDir, src);
         if (fs.existsSync(imgPath)) {
-            console.log(`  Gallery [${i}] OK: ${img}`);
+            console.log(`  Gallery [${i}] OK: ${src}`);
         } else {
             console.error(`  ERROR: Gallery image [${i}] not found: ${imgPath}`);
         }

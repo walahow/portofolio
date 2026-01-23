@@ -18,7 +18,13 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         PROJECTS.forEach((project) => {
             if (project.thumbnail) imageList.push(project.thumbnail);
             if (project.gallery && project.gallery.length > 0) {
-                imageList.push(...project.gallery);
+                project.gallery.forEach(item => {
+                    if (typeof item === 'string') {
+                        imageList.push(item);
+                    } else {
+                        imageList.push(item.src);
+                    }
+                });
             }
         });
 

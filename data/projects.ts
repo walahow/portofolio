@@ -73,7 +73,7 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['FRONTEND', 'UI/UX'],
         description: 'Shattering academic sterility with WebGL. An immersive digital campus designed to embody the core of Computer Science.',
-        thumbnail: '/img/WebIlkom/1.avif',
+        thumbnail: '/img/webIlkom/1.avif',
         video: '/img/webIlkom/vid.mp4', // Placeholder
         gallery: ['/img/webIlkom/1.avif', '/img/webIlkom/2.avif'], // Using existing images
         arcana: 'MAGICIAN',

@@ -35,7 +35,7 @@ export const PROJECTS: Project[] = [
     {
         id: '02',
         title: 'Diecast Photography',
-        stack: 'MYSQL • LARAVEL • TAILWIND',
+        stack: 'MINI GT • INNO 64',
         slug: 'diecast-photography',
         category: 'Photography',
         year: '2025',

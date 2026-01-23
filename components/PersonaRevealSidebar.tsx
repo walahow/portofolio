@@ -225,7 +225,7 @@ export function PersonaParallaxText() {
     const PARALLAX_TEXT = "Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart Change My Own Heart // Change My Own Heart //";
 
     return (
-        <div className="fixed top-0 left-0 h-full w-24 md:w-64 z-20 pointer-events-none flex flex-col items-end justify-center">
+        <div className="fixed top-0 left-0 h-full w-24 md:w-67 z-20 pointer-events-none flex flex-col items-end justify-center">
             <motion.div
                 className="whitespace-nowrap overflow-visible pr-[8px] md:pr-[16px]"
                 style={{

@@ -35,38 +35,87 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
 
     // PARAMETERS (Responsive)
     // Mobile: Video 75vw, Img 70vw
-    // Desktop: Video 50vw, Img 45vw
-    const VIDEO_W = isDesktop ? 65 : 100; // 100% on mobile
-    const IMG_W = isDesktop ? 55 : 100;   // 100% on mobile
+    // Desktop: Video 65vw, Img 55vw
+    const VIDEO_W = isDesktop ? 60 : 100; // 100% on mobile
+    const IMG_W = isDesktop ? 50 : 100;   // 100% on mobile
+    const VERTICAL_W = isDesktop ? 30 : 100; // Narrower for vertical items on desktop
     const GAP = isDesktop ? 15 : 0; // Gap logic handled by flex-gap on mobile
 
-    const START_X = 17.5; // vw (Center of 65vw item: 50 - 32.5 = 17.5)
+    // Combine Video and Gallery into one array for unified mapping and width calculation
+    const videoSrc = typeof project.video === 'string' ? project.video : project.video.src;
+    const videoIsVertical = typeof project.video === 'object' && project.video.isVertical;
+
+    const assets = [
+        {
+            type: 'video',
+            src: videoSrc,
+            id: 'video-main',
+            isVertical: !!videoIsVertical
+        },
+        ...project.gallery.map((item, i) => {
+            const src = typeof item === 'string' ? item : item.src;
+            const isVertical = typeof item === 'object' && item.isVertical;
+            return {
+                type: 'image',
+                src,
+                id: `img-${i}`,
+                isVertical: !!isVertical
+            };
+        })
+    ];
+
+    // START_X calculation logic:
+    // We want the FIRST item to be CENTERED at scroll progress 0.
+    // Center of Viewport = 50vw.
+    // Center of First Item = FirstItemWidth / 2.
+    // So: START_X (Left edge of first item) = 50 - (FirstItemWidth / 2).
+
+    const firstAsset = assets[0];
+    const firstAssetWidth = firstAsset.isVertical ? VERTICAL_W : (firstAsset.type === 'video' ? VIDEO_W : IMG_W);
+
+    // If first item is 65vw -> 50 - 32.5 = 17.5
+    // If first item is 30vw -> 50 - 15 = 35
+    const START_X = 50 - (firstAssetWidth / 2);
 
     // Calculate Total Width dynamically to determine END_X
-    // Assets: 1 Video + N Images
-    // Width = VIDEO_W + (N * IMG_W) + (TotalGaps * GAP)
-    const totalAssets = 1 + project.gallery.length;
-    const totalWidth = VIDEO_W + (project.gallery.length * IMG_W) + ((totalAssets - 1) * GAP);
+    const totalAssets = assets.length;
+
+    // Sum unique widths
+    const totalContentWidth = assets.reduce((acc, asset) => {
+        const w = asset.isVertical ? VERTICAL_W : (asset.type === 'video' ? VIDEO_W : IMG_W);
+        return acc + w;
+    }, 0);
+
+    const totalWidth = totalContentWidth + ((totalAssets - 1) * GAP);
 
     // We want to scroll until the last item is CENTERED.
-    // Position of Last Item Center = totalWidth - (IMG_W / 2)
-    // We want this position to coincide with Viewport Center (50vw)
-    // So: START_X + x_translation = 50 - (totalWidth - IMG_W/2)
-    // Wait, simpler: The track ends when Last Item Center is at 50vw.
-    // END_X = 50 - (totalWidth - IMG_W / 2);
-    const END_X = 50 - totalWidth + (IMG_W / 2);
+    // Position of Last Item Center (relative to start of strip) = totalWidth - (LastItemWidth / 2)
+    const lastAsset = assets[assets.length - 1];
+    const lastAssetWidth = lastAsset.isVertical ? VERTICAL_W : (lastAsset.type === 'video' ? VIDEO_W : IMG_W);
+
+    // END_X calculation:
+    // We want the TRANSLATION (x) to move the strip such that the Last Item is at 50vw.
+    // Currently, at x=0 (START_X), the strip starts at START_X.
+    // The Last Item Center is at: START_X + (totalWidth - LastItemWidth/2).
+    // We want this point to move to 50vw.
+    // So we need to translate by `delta` where:
+    // (START_X + totalWidth - LastItemWidth/2) + delta = 50
+    // delta (Total Translation) = 50 - (START_X + totalWidth - LastItemWidth/2)
+
+    // Framer Motion maps [0, 1] to [StartVal, EndVal].
+    // StartVal = START_X (minus sidebar offset)
+    // EndVal = START_X + delta (minus sidebar offset)
+
+    // Let's simplify END_X to mean "The visual left position of the strip when finished".
+    // Visual Left Position = 50 - (Distance from Strip Start to Last Item Center)
+    const distanceToLastItemCenter = totalWidth - (lastAssetWidth / 2);
+    const END_X = 50 - distanceToLastItemCenter;
 
     const TRACK_LENGTH = Math.abs(END_X - START_X);
 
     // Horizontal Scroll Logic
     // We subtract 8rem (half of the 16rem sidebar) to center visually in the remaining space
     const x = useTransform(smoothProgress, [0, 1], [`calc(${START_X}vw - 8rem)`, `calc(${END_X}vw - 8rem)`]);
-
-    // Combine Video and Gallery into one array for unified mapping
-    const assets = [
-        { type: 'video', src: project.video, id: 'video-main' },
-        ...project.gallery.map((img, i) => ({ type: 'image', src: img, id: `img-${i}` }))
-    ];
 
     return (
         <section
@@ -81,13 +130,15 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
                 >
                     {assets.map((asset, index) => {
                         // CALCULATE FOCUS POINT
+                        // We need to sum widths of all PREVIOUS items
                         let offset = 0;
                         for (let i = 0; i < index; i++) {
-                            const w = (i === 0) ? VIDEO_W : IMG_W;
+                            const prevAsset = assets[i];
+                            const w = prevAsset.isVertical ? VERTICAL_W : (prevAsset.type === 'video' ? VIDEO_W : IMG_W);
                             offset += w + GAP;
                         }
 
-                        const myWidth = (index === 0) ? VIDEO_W : IMG_W;
+                        const myWidth = asset.isVertical ? VERTICAL_W : (asset.type === 'video' ? VIDEO_W : IMG_W);
                         const centerP = (offset + (myWidth / 2) - START_X) / TRACK_LENGTH;
 
                         return (
@@ -185,12 +236,16 @@ function GalleryItem({
         width: '100%'
     };
 
+    // Aspect Ratio Logic
+    const aspectRatioClass = asset.isVertical
+        ? (asset.type === 'video' ? 'aspect-[9/16]' : 'aspect-[3/4]')
+        : (asset.type === 'video' ? 'aspect-video' : 'aspect-[4/3]');
+
     return (
         <motion.div
             ref={itemRef}
             style={isDesktop ? desktopStyles : mobileStyles}
-            className={`relative flex-shrink-0 bg-neutral-900 overflow-hidden ${asset.type === 'video' ? 'aspect-video' : 'aspect-[4/3]'
-                }`}
+            className={`relative flex-shrink-0 bg-neutral-900 overflow-hidden ${aspectRatioClass}`}
         >
             {asset.type === 'video' ? (
                 asset.src ? (

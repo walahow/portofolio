@@ -8,8 +8,8 @@ export interface Project {
     roles: string[];     // e.g., ['Art Direction', 'Development']
     description: string; // Long paragraph text
     thumbnail: string;   // Path to main image (e.g., '/images/thumb1.webp')
-    video: string;       // Path to video
-    gallery: string[];   // Array of secondary image paths
+    video: string | { src: string; isVertical?: boolean }; // Path to video or object
+    gallery: (string | { src: string; isVertical?: boolean })[];   // Array of secondary image paths or objects
     arcana: string;      // Tarot/Arcana persona name
     overviewHeading?: string; // Custom heading for Project Overview
     theme?: 'light' | 'dark'; // NEW: Theme preference
@@ -41,9 +41,9 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['PHOTOGRAPHER'],
         description: 'Capturing the soul of JDM legends in 1:64 scale. A visual study on lighting, texture, and the illusion of reality.',
-        thumbnail: '/img/ilkomWeb.avif', // Placeholder
-        video: '/img/SIM/vid.mp4',
-        gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
+        thumbnail: '/img/diecasr/5.avif', // Placeholder
+        video: '/img/diecasr/vid.webm',
+        gallery: ['/img/diecasr/1.avif', '/img/diecasr/2.avif', '/img/diecasr/3.avif', '/img/diecasr/4.avif', '/img/diecasr/5.avif', '/img/diecasr/6.avif', '/img/diecasr/7.avif'],
         arcana: 'JUSTICE',
         overviewHeading: 'Small Scale. Massive Soul.',
         theme: 'dark'
@@ -58,8 +58,8 @@ export const PROJECTS: Project[] = [
         roles: ['BACKEND', 'UI/UX'],
         description: 'Redefining online meetings through synchronization. Built for low-bandwith conference tool prioritizing document clarity over pixelated video streams.',
         thumbnail: '/img/MyMeet/1.avif', // Placeholder
-        video: '/img/MyMeet/vid.mp4',
-        gallery: ['/img/MyMeet/1.avif', '/img/MyMeet/2.avif'],
+        video: { src: '/img/MyMeet/vid.mp4', isVertical: true },
+        gallery: [{ src: '/img/MyMeet/1.avif', isVertical: true }, { src: '/img/MyMeet/2.avif', isVertical: true }],
         arcana: 'LOVERS',
         overviewHeading: 'Discussion, Optimized.',
         theme: 'dark'

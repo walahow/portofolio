@@ -25,7 +25,7 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['DATABASE', 'BACKEND'],
         description: 'Eliminating temporal conflicts in academic spaces. A robust scheduling engine ensuring fair resource distribution using DLM logic.',
-        thumbnail: '/img/ilkomWeb.avif', // Placeholder
+        thumbnail: '/img/SIM/1.avif', // Placeholder
         video: '/img/SIM/vid.mp4',
         gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
         arcana: 'JUSTICE',
@@ -57,7 +57,7 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['BACKEND', 'UI/UX'],
         description: 'Redefining online meetings through synchronization. Built for low-bandwith conference tool prioritizing document clarity over pixelated video streams.',
-        thumbnail: '/img/HeroGate.avif', // Placeholder
+        thumbnail: '/img/MyMeet/1.avif', // Placeholder
         video: '/img/MyMeet/vid.mp4',
         gallery: ['/img/MyMeet/1.avif', '/img/MyMeet/2.avif'],
         arcana: 'LOVERS',
@@ -73,7 +73,7 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['FRONTEND', 'UI/UX'],
         description: 'Shattering academic sterility with WebGL. An immersive digital campus designed to embody the core of Computer Science.',
-        thumbnail: '/img/ilkomWeb.avif',
+        thumbnail: '/img/WebIlkom/1.avif',
         video: '/img/webIlkom/vid.mp4', // Placeholder
         gallery: ['/img/webIlkom/1.avif', '/img/webIlkom/2.avif'], // Using existing images
         arcana: 'MAGICIAN',
@@ -89,7 +89,7 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['FRONTEND', 'BACKEND'],
         description: 'A productivity engine built on logic, not motivation. MyTask transforms your to-do list into a strategic asset.',
-        thumbnail: '/img/HeroGate.avif', // Placeholder
+        thumbnail: '/img/MyTask/1.avif', // Placeholder
         video: '/img/MyTask/vid.mp4',
         gallery: ['/img/MyTask/1.avif', '/img/MyTask/2.avif'],
         arcana: 'CHARIOT',

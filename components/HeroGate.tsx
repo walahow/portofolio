@@ -264,12 +264,12 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                 {displayedTitle}
             </div>
 
-            <div className="absolute top-8 right-17 text-xl md:text-xl text-gray-400 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
+            <div className="absolute top-8 right-17 text-md md:text-md text-gray-400 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
                 [ 2005 ]
             </div>
 
             {/* Top Right */}
-            <div className="absolute top-8 right-11 text-xl md:text-xl text-gray-400 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
+            <div className="absolute top-8 right-11 text-md md:text-md text-gray-400 text-right pointer-events-none z-10 [writing-mode:vertical-rl]">
                 MEDAN, ID // DECEMBER 24
             </div>
 
@@ -303,7 +303,7 @@ export default function HeroGate({ onEnter }: HeroGateProps) {
                     animate="visible"
                 >
                     <motion.p className="text-xl md:text-2xl text-gray-300" variants={charVariants}>
-                        Creative Technologist
+                        Digital Enthusiast
                     </motion.p>
                     <motion.p className="text-sm md:text-base text-gray-500 uppercase mt-2" variants={charVariants}>
                         Web • Photo • 3D • Mobile

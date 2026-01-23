@@ -57,7 +57,7 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['BACKEND', 'UI/UX'],
         description: 'Redefining online meetings through synchronization. Built for low-bandwith conference tool prioritizing document clarity over pixelated video streams.',
-        thumbnail: '/img/MyMeet/1.avif', // Placeholder
+        thumbnail: '/img/MyMeet/thumbn.jpeg', // Placeholder
         video: { src: '/img/MyMeet/vid.mp4', isVertical: true },
         gallery: [{ src: '/img/MyMeet/1.avif', isVertical: true }, { src: '/img/MyMeet/2.avif', isVertical: true }],
         arcana: 'LOVERS',

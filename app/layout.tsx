@@ -25,8 +25,8 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Boku no Portofolio",
-  description: "Im learning shi",
+  title: "Atta's Portofolio",
+  description: "Im learning type shi",
 };
 
 export const viewport: Viewport = {

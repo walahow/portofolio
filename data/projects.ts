@@ -6,7 +6,6 @@ export interface Project {
     category: string;    // Display category for list
     year: string;
     roles: string[];     // e.g., ['Art Direction', 'Development']
-    jargon: string;      // e.g., '/// WEBGL EXPERIMENTS 2026 ///'
     description: string; // Long paragraph text
     thumbnail: string;   // Path to main image (e.g., '/images/thumb1.webp')
     video: string;       // Path to video
@@ -19,70 +18,82 @@ export interface Project {
 export const PROJECTS: Project[] = [
     {
         id: '01',
-        title: 'Ilkom-Web',
-        stack: 'REACT • THREE.JS',
-        slug: 'ilkom-web',
-        category: 'Dev / Design',
-        year: '2025',
-        roles: ['FRONTEND', 'UI/UX'],
-        jargon: '/// ACADEMIC PORTAL REIMAGINED ///',
-        description: 'A comprehensive redesign of the Computer Science faculty website. The goal was to modernize the information architecture while introducing a distinct visual identity that reflects the forward-thinking nature of the department. Built with Next.js and Framer Motion for seamless page transitions.',
-        thumbnail: '/img/ilkomWeb.avif',
-        video: '', // Placeholder
-        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'], // Using existing images
-        arcana: 'MAGICIAN',
-        overviewHeading: 'DIGITAL CAMPUS',
-        theme: 'dark'
-    },
-    {
-        id: '02',
-        title: 'MyMeet',
-        stack: 'KOTLIN • FIREBASE • AGORA',
-        slug: 'mymeet',
-        category: 'Mobile App',
-        year: '2025',
-        roles: ['BACKEND', 'UI/UX'],
-        jargon: '/// VIRTUAL CONNECTION ///',
-        description: 'MyMeet is a high-performance video conferencing application designed for low-bandwidth environments. It utilizes adaptive bitrate streaming and a custom signaling server to ensure stable connections. The UI focuses on clarity and accessibility.',
-        thumbnail: '/img/HeroGate.avif', // Placeholder
-        video: '',
-        gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
-        arcana: 'LOVERS',
-        overviewHeading: 'VIRTUAL BRIDGE',
-        theme: 'light'
-    },
-    {
-        id: '03',
         title: 'S.I.M',
         stack: 'MYSQL • LARAVEL • TAILWIND',
         slug: 'sim',
         category: 'Web Dev',
         year: '2025',
         roles: ['DATABASE', 'BACKEND'],
-        jargon: '/// SYSTEMATIC EFFICIENCY ///',
-        description: 'SIM (Schedule Integrated Manager) fixes the chaos of university course planning. It features an automated conflict detection algorithm and a drag-and-drop interface for ease of use. The backend is powered by Python/Django.',
+        description: 'Eliminating temporal conflicts in academic spaces. A robust scheduling engine ensuring fair resource distribution using DLM logic.',
         thumbnail: '/img/ilkomWeb.avif', // Placeholder
-        video: '',
-        gallery: ['/img/ilkomWeb.avif', '/img/HeroGate.avif'],
+        video: '/img/SIM/vid.mp4',
+        gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
         arcana: 'JUSTICE',
-        overviewHeading: 'SYSTEM ARCHITECTURE',
+        overviewHeading: 'Orchestrating Academic Order.',
+        theme: 'light'
+    },
+    {
+        id: '02',
+        title: 'Diecast Photography',
+        stack: 'MYSQL • LARAVEL • TAILWIND',
+        slug: 'diecast-photography',
+        category: 'Photography',
+        year: '2025',
+        roles: ['PHOTOGRAPHER'],
+        description: 'Capturing the soul of JDM legends in 1:64 scale. A visual study on lighting, texture, and the illusion of reality.',
+        thumbnail: '/img/ilkomWeb.avif', // Placeholder
+        video: '/img/SIM/vid.mp4',
+        gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
+        arcana: 'JUSTICE',
+        overviewHeading: 'Small Scale. Massive Soul.',
+        theme: 'dark'
+    },
+    {
+        id: '03',
+        title: 'MyMeet',
+        stack: 'KOTLIN • FIREBASE • AGORA',
+        slug: 'mymeet',
+        category: 'Mobile App',
+        year: '2025',
+        roles: ['BACKEND', 'UI/UX'],
+        description: 'Redefining online meetings through synchronization. Built for low-bandwith conference tool prioritizing document clarity over pixelated video streams.',
+        thumbnail: '/img/HeroGate.avif', // Placeholder
+        video: '/img/MyMeet/vid.mp4',
+        gallery: ['/img/MyMeet/1.avif', '/img/MyMeet/2.avif'],
+        arcana: 'LOVERS',
+        overviewHeading: 'Discussion, Optimized.',
         theme: 'dark'
     },
     {
         id: '04',
+        title: 'Ilkom-Web',
+        stack: 'REACT • THREE.JS',
+        slug: 'ilkom-web',
+        category: 'Dev / Design',
+        year: '2025',
+        roles: ['FRONTEND', 'UI/UX'],
+        description: 'Shattering academic sterility with WebGL. An immersive digital campus designed to embody the core of Computer Science.',
+        thumbnail: '/img/ilkomWeb.avif',
+        video: '/img/webIlkom/vid.mp4', // Placeholder
+        gallery: ['/img/webIlkom/1.avif', '/img/webIlkom/2.avif'], // Using existing images
+        arcana: 'MAGICIAN',
+        overviewHeading: 'The Digital Facade.',
+        theme: 'dark'
+    },
+    {
+        id: '05',
         title: 'MyTask',
         stack: 'REACT • PYTHON',
         slug: 'mytask',
         category: 'Web Daily',
         year: '2025',
         roles: ['FRONTEND', 'BACKEND'],
-        jargon: '/// PRODUCTIVITY FLOW ///',
-        description: 'A minimalist task management dashboard that emphasizes "flow state". It uses a dark-mode-first design language and supports keyboard shortcuts for rapid task entry. Local-first architecture ensures instant interactions.',
+        description: 'A productivity engine built on logic, not motivation. MyTask transforms your to-do list into a strategic asset.',
         thumbnail: '/img/HeroGate.avif', // Placeholder
-        video: '',
-        gallery: ['/img/HeroGate.avif', '/img/ilkomWeb.avif'],
+        video: '/img/MyTask/vid.mp4',
+        gallery: ['/img/MyTask/1.avif', '/img/MyTask/2.avif'],
         arcana: 'CHARIOT',
-        overviewHeading: 'PRODUCTION FLOW',
+        overviewHeading: 'Optimized by Math.',
         theme: 'light'
     }
 ];

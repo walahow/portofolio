@@ -171,7 +171,7 @@ export default function DynamicProjectHeader({ title, role, projectId, projectIn
                 {/* Index */}
                 <div className="overflow-hidden">
                     <span className="text-md md:text-xl font-playfair font-bold tracking-widest text-white/95">
-                        04
+                        05
                     </span>
                 </div>
             </div>

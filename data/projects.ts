@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/SIM/1.avif', // Placeholder
         video: '/img/SIM/vid.mp4',
         gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
-        arcana: 'JUSTICE',
+        arcana: '0. THE FOOL',
         overviewHeading: 'Orchestrating Academic Order.',
         theme: 'light'
     },
@@ -44,7 +44,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/diecasr/5.avif', // Placeholder
         video: '/img/diecasr/vid.webm',
         gallery: ['/img/diecasr/1.avif', '/img/diecasr/2.avif', '/img/diecasr/3.avif', '/img/diecasr/4.avif', '/img/diecasr/5.avif', '/img/diecasr/6.avif', '/img/diecasr/7.avif'],
-        arcana: 'JUSTICE',
+        arcana: 'XIV. THE TEMPERANCE',
         overviewHeading: 'Small Scale. Massive Soul.',
         theme: 'dark'
     },
@@ -76,7 +76,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/webIlkom/1.avif',
         video: '/img/webIlkom/vid.mp4', // Placeholder
         gallery: ['/img/webIlkom/1.avif', '/img/webIlkom/2.avif'], // Using existing images
-        arcana: 'MAGICIAN',
+        arcana: 'XVII. THE STAR',
         overviewHeading: 'The Digital Facade.',
         theme: 'dark'
     },

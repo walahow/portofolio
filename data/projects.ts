@@ -60,7 +60,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/MyMeet/thumbn.jpeg', // Placeholder
         video: { src: '/img/MyMeet/vid.mp4', isVertical: true },
         gallery: [{ src: '/img/MyMeet/1.avif', isVertical: true }, { src: '/img/MyMeet/2.avif', isVertical: true }],
-        arcana: 'LOVERS',
+        arcana: 'VI. THE LOVERS',
         overviewHeading: 'Discussion, Optimized.',
         theme: 'dark'
     },
@@ -92,7 +92,7 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/MyTask/1.avif', // Placeholder
         video: '/img/MyTask/vid.mp4',
         gallery: ['/img/MyTask/1.avif', '/img/MyTask/2.avif'],
-        arcana: 'CHARIOT',
+        arcana: 'XI. THE JUSTICE',
         overviewHeading: 'Optimized by Math.',
         theme: 'light'
     }

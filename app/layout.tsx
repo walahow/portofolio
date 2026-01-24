@@ -53,7 +53,6 @@ export default function RootLayout({
           <SystemHUD />
           <NoiseOverlay />
           <ShutterOverlay />
-          <ThemeSwitcher />
           <CustomCursor />
           {children}
         </SmoothScroll>

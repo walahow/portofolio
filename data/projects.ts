@@ -11,6 +11,7 @@ export interface Project {
     video: string | { src: string; isVertical?: boolean }; // Path to video or object
     gallery: (string | { src: string; isVertical?: boolean })[];   // Array of secondary image paths or objects
     arcana: string | { mobile: string; desktop: string };      // Tarot/Arcana persona name
+    cardImage: string;   // Path to Tarot card image for transition
     overviewHeading?: string; // Custom heading for Project Overview
     theme?: 'light' | 'dark'; // NEW: Theme preference
 }
@@ -32,6 +33,7 @@ export const PROJECTS: Project[] = [
             desktop: 'FOOL',
             mobile: '0. THE FOOL'
         },
+        cardImage: '/img/arcana/FOOL.webp',
         overviewHeading: 'Orchestrating Academic Order.',
         theme: 'light'
     },
@@ -51,6 +53,7 @@ export const PROJECTS: Project[] = [
             desktop: 'TEMPERANCE',
             mobile: 'XIV. TEMPERANCE'
         },
+        cardImage: '/img/arcana/temperance.webp',
         overviewHeading: 'Small Scale. Massive Soul.',
         theme: 'dark'
     },
@@ -70,6 +73,7 @@ export const PROJECTS: Project[] = [
             desktop: 'LOVERS',
             mobile: 'VI. LOVERS'
         },
+        cardImage: '/img/arcana/lovers.webp',
         overviewHeading: 'Discussion, Optimized.',
         theme: 'dark'
     },
@@ -89,6 +93,7 @@ export const PROJECTS: Project[] = [
             desktop: 'STAR',
             mobile: 'XVII. THE STAR'
         },
+        cardImage: '/img/arcana/star.webp',
         overviewHeading: 'The Digital Facade.',
         theme: 'dark'
     },
@@ -108,6 +113,7 @@ export const PROJECTS: Project[] = [
             desktop: 'JUSTICE',
             mobile: 'VIII. JUSTICE'
         },
+        cardImage: '/img/arcana/justice.webp',
         overviewHeading: 'Optimized by Math.',
         theme: 'light'
     }

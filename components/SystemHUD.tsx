@@ -89,7 +89,7 @@ export default function SystemHUD() {
 
     const handleBack = () => {
         if (isProjectPage) {
-            startTransition('down');
+            startTransition('down', 'dark', '/img/arcana/tarot.webp', 'dark');
             setTimeout(() => {
                 router.push('/');
             }, 800);

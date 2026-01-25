@@ -216,6 +216,7 @@ export default function ProjectGallery() {
                         category={project.category}
                         year={project.year}
                         image={project.thumbnail}
+                        cardImage={project.cardImage}
                         theme={project.theme}
                     />
                 ))}

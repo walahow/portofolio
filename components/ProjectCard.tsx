@@ -14,10 +14,11 @@ interface ProjectCardProps {
     category: string;
     year: string;
     image?: string;
+    cardImage?: string; // NEW: Specific Tarot Card Image
     theme?: 'light' | 'dark';
 }
 
-export default function ProjectCard({ id, title, stack, slug, category, year, image, theme }: ProjectCardProps) {
+export default function ProjectCard({ id, title, stack, slug, category, year, image, cardImage, theme }: ProjectCardProps) {
     const cardRef = useRef<HTMLAnchorElement>(null);
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
     const { startTransition } = useTransitionStore();
@@ -31,7 +32,9 @@ export default function ProjectCard({ id, title, stack, slug, category, year, im
             className="project-card group/card block w-full origin-center cursor-none opacity-80 group-[.is-focused]/card:hover:[filter:none!important]" // Added conditional hover for filter
             onClick={(e) => {
                 e.preventDefault();
-                startTransition('up', theme);
+                // Transition: Up | Target Theme: project.theme | Image: cardImage (Passed Prop) | Source: dark (Gallery is always dark)
+                startTransition('up', theme, cardImage, 'dark');
+
                 // Wait for shutter to close (approx 800ms) before navigating
                 setTimeout(() => {
                     router.push(`/project/${slug}`);

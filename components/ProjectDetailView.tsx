@@ -167,7 +167,7 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
 
-            startTransition('up');     // Trigger Shutter
+            startTransition('up', nextProject.theme, nextProject.cardImage, project.theme);     // Trigger Shutter with Image and Source Theme
 
             // Wait for shutter to close (800ms) before changing page
             setTimeout(() => {

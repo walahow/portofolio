@@ -20,7 +20,8 @@ export default function Home() {
 
   const handleEnter = () => {
     // 1. Start Curtain
-    startTransition();
+    // Use Generic Tarot for Entry
+    startTransition('up', 'dark', '/img/arcana/tarot.webp', 'dark');
 
     // 2. Wait for cover (approx 800ms to match shutter animation)
     setTimeout(() => {

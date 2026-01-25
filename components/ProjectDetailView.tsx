@@ -338,7 +338,13 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
             {/* --- TOP LAYER (INTERACTIVE TEXT) --- */}
             {/* Placed here to ensure it is visually on top of everything, including the curtain (z-40 > z-10 wrapper) */}
             <div className="relative z-[60]">
-                <PersonaRevealSidebar arcana={project.arcana} />
+                <PersonaRevealSidebar
+                    arcana={
+                        typeof project.arcana === 'string'
+                            ? project.arcana
+                            : (isMobile ? project.arcana.mobile : project.arcana.desktop)
+                    }
+                />
             </div>
 
         </main >

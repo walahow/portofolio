@@ -12,53 +12,80 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
-        const imageList: string[] = [];
+        const assetsToLoad: string[] = [];
 
-        // Collect all image URLs from PROJECTS
+        // 1. Collect all asset URLs
         PROJECTS.forEach((project) => {
-            if (project.thumbnail) imageList.push(project.thumbnail);
+            if (project.thumbnail) assetsToLoad.push(project.thumbnail);
+
+            // Handle project.video
+            if (project.video) {
+                if (typeof project.video === 'string') {
+                    assetsToLoad.push(project.video);
+                } else {
+                    assetsToLoad.push(project.video.src);
+                }
+            }
+
+            // Handle project.gallery
             if (project.gallery && project.gallery.length > 0) {
                 project.gallery.forEach(item => {
                     if (typeof item === 'string') {
-                        imageList.push(item);
+                        assetsToLoad.push(item);
                     } else {
-                        imageList.push(item.src);
+                        assetsToLoad.push(item.src);
                     }
                 });
             }
         });
 
-        // Add HeroGate image as well for safety
-        imageList.push('/img/HeroGate.avif');
+        // Add static assets
+        assetsToLoad.push('/img/HeroGate.avif');
 
         // Deduplicate
-        const uniqueImages = Array.from(new Set(imageList));
-        let loadedCount = 0;
+        const uniqueAssets = Array.from(new Set(assetsToLoad));
 
-        const incrementProgress = () => {
-            loadedCount++;
-            const pct = Math.floor((loadedCount / uniqueImages.length) * 100);
-            setProgress(pct);
-
-            if (loadedCount === uniqueImages.length) {
-                // All loaded
-                setTimeout(() => {
-                    onComplete();
-                }, 500); // Small buffer at 100%
-            }
-        };
-
-        if (uniqueImages.length === 0) {
+        if (uniqueAssets.length === 0) {
             onComplete();
             return;
         }
 
-        uniqueImages.forEach((src) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = incrementProgress;
-            img.onerror = incrementProgress; // Count errors as loaded to prevent stuck
-        });
+        let loadedCount = 0;
+        const total = uniqueAssets.length;
+
+        const incrementProgress = () => {
+            loadedCount++;
+            const pct = Math.floor((loadedCount / total) * 100);
+            setProgress(pct);
+
+            if (loadedCount === total) {
+                setTimeout(() => {
+                    onComplete();
+                }, 500);
+            }
+        };
+
+        // 2. Load Function
+        const loadAsset = (src: string) => {
+            const isVideo = src.endsWith('.mp4') || src.endsWith('.webm');
+
+            if (isVideo) {
+                // Preload video by fetching the blob
+                // This ensures it's in the browser disk cache
+                fetch(src)
+                    .then(() => incrementProgress())
+                    .catch(() => incrementProgress()); // Proceed even on error
+            } else {
+                // Preload image
+                const img = new Image();
+                img.src = src;
+                img.onload = incrementProgress;
+                img.onerror = incrementProgress;
+            }
+        };
+
+        // 3. Trigger Load
+        uniqueAssets.forEach(src => loadAsset(src));
 
     }, [onComplete]);
 

@@ -1,12 +1,19 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, MotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue, useSpring, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { Project } from '@/data/projects';
 
 interface ProjectDetailGalleryProps {
     project: Project;
+}
+
+interface GalleryAsset {
+    type: 'video' | 'image';
+    src: string;
+    id: string;
+    isVertical: boolean;
 }
 
 export default function ProjectDetailGallery({ project }: ProjectDetailGalleryProps) {
@@ -45,7 +52,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     const videoSrc = typeof project.video === 'string' ? project.video : project.video.src;
     const videoIsVertical = typeof project.video === 'object' && project.video.isVertical;
 
-    const assets = [
+    const assets: GalleryAsset[] = [
         {
             type: 'video',
             src: videoSrc,
@@ -56,7 +63,7 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
             const src = typeof item === 'string' ? item : item.src;
             const isVertical = typeof item === 'object' && item.isVertical;
             return {
-                type: 'image',
+                type: 'image' as const,
                 src,
                 id: `img-${i}`,
                 isVertical: !!isVertical
@@ -168,7 +175,7 @@ function GalleryItem({
     width,
     isDesktop
 }: {
-    asset: any,
+    asset: GalleryAsset,
     index: number,
     centerP: number,
     scrollYProgress: MotionValue,
@@ -179,47 +186,35 @@ function GalleryItem({
     const p = centerP;
     const desktopGrayscale = useTransform(
         scrollYProgress,
-        // Widened range: Transition starts 0.25 away (was 0.15)
         [p - 0.25, p - 0.05, p + 0.05, p + 0.25],
         [1, 0, 0, 1]
     );
     const desktopOpacity = useTransform(
         scrollYProgress,
-        // Widened range: Transition starts 0.35 away (was 0.2)
         [p - 0.35, p - 0.1, p + 0.1, p + 0.35],
         [0.3, 1, 1, 0.3]
     );
 
     // MOBILE VERTICAL FOCUS LOGIC
-    // We need a ref to track this specific item's position in the viewport
     const itemRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress: mobileScrollYProgress } = useScroll({
         target: itemRef,
         offset: ["start end", "end start"]
     });
 
-    // Mobile Animations:
-    // 0 = entering from bottom, 0.5 = center, 1 = leaving top
-    // Focus peak around 0.5
-    const mobileGrayscale = useTransform(
-        mobileScrollYProgress,
-        [0.1, 0.4, 0.6, 0.9],
-        [1, 0, 0, 1]
-    );
-
+    // Mobile Animations: Simplified for Performance
+    // Removed expensive grayscale filter animation on mobile
     const mobileScale = useTransform(
         mobileScrollYProgress,
         [0.1, 0.4, 0.6, 0.9],
-        [0.9, 1.05, 1.05, 0.9]
+        [0.9, 1.02, 1.02, 0.9] // Reduced scale slightly
     );
 
-    // We can also add a slight opacity fade at the very edges to smooth entry/exit
     const mobileOpacity = useTransform(
         mobileScrollYProgress,
-        [0, 0.2, 0.8, 1],
-        [0.8, 1, 1, 0.8]
+        [0, 0.15, 0.85, 1],
+        [0.6, 1, 1, 0.6]
     );
-
 
     // Conditional Styles
     const desktopStyles = {
@@ -228,9 +223,8 @@ function GalleryItem({
         width: `${width}vw`
     };
 
-    // Note: On mobile, we use the mobile-specific motion values
+    // Mobile: No filter, just opacity and scale
     const mobileStyles = {
-        filter: useTransform(mobileGrayscale, (v) => `grayscale(${v})`),
         scale: mobileScale,
         opacity: mobileOpacity,
         width: '100%'
@@ -241,6 +235,21 @@ function GalleryItem({
         ? (asset.type === 'video' ? 'aspect-[9/16]' : 'aspect-[3/4]')
         : (asset.type === 'video' ? 'aspect-video' : 'aspect-[4/3]');
 
+    // Smart Video Logic
+    const videoRef = useRef<HTMLVideoElement>(null);
+    // Use useInView to detect if the video is actually on screen
+    const isInView = useInView(itemRef, { margin: "0px 0px -20% 0px" }); // Play when largely visible
+
+    useEffect(() => {
+        if (!videoRef.current) return;
+
+        if (isInView) {
+            videoRef.current.play().catch(() => { }); // Auto-play when in view
+        } else {
+            videoRef.current.pause(); // Pause when out of view
+        }
+    }, [isInView]);
+
     return (
         <motion.div
             ref={itemRef}
@@ -250,8 +259,8 @@ function GalleryItem({
             {asset.type === 'video' ? (
                 asset.src ? (
                     <video
+                        ref={videoRef}
                         src={asset.src}
-                        autoPlay
                         loop
                         muted
                         playsInline
@@ -267,6 +276,7 @@ function GalleryItem({
                     src={asset.src}
                     alt="Gallery Asset"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                 />
             )}

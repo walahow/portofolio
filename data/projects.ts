@@ -10,7 +10,7 @@ export interface Project {
     thumbnail: string;   // Path to main image (e.g., '/images/thumb1.webp')
     video: string | { src: string; isVertical?: boolean }; // Path to video or object
     gallery: (string | { src: string; isVertical?: boolean })[];   // Array of secondary image paths or objects
-    arcana: string;      // Tarot/Arcana persona name
+    arcana: string | { mobile: string; desktop: string };      // Tarot/Arcana persona name
     overviewHeading?: string; // Custom heading for Project Overview
     theme?: 'light' | 'dark'; // NEW: Theme preference
 }
@@ -28,7 +28,10 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/SIM/1.avif', // Placeholder
         video: '/img/SIM/vid.mp4',
         gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
-        arcana: '0. THE FOOL',
+        arcana: {
+            desktop: 'FOOL',
+            mobile: '0. THE FOOL'
+        },
         overviewHeading: 'Orchestrating Academic Order.',
         theme: 'light'
     },
@@ -44,7 +47,10 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/diecasr/5.avif', // Placeholder
         video: '/img/diecasr/vid.webm',
         gallery: ['/img/diecasr/1.avif', '/img/diecasr/2.avif', '/img/diecasr/3.avif', '/img/diecasr/4.avif', '/img/diecasr/5.avif', '/img/diecasr/6.avif', '/img/diecasr/7.avif'],
-        arcana: 'XIV. THE TEMPERANCE',
+        arcana: {
+            desktop: 'TEMPERANCE',
+            mobile: 'XIV. TEMPERANCE'
+        },
         overviewHeading: 'Small Scale. Massive Soul.',
         theme: 'dark'
     },
@@ -60,7 +66,10 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/MyMeet/thumbn.jpeg', // Placeholder
         video: { src: '/img/MyMeet/vid.mp4', isVertical: true },
         gallery: [{ src: '/img/MyMeet/1.avif', isVertical: true }, { src: '/img/MyMeet/2.avif', isVertical: true }],
-        arcana: 'VI. THE LOVERS',
+        arcana: {
+            desktop: 'LOVERS',
+            mobile: 'VI. LOVERS'
+        },
         overviewHeading: 'Discussion, Optimized.',
         theme: 'dark'
     },
@@ -76,7 +85,10 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/webIlkom/1.avif',
         video: '/img/webIlkom/vid.mp4', // Placeholder
         gallery: ['/img/webIlkom/1.avif', '/img/webIlkom/2.avif'], // Using existing images
-        arcana: 'XVII. THE STAR',
+        arcana: {
+            desktop: 'STAR',
+            mobile: 'XVII. THE STAR'
+        },
         overviewHeading: 'The Digital Facade.',
         theme: 'dark'
     },
@@ -92,7 +104,10 @@ export const PROJECTS: Project[] = [
         thumbnail: '/img/MyTask/1.avif', // Placeholder
         video: '/img/MyTask/vid.mp4',
         gallery: ['/img/MyTask/1.avif', '/img/MyTask/2.avif'],
-        arcana: 'XI. THE JUSTICE',
+        arcana: {
+            desktop: 'JUSTICE',
+            mobile: 'VIII. JUSTICE'
+        },
         overviewHeading: 'Optimized by Math.',
         theme: 'light'
     }

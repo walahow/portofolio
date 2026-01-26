@@ -8,7 +8,7 @@ export interface Project {
     roles: string[];     // e.g., ['Art Direction', 'Development']
     description: string; // Long paragraph text
     thumbnail: string;   // Path to main image (e.g., '/images/thumb1.webp')
-    video: string | { src: string; isVertical?: boolean }; // Path to video or object
+    video?: string | { src: string; isVertical?: boolean }; // Path to video or object
     gallery: (string | { src: string; isVertical?: boolean })[];   // Array of secondary image paths or objects
     arcana: string | { mobile: string; desktop: string };      // Tarot/Arcana persona name
     cardImage: string;   // Path to Tarot card image for transition
@@ -23,10 +23,10 @@ export const PROJECTS: Project[] = [
         stack: 'MYSQL • LARAVEL • TAILWIND',
         slug: 'sim',
         category: 'Web Dev',
-        year: '2025',
+        year: '2024',
         roles: ['DATABASE', 'BACKEND'],
         description: 'Eliminating temporal conflicts in academic spaces. A robust scheduling engine ensuring fair resource distribution using DLM logic.',
-        thumbnail: '/img/SIM/1.avif', // Placeholder
+        thumbnail: '/img/SIM/thumbn.avif', // Placeholder
         video: '/img/SIM/vid.webm',
         gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
         arcana: {
@@ -39,6 +39,26 @@ export const PROJECTS: Project[] = [
     },
     {
         id: '02',
+        title: 'Garage',
+        stack: 'BLENDER • 3D PRINT',
+        slug: 'garage',
+        category: 'Hobbyist',
+        year: '2025',
+        roles: ['DESIGNER', 'PHOTOGRAPHER'],
+        description: 'Realizing imagination into matter. A collection of physical prototypes designed in the digital void and realized through the layers of 3D printing.',
+        thumbnail: '/img/extack/thumbn.avif', // Placeholder
+        video: '',
+        gallery: ['/img/extack/1.avif', '/img/extack/4.avif', '/img/extack/3.avif', '/img/extack/2.avif'],
+        arcana: {
+            desktop: 'MAGICIAN',
+            mobile: 'I. THE MAGICIAN'
+        },
+        cardImage: '/img/arcana/magician.webp',
+        overviewHeading: 'Brought to Reality.',
+        theme: 'dark'
+    },
+    {
+        id: '03',
         title: 'Diecast',
         stack: 'MINI GT • INNO 64',
         slug: 'diecast-photography',
@@ -58,7 +78,7 @@ export const PROJECTS: Project[] = [
         theme: 'dark'
     },
     {
-        id: '03',
+        id: '04',
         title: 'MyMeet',
         stack: 'KOTLIN • FIREBASE • AGORA',
         slug: 'mymeet',
@@ -78,9 +98,9 @@ export const PROJECTS: Project[] = [
         theme: 'dark'
     },
     {
-        id: '04',
+        id: '05',
         title: 'Ilkom-Web',
-        stack: 'REACT • THREE.JS',
+        stack: 'REACT • R3F',
         slug: 'ilkom-web',
         category: 'Dev / Design',
         year: '2025',
@@ -98,7 +118,7 @@ export const PROJECTS: Project[] = [
         theme: 'dark'
     },
     {
-        id: '05',
+        id: '06',
         title: 'MyTask',
         stack: 'REACT • PYTHON',
         slug: 'mytask',
@@ -106,15 +126,51 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['FRONTEND', 'BACKEND'],
         description: 'A productivity engine built on logic, not motivation. MyTask transforms your to-do list into a strategic asset.',
-        thumbnail: '/img/MyTask/1.avif', // Placeholder
+        thumbnail: '/img/MyTask/thumbn.avif', // Placeholder
         video: '/img/MyTask/vid.webm',
         gallery: ['/img/MyTask/1.avif', '/img/MyTask/2.avif'],
         arcana: {
             desktop: 'JUSTICE',
-            mobile: 'VIII. JUSTICE'
+            mobile: 'XI. JUSTICE'
         },
         cardImage: '/img/arcana/justice.webp',
         overviewHeading: 'Optimized by Math.',
         theme: 'light'
+    },
+    {
+        id: '07', // The Origin / The End
+        title: 'Pantheon', // Atau "The Manifestation"
+        stack: 'NEXT.JS • R3F • FRAMER MOTION',
+        slug: 'pantheon',
+        category: 'Web Experience',
+        year: '2026',
+        roles: ['DESIGN ENGINEER', 'FULLSTACK'],
+
+        // Deskripsi Meta
+        description: 'A recursive exploration of identity. Why show screenshots  of a place you already inhabit? This project is not a static case study; it is the very environment you are breathing in right now.',
+
+        overviewHeading: 'My Pantheon.',
+
+        // Thumbnail yang beda (misal: gambar abstrak/glitch)
+        thumbnail: '/img/portofolio/thumbn.avif',
+
+        // Video: Rekaman Terminal boot up / Coding timelapse
+        video: '',
+
+        // Gallery berisi gambar Teks/Tipografi (Buat gambar hitam tulisan putih)
+        gallery: [
+            '/img/portofolio/1.avif', // Tulis: "YOU ARE ALREADY HERE"
+            '/img/portofolio/2.avif',  // Tulis: "RENDERED LIVE"
+            '/img/portofolio/3.avif'   // Tulis: "CODE IS POETRY"
+        ],
+
+        arcana: {
+            desktop: 'WORLD',
+            mobile: 'XXI. THE WORLD'
+        },
+        cardImage: '/img/arcana/world.webp',
+        // arcanaText: 'The magnum opus. A complete ecosystem where every distinct project converges. It is the final destination, a holistic celebration of the entire journey.',
+
+        theme: 'dark' // Pastikan dark biar teks putihnya masuk
     }
 ];

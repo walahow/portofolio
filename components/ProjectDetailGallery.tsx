@@ -49,27 +49,32 @@ export default function ProjectDetailGallery({ project }: ProjectDetailGalleryPr
     const GAP = isDesktop ? 15 : 0; // Gap logic handled by flex-gap on mobile
 
     // Combine Video and Gallery into one array for unified mapping and width calculation
-    const videoSrc = typeof project.video === 'string' ? project.video : project.video.src;
-    const videoIsVertical = typeof project.video === 'object' && project.video.isVertical;
+    const assets: GalleryAsset[] = [];
 
-    const assets: GalleryAsset[] = [
-        {
+    if (project.video) {
+        const videoSrc = typeof project.video === 'string' ? project.video : project.video.src;
+        const videoIsVertical = typeof project.video === 'object' && project.video.isVertical;
+
+        assets.push({
             type: 'video',
             src: videoSrc,
             id: 'video-main',
             isVertical: !!videoIsVertical
-        },
-        ...project.gallery.map((item, i) => {
-            const src = typeof item === 'string' ? item : item.src;
-            const isVertical = typeof item === 'object' && item.isVertical;
-            return {
-                type: 'image' as const,
-                src,
-                id: `img-${i}`,
-                isVertical: !!isVertical
-            };
-        })
-    ];
+        });
+    }
+
+    assets.push(...project.gallery.map((item, i) => {
+        const src = typeof item === 'string' ? item : item.src;
+        const isVertical = typeof item === 'object' && item.isVertical;
+        return {
+            type: 'image' as const,
+            src,
+            id: `img-${i}`,
+            isVertical: !!isVertical
+        };
+    }));
+
+    if (assets.length === 0) return null;
 
     // START_X calculation logic:
     // We want the FIRST item to be CENTERED at scroll progress 0.

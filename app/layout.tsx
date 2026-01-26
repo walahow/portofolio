@@ -25,7 +25,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Atta's Portofolio",
+  title: "Atta's Pantheon",
   description: "Im learning type shi",
 };
 

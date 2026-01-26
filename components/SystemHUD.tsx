@@ -20,7 +20,7 @@ export default function SystemHUD() {
     const lastTriggeredTime = useRef(0);
 
     // Thermal Limit (Seconds)
-    const MAX_UPTIME = 6000;
+    const MAX_UPTIME = 60;
 
     // Formatting MM:SS
     const formatTime = (seconds: number) => {

@@ -68,7 +68,7 @@ export const PROJECTS: Project[] = [
         description: 'Capturing the soul of JDM legends in 1:64 scale. A visual study on lighting, texture, and the illusion of reality.',
         thumbnail: '/img/diecasr/5.avif', // Placeholder
         video: '/img/diecasr/vid.webm',
-        gallery: ['img/diecasr/2.avif', '/img/diecasr/3.avif', '/img/diecasr/4.avif', '/img/diecasr/5.avif', '/img/diecasr/7.avif'],
+        gallery: ['/img/diecasr/2.avif', '/img/diecasr/3.avif', '/img/diecasr/4.avif', '/img/diecasr/5.avif', '/img/diecasr/7.avif'],
         arcana: {
             desktop: 'TEMPERANCE',
             mobile: 'XIV. TEMPERANCE'

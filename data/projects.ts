@@ -20,7 +20,7 @@ export const PROJECTS: Project[] = [
     {
         id: '01',
         title: 'S.I.M',
-        stack: 'MYSQL • LARAVEL • TAILWIND',
+        stack: 'LARAVEL • MYSQL',
         slug: 'sim',
         category: 'Web Dev',
         year: '2024',
@@ -68,7 +68,7 @@ export const PROJECTS: Project[] = [
         description: 'Capturing the soul of JDM legends in 1:64 scale. A visual study on lighting, texture, and the illusion of reality.',
         thumbnail: '/img/diecasr/5.avif', // Placeholder
         video: '/img/diecasr/vid.webm',
-        gallery: ['/img/diecasr/1.avif', '/img/diecasr/2.avif', '/img/diecasr/3.avif', '/img/diecasr/4.avif', '/img/diecasr/5.avif', '/img/diecasr/6.avif', '/img/diecasr/7.avif'],
+        gallery: ['img/diecasr/2.avif', '/img/diecasr/3.avif', '/img/diecasr/4.avif', '/img/diecasr/5.avif', '/img/diecasr/7.avif'],
         arcana: {
             desktop: 'TEMPERANCE',
             mobile: 'XIV. TEMPERANCE'
@@ -80,7 +80,7 @@ export const PROJECTS: Project[] = [
     {
         id: '04',
         title: 'MyMeet',
-        stack: 'KOTLIN • FIREBASE • AGORA',
+        stack: 'KOTLIN • FIREBASE',
         slug: 'mymeet',
         category: 'Mobile App',
         year: '2025',
@@ -140,7 +140,7 @@ export const PROJECTS: Project[] = [
     {
         id: '07', // The Origin / The End
         title: 'Pantheon', // Atau "The Manifestation"
-        stack: 'NEXT.JS • R3F • FRAMER MOTION',
+        stack: 'NEXT.JS • FRAMER MOTION',
         slug: 'pantheon',
         category: 'Web Experience',
         year: '2026',

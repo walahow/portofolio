@@ -18,7 +18,9 @@ interface ProjectCardProps {
     theme?: 'light' | 'dark';
 }
 
-export default function ProjectCard({ id, title, stack, slug, category, year, image, cardImage, theme }: ProjectCardProps) {
+import { memo } from 'react';
+
+function ProjectCard({ id, title, stack, slug, category, year, image, cardImage, theme }: ProjectCardProps) {
     const cardRef = useRef<HTMLAnchorElement>(null);
     const { setCursorText, setIsHovered, setCursorVariant } = useCursorStore();
     const { startTransition } = useTransitionStore();
@@ -35,10 +37,12 @@ export default function ProjectCard({ id, title, stack, slug, category, year, im
                 // Transition: Up | Target Theme: project.theme | Image: cardImage (Passed Prop) | Source: dark (Gallery is always dark)
                 startTransition('up', theme, cardImage, 'dark');
 
-                // Wait for shutter to close (approx 800ms) before navigating
+                // Wait for shutter to close (approx 1.4s) before navigating.
+                // We wait 1500ms to ensure the animation is largely finished and the screen is covered
+                // BEFORE the heavy React render/hydration of the next page kicks in.
                 setTimeout(() => {
                     router.push(`/project/${slug}`);
-                }, 800);
+                }, 1500);
             }}
             onMouseEnter={() => {
                 setIsHovered(true);
@@ -83,3 +87,5 @@ export default function ProjectCard({ id, title, stack, slug, category, year, im
         </Link>
     )
 }
+
+export default memo(ProjectCard);

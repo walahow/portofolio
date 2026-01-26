@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useTransitionStore } from '@/store/useTransitionStore';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function ShutterOverlay() {
     const { isTransitioning, endTransition, shouldReveal, direction, targetTheme, targetImage, sourceTheme } = useTransitionStore();
@@ -21,8 +22,8 @@ export default function ShutterOverlay() {
     // Source: Original page theme (Default/Dark: #0d0d0d / hsl(0 0% 5%), Light: hsl(0 0% 95%))
     // Accent: Card Background (fixed #050505)
     // Theme: Target page theme (Default/Dark: #0d0d0d / hsl(0 0% 5%), Light: hsl(0 0% 95%))
-    const SOURCE_COLOR = (useTransitionStore.getState().sourceTheme === 'light') ? 'hsl(0 0% 95%)' : 'hsl(0 0% 5%)';
-    const THEME_COLOR = targetTheme === 'light' ? 'hsl(0 0% 95%)' : 'hsl(0 0% 5%)';
+    const SOURCE_COLOR = (useTransitionStore.getState().sourceTheme === 'light') ? 'hsl(0 0% 95%)' : 'hsl(0 0% 6%)';
+    const THEME_COLOR = targetTheme === 'light' ? 'hsl(0 0% 95%)' : 'hsl(0 0% 12%)';
 
     useEffect(() => {
         if (isTransitioning) {
@@ -153,30 +154,39 @@ export default function ShutterOverlay() {
                 {targetImage && (
                     <div className="relative w-full h-full flex items-center justify-center">
                         {/* ECHO LEFT (Mobile & Desktop) */}
-                        <div className="block absolute -left-[10%] md:left-[15%] opacity-30 scale-90 blur-[2px] transition-transform duration-1000">
-                            <img
+                        <div className="block absolute -left-[25%] md:left-[15%] opacity-30 scale-90 blur-[2px] transition-transform duration-1000 will-change-transform">
+                            <Image
                                 src={targetImage}
                                 alt=""
+                                width={600}
+                                height={1000}
+                                priority
                                 className="h-[60vh] w-auto object-contain"
                                 style={{ transform: 'rotate(-5deg)', filter: 'grayscale(100%) contrast(150%)' }}
                             />
                         </div>
 
                         {/* ECHO RIGHT (Mobile & Desktop) */}
-                        <div className="block absolute -right-[10%] md:right-[15%] opacity-30 scale-90 blur-[2px] transition-transform duration-1000">
-                            <img
+                        <div className="block absolute -right-[25%] md:right-[15%] opacity-30 scale-90 blur-[2px] transition-transform duration-1000 will-change-transform">
+                            <Image
                                 src={targetImage}
                                 alt=""
+                                width={600}
+                                height={1000}
+                                priority
                                 className="h-[60vh] w-auto object-contain"
                                 style={{ transform: 'rotate(5deg)', filter: 'grayscale(100%) contrast(150%)' }}
                             />
                         </div>
 
                         {/* MAIN CARD (Center) */}
-                        <div className="relative z-10 drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]">
-                            <img
+                        <div className="relative z-10 drop-shadow-[0_0_50px_rgba(255,255,255,0.1)] will-change-transform">
+                            <Image
                                 src={targetImage}
                                 alt="Arcana"
+                                width={600}
+                                height={1000}
+                                priority
                                 className="h-[50vh] md:h-[70vh] w-auto object-contain"
                                 style={{ filter: 'grayscale(100%) contrast(150%)' }}
                             />

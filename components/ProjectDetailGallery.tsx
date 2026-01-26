@@ -269,6 +269,7 @@ function GalleryItem({
                         loop
                         muted
                         playsInline
+                        preload="none" // Optimization: Don't load until needed
                         className="w-full h-full object-cover"
                     />
                 ) : (

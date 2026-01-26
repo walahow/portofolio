@@ -169,10 +169,10 @@ export default function ProjectDetailView({ project, nextProject }: ProjectDetai
 
             startTransition('up', nextProject.theme, nextProject.cardImage, project.theme);     // Trigger Shutter with Image and Source Theme
 
-            // Wait for shutter to close (800ms) before changing page
+            // Wait for shutter to close (1500ms) before changing page to ensure smooth transition
             setTimeout(() => {
                 router.push(`/project/${nextProject.slug}`);
-            }, 800);
+            }, 1500);
         }
     });
 

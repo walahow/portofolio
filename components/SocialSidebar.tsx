@@ -31,7 +31,9 @@ const socialData = [
     }
 ];
 
-export default function SocialSidebar() {
+import { memo } from 'react';
+
+function SocialSidebar() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -85,6 +87,8 @@ export default function SocialSidebar() {
         </motion.div>
     );
 }
+
+export default memo(SocialSidebar);
 
 function SocialItem({ item, isHovered, setHovered, isAnyHovered, isMobile }: {
     item: typeof socialData[0],

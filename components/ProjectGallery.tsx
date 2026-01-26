@@ -121,55 +121,66 @@ export default function ProjectGallery() {
 
             // MOBILE: STRICT FOCUS (Center = Color, Else = Grayscale)
             // Using standard ScrollTrigger with toggleActions for snappy response
+            // MOBILE: STRICT FOCUS (Center = Color, Else = Grayscale)
+            // Using standard ScrollTrigger with toggleActions for snappy response
             mm.add("(max-width: 767px)", () => {
                 const cards = gsap.utils.toArray<HTMLElement>(".project-card");
                 cards.forEach((card, i) => {
-                    // Update Header
                     ScrollTrigger.create({
                         trigger: card,
                         start: "top 60%",
                         end: "bottom 40%",
+                        toggleActions: "play reverse play reverse",
                         onEnter: () => {
-                            const projectId = card.getAttribute("data-id");
-                            const found = PROJECTS.find(p => p.id === projectId);
-                            if (found) {
-                                setActiveProject(found);
-                                const realIndex = (i % PROJECTS.length) + 1;
-                                setActiveIndex(realIndex);
-                            }
+                            updateActiveProject(card, i);
+                            animateFocus(card, true);
+                        },
+                        onLeave: () => {
+                            animateFocus(card, false);
                         },
                         onEnterBack: () => {
-                            const projectId = card.getAttribute("data-id");
-                            const found = PROJECTS.find(p => p.id === projectId);
-                            if (found) {
-                                setActiveProject(found);
-                                const realIndex = (i % PROJECTS.length) + 1;
-                                setActiveIndex(realIndex);
-                            }
+                            updateActiveProject(card, i);
+                            animateFocus(card, true);
+                        },
+                        onLeaveBack: () => {
+                            animateFocus(card, false);
                         }
                     });
 
-                    // Strict Visibility/Color Animation
-                    gsap.fromTo(card,
-                        {
-                            filter: "grayscale(1) brightness(0.6)", // Darker/Grayer by default
-                            scale: 0.95,
-                            opacity: 0.6
-                        },
-                        {
-                            filter: "grayscale(0) brightness(1)",
-                            scale: 1,
-                            opacity: 1,
-                            duration: 1.0,
-                            ease: "power2.inOut",
-                            scrollTrigger: {
-                                trigger: card,
-                                start: "top 60%", // Activate when near center
-                                end: "bottom 40%", // Deactivate when leaving center
-                                toggleActions: "play reverse play reverse", // Play on enter, reverse on leave
-                            }
+                    // Helper to update state
+                    function updateActiveProject(card: HTMLElement, index: number) {
+                        const projectId = card.getAttribute("data-id");
+                        const found = PROJECTS.find(p => p.id === projectId);
+                        if (found) {
+                            setActiveProject(found);
+                            const realIndex = (index % PROJECTS.length) + 1;
+                            setActiveIndex(realIndex);
                         }
-                    );
+                    }
+
+                    // Helper: Lightweight Animation (Opacity/Scale only, NO FILTERS)
+                    function animateFocus(card: HTMLElement, isFocused: boolean) {
+                        if (isFocused) {
+                            gsap.to(card, {
+                                scale: 1,
+                                opacity: 1,
+                                duration: 0.6,
+                                ease: "power2.out",
+                                overwrite: true
+                            });
+                        } else {
+                            gsap.to(card, {
+                                scale: 0.95,
+                                opacity: 0.5,
+                                duration: 0.6,
+                                ease: "power2.out",
+                                overwrite: true
+                            });
+                        }
+                    }
+
+                    // Set initial state
+                    gsap.set(card, { scale: 0.95, opacity: 0.5 });
                 });
             });
 

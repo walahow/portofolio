@@ -23,7 +23,8 @@ export default function Home() {
     // Use Generic Tarot for Entry
     startTransition('up', 'dark', '/img/arcana/tarot.webp', 'dark');
 
-    // 2. Wait for cover (approx 800ms to match shutter animation)
+    // 2. Wait for cover (approx 1.5s to match shutter animation)
+    // We increase delay to ensure the heavy ProjectGallery mount happens HIDDEN behind the shutter.
     setTimeout(() => {
       setEntered(true);
       setSystemActive(true);
@@ -34,7 +35,7 @@ export default function Home() {
         triggerReveal();
       }, 50);
 
-    }, 800);
+    }, 1500);
   };
 
   const handlePreloaderComplete = () => {

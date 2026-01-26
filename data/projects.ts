@@ -27,7 +27,7 @@ export const PROJECTS: Project[] = [
         roles: ['DATABASE', 'BACKEND'],
         description: 'Eliminating temporal conflicts in academic spaces. A robust scheduling engine ensuring fair resource distribution using DLM logic.',
         thumbnail: '/img/SIM/1.avif', // Placeholder
-        video: '/img/SIM/vid.mp4',
+        video: '/img/SIM/vid.webm',
         gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
         arcana: {
             desktop: 'FOOL',
@@ -66,8 +66,8 @@ export const PROJECTS: Project[] = [
         year: '2025',
         roles: ['BACKEND', 'UI/UX'],
         description: 'Redefining online meetings through synchronization. Built for low-bandwith conference tool prioritizing document clarity over pixelated video streams.',
-        thumbnail: '/img/MyMeet/thumbn.jpeg', // Placeholder
-        video: { src: '/img/MyMeet/vid.mp4', isVertical: true },
+        thumbnail: '/img/MyMeet/thumbn.avif', // Placeholder
+        video: { src: '/img/MyMeet/vid.webm', isVertical: true },
         gallery: [{ src: '/img/MyMeet/1.avif', isVertical: true }, { src: '/img/MyMeet/2.avif', isVertical: true }],
         arcana: {
             desktop: 'LOVERS',
@@ -87,7 +87,7 @@ export const PROJECTS: Project[] = [
         roles: ['FRONTEND', 'UI/UX'],
         description: 'Shattering academic sterility with WebGL. An immersive digital campus designed to embody the core of Computer Science.',
         thumbnail: '/img/webIlkom/1.avif',
-        video: '/img/webIlkom/vid.mp4', // Placeholder
+        video: '/img/webIlkom/vid.webm', // Placeholder
         gallery: ['/img/webIlkom/1.avif', '/img/webIlkom/2.avif'], // Using existing images
         arcana: {
             desktop: 'STAR',
@@ -107,7 +107,7 @@ export const PROJECTS: Project[] = [
         roles: ['FRONTEND', 'BACKEND'],
         description: 'A productivity engine built on logic, not motivation. MyTask transforms your to-do list into a strategic asset.',
         thumbnail: '/img/MyTask/1.avif', // Placeholder
-        video: '/img/MyTask/vid.mp4',
+        video: '/img/MyTask/vid.webm',
         gallery: ['/img/MyTask/1.avif', '/img/MyTask/2.avif'],
         arcana: {
             desktop: 'JUSTICE',

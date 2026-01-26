@@ -222,7 +222,7 @@ export function PersonaParallaxText() {
         return - (value * speed) % loopHeight;
     });
 
-    const PARALLAX_TEXT = "Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart Change My Own Heart // Change My Own Heart //";
+    const PARALLAX_TEXT = "Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart // Change My Own Heart Change My Own Heart // Change My Own Heart //";
 
     return (
         <div className="fixed top-0 left-0 h-full w-24 md:w-67 z-20 pointer-events-none flex flex-col items-end justify-center">

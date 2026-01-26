@@ -25,7 +25,7 @@ export const PROJECTS: Project[] = [
         category: 'Web Dev',
         year: '2024',
         roles: ['DATABASE', 'BACKEND'],
-        description: 'Eliminating temporal conflicts in academic spaces. A robust scheduling engine ensuring fair resource distribution using DLM logic.',
+        description: 'Eliminating temporal conflicts in academic spaces. A robust scheduling engine ensuring fair resource distribution.',
         thumbnail: '/img/SIM/thumbn.avif', // Placeholder
         video: '/img/SIM/vid.webm',
         gallery: ['/img/SIM/1.avif', '/img/SIM/2.avif'],
@@ -147,7 +147,7 @@ export const PROJECTS: Project[] = [
         roles: ['DESIGN ENGINEER', 'FULLSTACK'],
 
         // Deskripsi Meta
-        description: 'A recursive exploration of identity. Why show screenshots  of a place you already inhabit? This project is not a static case study; it is the very environment you are breathing in right now.',
+        description: 'Why show screenshots  of a place you already inhabit? This project is not a static case study; it is the very environment you are breathing in right now.',
 
         overviewHeading: 'My Pantheon.',
 
